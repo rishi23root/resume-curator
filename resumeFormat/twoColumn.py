@@ -1,9 +1,9 @@
 # handel all the logic for the two column resume format
 # create resume.tex file from the template.json file
 
-from utils import read_json_file, saveTEXFile, createResume, removeEmptySpace
+from util.utils import read_json_file, saveTEXFile, createResume, removeEmptySpace
 from constants import resumeJsonFile, outputDir
-from tolatex import createLink, createSection, latexBlock, inBlock
+from util.tolatex import createLink, createSection, latexBlock, inBlock
 import os
 
 
