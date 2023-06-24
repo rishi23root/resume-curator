@@ -1,0 +1,5 @@
+{
+  "title": "userinfo",
+  "column1": ["links", "skills", "education", "languages"],
+  "column2": ["work", "projects", "awards", "certificates"]
+}
