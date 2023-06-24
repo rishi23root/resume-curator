@@ -51,9 +51,11 @@ def createUserInfo(name: str, email: str, phone: str, website: str, objective: s
     %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     '''
+    
     # adding the user info
     userInfoWrapper = latexBlock(
         'namesection', '{'+f'{name.split(" ")[0]}'+'}'+'{'+f'{name.split(" ")[1]}'+'}{', '}')
+    
     userInfoData = fr"""
     {inBlock('urlstyle',"{same}")}
 
