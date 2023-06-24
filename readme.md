@@ -17,7 +17,12 @@ chmod +x setup.sh
 1. edit and download template form the - https://e-resume.vercel.app/builder
 2. and save it in the same folder as the script
 3. follow setup instructions 
-4. execute the script 'python3 main.py'
+4. execute the script `python3 main.py`
+5. get the results in the 'output' folder
+
+<!-- download the files from output dir btn-->
+<a href="output/2ColumnResume.pdf" download>Download 2 column resume</a>
+
 
 
 
