@@ -6,6 +6,7 @@ builderDirName = 'builder'
 outputDirName = 'output'
 
 templateDir = os.path.join(os.path.dirname(__file__), templateFolderName)
+buildDir = os.path.join(os.path.dirname(__file__), builderDirName)
 
 resumeJsonFile = os.path.join(os.path.dirname(__file__), resumeJsonFileName)
 

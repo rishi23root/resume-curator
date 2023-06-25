@@ -66,7 +66,7 @@ def createResume(filename: str):
     # remove the other files other then resume-custom.cls
     allfiles = os.listdir(os.path.join(baseDir, builderDirName))
     # print(allfiles)
-    allfiles.remove('resume-custom.cls')
+    allfiles.remove('resumecustom.cls')
     allfiles.remove('resume.pdf')
     
     allfiles.remove('resume.tex') # for testing only

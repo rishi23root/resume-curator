@@ -13,7 +13,8 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-## working with the project
+---
+## To Running the Project
 1. edit and download template form the - https://e-resume.vercel.app/builder
 2. and save it in the same folder as the script
 3. follow setup instructions 
@@ -24,12 +25,13 @@ chmod +x setup.sh
 <a href="output/2ColumnResume.pdf" download>Download 2 column resume</a>
 
 
-
-
 # to-add
 1. workflow to auto generator
 2. linkedin profile extractor and data extractor
 
+
+
+use - pylatex to generate latex files
 <!-- useful field from resume template  -->
 basic 
 skill 
