@@ -1,5 +1,8 @@
 {
-  "title": "userinfo",
+  "title": [
+    "name",
+    "email","website","phone","city","country"
+  ],
   "column1": ["links", "skills", "education", "languages"],
   "column2": ["work", "projects", "awards", "certificates"]
 }

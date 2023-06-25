@@ -1,17 +1,16 @@
 # handel all the logic for the two column resume format
 # create resume.tex file from the template.json file
 
-from pylatex import Document, Section, Subsection, Command
 from pylatex.utils import italic, NoEscape
 import pylatex as lt
 
-from util.utils import read_json_file, saveTEXFile, createResume
-from util.tolatex import createLink
+from util.utils import read_json_file, createResume
+from util.tolatex import createLink, inBlock
 from constants import resumeJsonFile, buildDir
 import os
 
 
-class MyDocument(Document):
+class MyDocument(lt.Document):
     def __init__(self):
         super().__init__(documentclass='resumecustom',
                          page_numbers=False,
@@ -21,9 +20,9 @@ class MyDocument(Document):
                          textcomp=False,
                          microtype=False)
 
-        # self.preamble.append(Command('title', 'Awesome Title'))
-        # self.preamble.append(Command('author', 'Anonymous author'))
-        # self.preamble.append(Command('date', NoEscape(r'\today')))
+        # self.preamble.append(lt.Command('title', 'Rishi23root resume builder'))
+        # self.preamble.append(lt.Command('author', 'Rishi23root'))
+        # self.preamble.append(lt.Command('date', NoEscape(r'\today')))
         # self.append(NoEscape(r'\maketitle'))
 
         # setup for base data
@@ -43,7 +42,7 @@ class MyDocument(Document):
             'email': jsonData['basics']['email'],
             'phone': jsonData['basics']['phone'],
             'website': jsonData['basics']['url'],
-            'objective': jsonData['basics']['objective']
+            'address': ", ".join([i for i in [jsonData['basics']['location']['city'], jsonData['basics']['location']['postalCode']] if i != '']),
         }
         links = jsonData['basics']['profiles']
         experience = jsonData['work']
@@ -51,6 +50,7 @@ class MyDocument(Document):
         skills = jsonData['skills']
         # projects = jsonData['projects']
         # awards = jsonData['awards']
+
         return {
             'userInfoContant': userInfoContant,
             'links': links,
@@ -59,64 +59,104 @@ class MyDocument(Document):
             'skills': skills
         }
 
-    def AddUserProfile(self, *args, **kwargs):
-        # name: str, email: str, phone: str, website: str, objective: str
+    def AddUserProfile(self, **kwargs):
+        # name: str, email: str, phone: str, website: str, address: str
         # name
         # name = "Rahul Kumar"
         first, last = kwargs['name'].split(" ")
 
-        
         # profile links
         linkstring = ''
-        for key,val in kwargs.items():
-            if key not in ['name','objective']:
-                if key == 'phone':
+        for key, val in kwargs.items():
+            if key != 'name':
+                if key in ['phone', 'address']:
                     linkstring += val + ' \\textbar{} \n\t'
+                elif key == 'email':
+                    linkstring += createLink('mailto:' +
+                                             val, val) + ' \\textbar{} \n\t'
                 else:
-                    linkstring += createLink(val, val) + '\\textbar{} \n\t'
+                    linkstring += createLink(val, val) + ' \\textbar{} \n\t'
         else:
             linkstring = linkstring[:-13]
 
         namesection_args = [
             first, last,
             NoEscape(
-                '\n\t\\urlstyle{same}\n\t'+
-                linkstring+
-                '\n\t\\newline\n\t'+
-                kwargs['objective'] +'\n'              
+                '\n\t\\urlstyle{same}\n\t' +
+                linkstring +
+                '\n'
             )
         ]
         nameSection = lt.Command("namesection", arguments=namesection_args)
         self.append(nameSection)
 
+    def AddLinks(self, links: dict):
+        # add the links section
+        with self.create(lt.Section('Links')):
+            for link in links:
+                if not link['url'] or not link['username']:
+                    continue
+                
+                network = link['network'].capitalize()
+                username = link['username']
+
+                self.append(f"{network}:// ")
+                self.append(NoEscape(createLink( link['url'], lt.utils.bold(username))))
+                self.append("\n")
+
+    def AddEducation(self, education: dict):
+        # add the education section
+        # print(education)
+        with self.create(lt.Section('Education')):
+            for edu in education:
+                institution = edu['institution']
+                study_type = edu['studyType']
+                area = edu['area']
+                start_date = edu['startDate']
+                end_date = edu['endDate']
+                score = edu['score']
+                isStudyingHere = edu['isStudyingHere']
+
+                # Create the education entry
+                with self.create(lt.Subsection(title=institution)):
+                    self.append(NoEscape(inBlock('descript', f'{study_type} in {area}')))
+
+                    self.append(NoEscape(inBlock('descript', f'{start_date} | {end_date if not isStudyingHere else "Present"}') + '\n'))
+
+                    if score:
+                        self.append('Score: ' + NoEscape(score))
+                    self.append(NoEscape('\\sectionsep'))
+                    
+            # self.append(NoEscape('\\sectionsep'))
+    
+    def AddSkills(self, skills: dict):
+        print(skills)
+        pass
+    
     def fill_document(self):
         data = self.extractData()
 
         # add date
         self.append(lt.Command("lastupdated"))
-        print(data['userInfoContant'])
+
         self.AddUserProfile(**data['userInfoContant'])
+        with self.create(lt.MiniPage(width=lt.NoEscape(r"0.31\textwidth"))):
+            # add the links section
+            self.AddLinks(data['links'])
+            # add education section
+            self.AddEducation(data['education'])
+            # add the skills section
+            self.AddSkills(data['skills'])
+            
 
+        self.append(lt.HFill())
 
-# userInfoWrapper = latexBlock(
-#     'namesection', '{'+f'{name.split(" ")[0]}'+'}'+'{'+f'{name.split(" ")[1]}'+'}{', '}')
+        with self.create(lt.MiniPage(width=lt.NoEscape(r"0.66\textwidth"))):
+            # add the skills section
+            # add education section
+            pass
 
-# userInfoData = fr"""
-# {inBlock('urlstyle',"{same}")}
-
-# {createLink(email,email)} |
-# {phone} |
-# {createLink(website,website)}
-# \newline
-# {objective}
-# """
-
-# texCode += f'''
-# {sectionNameString}
-# {userInfoWrapper(userInfoData)}
-# '''
-
-# retu`rn texCode
+        # add sub mini pages for other data like education, experience, skills etc
 
 
 def runner(filename: str = 'resume.pdf'):

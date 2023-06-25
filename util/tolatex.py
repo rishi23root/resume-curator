@@ -12,7 +12,7 @@ def createSection(title: str, content: str):
 
 
 def inBlock(blockName: str, argStr: str):
-    return f"\{blockName}{argStr}"
+    return f"\\{blockName}{{{argStr}}}"
 
 
 # wrapper which will take arguments and closing element name
