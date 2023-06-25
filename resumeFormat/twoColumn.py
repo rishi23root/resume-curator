@@ -3,12 +3,14 @@
 
 from pylatex.utils import italic, NoEscape
 import pylatex as lt
-
+from util.htmlParser import getListItems
 from util.utils import read_json_file, createResume
 from util.tolatex import createLink, inBlock
 from constants import resumeJsonFile, buildDir
 import os
 
+
+from pprint import pprint   
 
 class MyDocument(lt.Document):
     def __init__(self):
@@ -48,17 +50,20 @@ class MyDocument(lt.Document):
         experience = jsonData['work']
         education = jsonData['education']
         skills = jsonData['skills']
-        # projects = jsonData['projects']
-        # awards = jsonData['awards']
+        projects = jsonData['projects']
+        awards = jsonData['awards']
 
         return {
             'userInfoContant': userInfoContant,
             'links': links,
             'experience': experience,
             'education': education,
-            'skills': skills
+            'skills': skills,
+            'certificates': awards,
+            'projects': projects
         }
 
+    # header
     def AddUserProfile(self, **kwargs):
         # name: str, email: str, phone: str, website: str, address: str
         # name
@@ -90,6 +95,7 @@ class MyDocument(lt.Document):
         nameSection = lt.Command("namesection", arguments=namesection_args)
         self.append(nameSection)
 
+    # left sections
     def AddLinks(self, links: dict):
         # add the links section
         with self.create(lt.Section('Links')):
@@ -130,9 +136,113 @@ class MyDocument(lt.Document):
             # self.append(NoEscape('\\sectionsep'))
     
     def AddSkills(self, skills: dict):
-        print(skills)
-        pass
+        languages = skills['languages'] + skills['frameworks']
+        familar = skills['databases'] + skills['libraries'] + skills['technologies']
+        tools = skills['tools']
+        with self.create(lt.Section('Skill')):
+            self.append(NoEscape('\\subsection{Programming}'))
+            
+            under5000 = []
+            for i in languages:
+                if int(i['level']) > 60:
+                    under5000.append(i['name'])
+            # languages  
+            if under5000:
+                self.append(lt.utils.bold(NoEscape('\\location{Over 5000 lines:}')))
+                self.append(NoEscape(' \\textbullet{} '.join(under5000)))
+            if len(under5000) < len(languages):
+                self.append(lt.utils.bold(NoEscape('\\location{Over 1000 lines:}')))
+                self.append(NoEscape(' \\textbullet{} '.join(
+                    [i['name'] for i in languages if i not in under5000]
+                )))
+            self.append(lt.NewLine())
+
+            # familar
+            if familar:
+                self.append(lt.utils.bold(NoEscape('\\location{Familiar:}\n')))
+                for i in familar:
+                    self.append(NoEscape(' \\textbullet{} ' + i['name']))
+                self.append(lt.NewLine())
+
+            # tools
+            if tools:
+                self.append(lt.utils.bold(NoEscape('\\location{Tools:}\n')))
+                for i in tools:
+                    self.append(NoEscape(' \\textbullet{} ' + i['name']))
+
+        # pprint(skills)
+        # section space
+        self.append(NoEscape('\\sectionsep'))
     
+    def AddCerts(self, awards: dict):
+        self.append(lt.Section('Certificates'))
+        for award in awards:
+            self.append(NoEscape('\\subsection{Programming}'))
+            self.append(NoEscape('\\subsection{' + award['title'] + '}\n'))
+            self.append(
+                NoEscape('\\location{' + award['date'] + ' by ' + award['awarder'] + '}'))
+            self.append(NoEscape('\\sectionsep'))
+
+        self.append(NoEscape('\\sectionsep'))
+
+
+    
+    # right sections
+    def AddExperience(self, experience: dict):
+        # \runsubsection{Facebook}
+        # \descript{| Software Engineer }
+        # \location{Jan 2015 - Present | New York, NY}
+        # \sectionsep
+        self.append(NoEscape('\\section{Experience}'))
+        for ex in experience:
+            self.append(NoEscape('\\runsubsection{' + ex['name'] + '}'))
+            self.append(NoEscape('\\descript{\\textbar{} ' + ex['position'] + '}'))
+            startingDate = str(ex['startDate'])
+            endDate: str = ('Present' if ex['isWorkingHere'] else ex['endDate'])
+            string = '\\location{' + startingDate + ' - ' + endDate + ' }'
+            self.append(NoEscape(string))
+
+            # # description
+            if ex['summary']:
+                # \vspace{\topsep} # Hacky fix for awkward extra vertical space
+                self.append(NoEscape('\\vspace{\\topsep}'))
+                self.append(NoEscape('\\begin{tightemize}'))
+                # for i in ex['summary'].split:
+                # parse the list items of summeries
+                lis = getListItems(ex['summary'])
+                for li in lis:
+                    self.append(NoEscape('\\item ' + li))
+                self.append(NoEscape('\\end{tightemize}'))
+            # # \sectionsep
+            self.append(NoEscape('\\sectionsep'))
+        
+    
+    def AddProjects(self, projects: dict):
+        print(projects)
+        
+        self.append(NoEscape('\\section{Projects}'))
+        
+        for project in projects:
+            self.append(NoEscape('\\runsubsection{' + project['name'] + '}'))
+
+            self.append(
+                NoEscape(' \\textbar{} ' + createLink(project['url'],"Link")+'\n')
+            )
+            
+            
+            # project['languages']
+
+            # # description
+            if project['discription']:
+                # \vspace{\topsep} # Hacky fix for awkward extra vertical space
+                self.append(NoEscape('\\vspace{\\topsep}'))
+                # self.append(NoEscape('\\begin{tightemize}'))
+                # # self.append(project['discription'])
+                # self.append(NoEscape('\\end{tightemize}'))
+                self.append(NoEscape('\\sectionsep'))
+            
+            # \sectionsep
+
     def fill_document(self):
         data = self.extractData()
 
@@ -140,21 +250,23 @@ class MyDocument(lt.Document):
         self.append(lt.Command("lastupdated"))
 
         self.AddUserProfile(**data['userInfoContant'])
-        with self.create(lt.MiniPage(width=lt.NoEscape(r"0.31\textwidth"))):
+        with self.create(lt.MiniPage(width=lt.NoEscape(r"0.31\textwidth"), pos='t', content_pos='t')):
             # add the links section
             self.AddLinks(data['links'])
             # add education section
             self.AddEducation(data['education'])
             # add the skills section
             self.AddSkills(data['skills'])
+            # add Awards section
+            self.AddCerts(data['certificates'])
             
-
         self.append(lt.HFill())
 
-        with self.create(lt.MiniPage(width=lt.NoEscape(r"0.66\textwidth"))):
-            # add the skills section
-            # add education section
-            pass
+        with self.create(lt.MiniPage(width=lt.NoEscape(r"0.66\textwidth"), pos='t',content_pos='t')):
+            # add Experence section
+            self.AddExperience(data['experience'])
+            # add Projects section
+            self.AddProjects(data['projects'])
 
         # add sub mini pages for other data like education, experience, skills etc
 
