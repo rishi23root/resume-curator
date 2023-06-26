@@ -15,7 +15,7 @@ chmod +x setup.sh
 
 ---
 ## To Running the Project
-1. edit and download template form the - https://e-resume.vercel.app/builder or just update the existing one
+1. edit the existing `tempalte.json` 
 2. and save it in the same folder as the script
 3. follow setup instructions 
 4. execute the script `python3 main.py`

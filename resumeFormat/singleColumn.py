@@ -43,6 +43,7 @@ class MyDocument(lt.Document):
             'phone': jsonData['basics']['phone'],
             'website': jsonData['basics']['url'],
             'address': ", ".join([i for i in [jsonData['basics']['location']['city'], jsonData['basics']['location']['postalCode']] if i != '']),
+            'label': jsonData['basics']['label'],
         }
         links = jsonData['basics']['profiles']
         experience = jsonData['work']
@@ -67,11 +68,10 @@ class MyDocument(lt.Document):
         # name
         # name = "Rahul Kumar"
         first, last = kwargs['name'].split(" ")
-
         # profile links
         linkstring = ''
         for key, val in kwargs.items():
-            if key != 'name':
+            if key not in ['name','label','links']:
                 if key in ['phone', 'address']:
                     linkstring += val + ' \\textbar{} \n\t'
                 elif key == 'email':
@@ -82,32 +82,35 @@ class MyDocument(lt.Document):
         else:
             linkstring = linkstring[:-13]
 
+        # adding social links
+        socialLinks = []
+        for link in kwargs['links']:
+            if not link['url'] or not link['username']:
+                continue
+
+            network = link['network'].capitalize()
+            url = link['url']
+            
+            # add to social links
+            socialLinks.append(
+                lt.utils.bold(NoEscape(f'\\href{{{url}}}{{{network}}}'))
+            )
+        
         namesection_args = [
             first, last,
             NoEscape(
-                '\n\t\\urlstyle{same}\n\t' +
-                linkstring +
+                '\n\t' + kwargs['label'] +
+                '\n\n\t\\urlstyle{same}\n\t' +
+                linkstring + '\n\n' + 
+                '\n\t' + " \\textbar{} ".join(socialLinks) +
                 '\n'
             )
         ]
-        nameSection = lt.Command("namesection", arguments=namesection_args)
+        nameSection = lt.Command(
+            "namesectionsinglelayout", arguments=namesection_args)
         self.append(nameSection)
 
     # left sections
-    def AddLinks(self, links: dict):
-        # add the links section
-        with self.create(lt.Section('Links')):
-            for link in links:
-                if not link['url'] or not link['username']:
-                    continue
-
-                network = link['network'].capitalize()
-                username = link['username']
-
-                self.append(f"{network}:// ")
-                self.append(
-                    NoEscape(createLink(link['url'], lt.utils.bold(username))))
-                self.append("\n")
 
     def AddEducation(self, education: dict):
         # add the education section
@@ -248,27 +251,20 @@ class MyDocument(lt.Document):
         # add date
         self.append(lt.Command("lastupdated"))
 
-        self.AddUserProfile(**data['userInfoContant'])
-        with self.create(lt.MiniPage(width=lt.NoEscape(r"0.31\textwidth"), pos='t', content_pos='t')):
-            # add the links section
-            self.AddLinks(data['links'])
-            # add education section
-            self.AddEducation(data['education'])
-            # add the skills section
-            self.AddSkills(data['skills'])
-            # add Awards section
-            self.AddCerts(data['certificates'])
-
-        self.append(lt.HFill())
-
-        with self.create(lt.MiniPage(width=lt.NoEscape(r"0.66\textwidth"), pos='t', content_pos='t')):
-            # add Experence section
-            self.AddExperience(data['experience'])
-            # add Projects section
-            self.AddProjects(data['projects'])
-
-        # add sub mini pages for other data like education, experience, skills etc
-
+        self.AddUserProfile(**data['userInfoContant'],links=data['links'])
+        self.append(lt.NewLine())
+        self.append(lt.NewLine())
+        
+        # add education section
+        self.AddEducation(data['education'])
+        # add Experence section
+        self.AddExperience(data['experience'])
+        # add the skills section
+        self.AddSkills(data['skills'])
+        # add Projects section
+        self.AddProjects(data['projects'])
+        # add Awards section
+        self.AddCerts(data['certificates'])
 
 def runner(filename: str = 'resume.pdf'):
     doc = MyDocument()

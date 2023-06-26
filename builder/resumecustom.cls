@@ -49,6 +49,17 @@ Last Updated on \today
 \noindent\makebox[\linewidth]{\color{headings}\rule{\paperwidth}{0.4pt}}
 \vspace{-15pt}
 }
+\newcommand{\namesectionsinglelayout}[3]{
+\centering{
+\fontsize{30pt}{45pt}\selectfont 
+\fontfamily{lmr}\selectfont #1 
+\fontfamily{lmr}\selectfont #2
+} \\[5pt]
+\centering{
+\color{headings}
+\fontfamily{lmr}\fontsize{11pt}{14pt}\selectfont #3}
+\vspace{-15pt}
+}
 
 % Section separators 
 \usepackage{titlesec}

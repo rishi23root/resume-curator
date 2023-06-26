@@ -16,6 +16,6 @@ filename2 = '2ColumnResume.pdf'
 singleColumnRunner(filename1)
 
 # 2 column resume
-twoColumnRunner(filename2)
+# twoColumnRunner(filename2)
 
 # os.system(f'open {os.path.join(outputDir,filename2)}')
