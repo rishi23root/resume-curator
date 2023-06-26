@@ -9,9 +9,6 @@ from util.tolatex import createLink, inBlock
 from constants import resumeJsonFile, buildDir
 import os
 
-
-from pprint import pprint   
-
 class MyDocument(lt.Document):
     def __init__(self):
         super().__init__(documentclass='resumecustom',
@@ -215,33 +212,27 @@ class MyDocument(lt.Document):
                 self.append(NoEscape('\\end{tightemize}'))
             # # \sectionsep
             self.append(NoEscape('\\sectionsep'))
-        
     
     def AddProjects(self, projects: dict):
-        print(projects)
-        
         self.append(NoEscape('\\section{Projects}'))
-        
         for project in projects:
             self.append(NoEscape('\\runsubsection{' + project['name'] + '}'))
 
             self.append(
-                NoEscape(' \\textbar{} ' + createLink(project['url'],"Link")+'\n')
+                NoEscape('\\textbar{} ' + createLink(project['url'],"Link"))
             )
-            
-            
-            # project['languages']
 
             # # description
             if project['discription']:
                 # \vspace{\topsep} # Hacky fix for awkward extra vertical space
                 self.append(NoEscape('\\vspace{\\topsep}'))
-                # self.append(NoEscape('\\begin{tightemize}'))
-                # # self.append(project['discription'])
-                # self.append(NoEscape('\\end{tightemize}'))
-                self.append(NoEscape('\\sectionsep'))
+                self.append(NoEscape('\\begin{tightemize}'))
+                self.append(NoEscape('\\item ' + project['discription']))
+                self.append(NoEscape('\\end{tightemize}'))
             
-            # \sectionsep
+            self.append(NoEscape('\\sectionsep'))
+            
+            # self.append(lt.NewLine())
 
     def fill_document(self):
         data = self.extractData()
