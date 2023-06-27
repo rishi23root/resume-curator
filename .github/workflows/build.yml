@@ -37,6 +37,17 @@ jobs:
       #     python -m pip install --upgrade pip
       #     pip install -r requirements.txt
 
+      - name: Cache setup.sh
+        uses: actions/cache@v2
+        with:
+          path: ./setup.sh
+          key: ${{ runner.os }}-setup
+
+      - name: Run setup.sh
+        run: |
+          chmod +x ${pwd}/setup.sh
+          sudo bash ${pwd}/setup.sh
+
       # install texlive for creating pdf 
       - name: Setup TeX Live
         uses: teatimeguest/setup-texlive-action@v2
@@ -51,16 +62,6 @@ jobs:
 
 
       #####
-      - name: Cache setup.sh
-        uses: actions/cache@v2
-        with:
-          path: ./setup.sh
-          key: ${{ runner.os }}-setup
-
-      - name: Run setup.sh
-        run: |
-          chmod +x ${pwd}/setup.sh
-          sudo bash ${pwd}/setup.sh
 
       - name: list texlive binaries
         run: which pdflatex
