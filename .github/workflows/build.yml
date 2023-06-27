@@ -42,27 +42,28 @@ jobs:
         uses: teatimeguest/setup-texlive-action@v2
         with:
           version: 2023
+          cache: true
           packages: >-
             hyperref
 
       - name: Check `tlmgr` version
         run: tlmgr --version
 
-      - name: list texlive binaries
-        run: which pdflatex
 
       #####
-      # - name: Cache setup.sh
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: ./setup.sh
-      #     key: ${{ runner.os }}-setup
+      - name: Cache setup.sh
+        uses: actions/cache@v2
+        with:
+          path: ./setup.sh
+          key: ${{ runner.os }}-setup
 
-      # - name: Run setup.sh
-      #   run: |
-      #     chmod +x setup.sh
-      #     sudo bash setup.sh
+      - name: Run setup.sh
+        run: |
+          chmod +x setup.sh
+          sudo bash setup.sh
 
+      - name: list texlive binaries
+        run: which pdflatex
 
       # running main script
 

@@ -24,6 +24,6 @@ wait
 
 # wait
 
-# tlmgr init-usertree
-# tlmgr install hyperref
+tlmgr init-usertree
+tlmgr install hyperref
 
