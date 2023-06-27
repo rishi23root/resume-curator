@@ -60,6 +60,7 @@ jobs:
       - name: Run setup.sh
         run: |
           pwd
+          ls
           chmod +x ./setup.sh
           sudo bash ./setup.sh
 
