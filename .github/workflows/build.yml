@@ -66,6 +66,7 @@ jobs:
           pdflatex --version
 
       # running main script
+
       - name: Build
         run: python main.py
 

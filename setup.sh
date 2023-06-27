@@ -7,7 +7,7 @@ sudo apt-get install texlive-xetex -y &
 wait
 
 # to install latest version of texlive # i will not recommend this as it will take a lot of time and skill to just install it
-# use github and just clone the repo and install it
+# use github and just folk the repo and use it 
 # cd /tmp
 # wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz 
 # zcat < install-tl-unx.tar.gz | tar xf -
