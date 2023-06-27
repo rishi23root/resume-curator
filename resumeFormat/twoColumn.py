@@ -1,7 +1,7 @@
 # handel all the logic for the two column resume format
 # create resume.tex file from the template.json file
 
-from pylatex.utils import italic, NoEscape
+from pylatex.utils import NoEscape
 import pylatex as lt
 from util.htmlParser import getListItems
 from util.utils import read_json_file, createResume

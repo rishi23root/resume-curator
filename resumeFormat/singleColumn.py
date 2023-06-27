@@ -1,11 +1,8 @@
-# copy of twoColumn.py update it later
-
-
-from pylatex.utils import italic, NoEscape
+from pylatex.utils import NoEscape
 import pylatex as lt
 from util.htmlParser import getListItems
 from util.utils import read_json_file, createResume
-from util.tolatex import createLink, inBlock
+from util.tolatex import createLink
 from constants import resumeJsonFile, buildDir
 import os
 
