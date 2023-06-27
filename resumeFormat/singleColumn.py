@@ -71,7 +71,7 @@ class MyDocument(lt.Document):
         # profile links
         linkstring = ''
         for key, val in kwargs.items():
-            if key not in ['name','label','links']:
+            if key not in ['name', 'label', 'links']:
                 if key in ['phone', 'address']:
                     linkstring += val + ' \\textbar{} \n\t'
                 elif key == 'email':
@@ -90,18 +90,18 @@ class MyDocument(lt.Document):
 
             network = link['network'].capitalize()
             url = link['url']
-            
+
             # add to social links
             socialLinks.append(
                 lt.utils.bold(NoEscape(f'\\href{{{url}}}{{{network}}}'))
             )
-        
+
         namesection_args = [
             first, last,
             NoEscape(
                 '\n\t' + kwargs['label'] +
                 '\n\n\t\\urlstyle{same}\n\t' +
-                linkstring + '\n\n' + 
+                linkstring + '\n\n' +
                 '\n\t' + " \\textbar{} ".join(socialLinks) +
                 '\n'
             )
@@ -113,137 +113,188 @@ class MyDocument(lt.Document):
     # left sections
 
     def AddEducation(self, education: dict):
-        # add the education section
-        # print(education)
-        with self.create(lt.Section('Education')):
-            for edu in education:
-                institution = edu['institution']
-                study_type = edu['studyType']
-                area = edu['area']
-                start_date = edu['startDate']
-                end_date = edu['endDate']
-                score = edu['score']
-                isStudyingHere = edu['isStudyingHere']
+        self.append(NoEscape('\\fieldsection{Education}{\n'))
+        for edu in education:
+            institution = edu['institution']
+            study_type = edu['studyType']
+            area = edu['area']
+            start_date = edu['startDate']
+            end_date = edu['endDate']
+            score = edu['score']
+            isStudyingHere = edu['isStudyingHere']
+            studytime = f'{start_date} - {end_date if not isStudyingHere else "Present"}'
 
-                # Create the education entry
-                with self.create(lt.Subsection(title=institution)):
-                    self.append(
-                        NoEscape(inBlock('descript', f'{study_type} in {area}')))
+            # \vspace{0.5em}
+            self.append(NoEscape(f'\\textbf{{{institution}}} \hfill {area}\n'))
+            self.append(NoEscape('\\newline\n'))
+            self.append(NoEscape(f'{study_type} \hfill {studytime}\n'))
+            self.append(NoEscape('\\vspace{0.5em}\n'))
+            self.append(NoEscape('\\newline\n'))
 
-                    self.append(NoEscape(inBlock(
-                        'descript', f'{start_date} | {end_date if not isStudyingHere else "Present"}') + '\n'))
-
-                    if score:
-                        self.append('Score: ' + NoEscape(score))
-                    self.append(NoEscape('\\sectionsep'))
-
-            # self.append(NoEscape('\\sectionsep'))
+        self.append(NoEscape('}%\n'))
 
     def AddSkills(self, skills: dict):
         languages = skills['languages'] + skills['frameworks']
         familar = skills['databases'] + \
             skills['libraries'] + skills['technologies']
         tools = skills['tools']
-        with self.create(lt.Section('Skill')):
-            self.append(NoEscape('\\subsection{Programming}'))
-
-            under5000 = []
-            for i in languages:
-                if int(i['level']) > 60:
-                    under5000.append(i['name'])
-            # languages
-            if under5000:
-                self.append(lt.utils.bold(
-                    NoEscape('\\location{Over 5000 lines:}')))
-                self.append(NoEscape(' \\textbullet{} '.join(under5000)))
-            if len(under5000) < len(languages):
-                self.append(lt.utils.bold(
-                    NoEscape('\\location{Over 1000 lines:}')))
-                self.append(NoEscape(' \\textbullet{} '.join(
-                    [i['name'] for i in languages if i not in under5000]
-                )))
+        
+        self.append(NoEscape('\\fieldsection{Skills}{\n'))
+        # add space
+        self.append(NoEscape('\\vspace{0.5em}\n'))
+        
+        # rfsdhflksd
+        under5000 = []
+        for i in languages:
+            if int(i['level']) > 60:
+                under5000.append(i['name'])
+        # languages
+        if under5000:
+            self.append(lt.utils.bold(NoEscape('\\textbf{Over 5000 lines:}')))
+            # new line
+            self.append(lt.NewLine())
+            self.append(NoEscape(' \\textbullet{} '.join(under5000)))
+            self.append(NoEscape('\\vspace{0.2em}\n'))
             self.append(lt.NewLine())
 
-            # familar
-            if familar:
-                self.append(lt.utils.bold(NoEscape('\\location{Familiar:}\n')))
-                for i in familar:
-                    self.append(NoEscape(' \\textbullet{} ' + i['name']))
-                self.append(lt.NewLine())
+        if len(under5000) < len(languages):
+            self.append(lt.utils.bold(NoEscape('\\textbf{Over 1000 lines:}\t')))
+            self.append(lt.NewLine())
+            self.append(NoEscape(' \\textbullet{} '.join([i['name'] for i in languages if i not in under5000])))
+            self.append(NoEscape('\\vspace{0.2em}\n'))
+            self.append(lt.NewLine())
 
-            # tools
-            if tools:
-                self.append(lt.utils.bold(NoEscape('\\location{Tools:}\n')))
-                for i in tools:
-                    self.append(NoEscape(' \\textbullet{} ' + i['name']))
+        # familar
+        if familar:
+            self.append(lt.utils.bold(NoEscape('\\textbf{Familiar:}\n\t')))
+            self.append(lt.NewLine())
+            for i in familar:
+                self.append(NoEscape(' \\textbullet{} ' + i['name']))
+            self.append(NoEscape('\\vspace{0.2em}\n'))
+            self.append(lt.NewLine())
 
-        # pprint(skills)
-        # section space
-        self.append(NoEscape('\\sectionsep'))
+        # tools
+        if tools:
+            self.append(lt.utils.bold(NoEscape('\\textbf{Tools:}\n\t')))
+            self.append(lt.NewLine())
+            for i in tools:
+                self.append(NoEscape(' \\textbullet{} ' + i['name']))
+            self.append(lt.NewLine())
+            self.append(NoEscape('\\vspace{0.2em}\n'))
+
+
+        
+
+        self.append(NoEscape('}%\n'))
+
+
+        # with self.create(lt.Section('Skill')):
+        #     self.append(NoEscape('\\subsection{Programming}'))
+
+        #     under5000 = []
+        #     for i in languages:
+        #         if int(i['level']) > 60:
+        #             under5000.append(i['name'])
+        #     # languages
+        #     if under5000:
+        #         self.append(lt.utils.bold(
+        #             NoEscape('\\location{Over 5000 lines:}')))
+        #         self.append(NoEscape(' \\textbullet{} '.join(under5000)))
+        #     if len(under5000) < len(languages):
+        #         self.append(lt.utils.bold(
+        #             NoEscape('\\location{Over 1000 lines:}')))
+        #         self.append(NoEscape(' \\textbullet{} '.join(
+        #             [i['name'] for i in languages if i not in under5000]
+        #         )))
+        #     self.append(lt.NewLine())
+
+        #     # familar
+        #     if familar:
+        #         self.append(lt.utils.bold(NoEscape('\\location{Familiar:}\n')))
+        #         for i in familar:
+        #             self.append(NoEscape(' \\textbullet{} ' + i['name']))
+        #         self.append(lt.NewLine())
+
+        #     # tools
+        #     if tools:
+        #         self.append(lt.utils.bold(NoEscape('\\location{Tools:}\n')))
+        #         for i in tools:
+        #             self.append(NoEscape(' \\textbullet{} ' + i['name']))
+
+        # # pprint(skills)
+        # # section space
+        # self.append(NoEscape('\\sectionsep'))
 
     def AddCerts(self, awards: dict):
-        self.append(lt.Section('Certificates'))
+        self.append(NoEscape('\\fieldsection{projects}{\n'))
         for award in awards:
-            self.append(NoEscape('\\subsection{Programming}'))
-            self.append(NoEscape('\\subsection{' + award['title'] + '}\n'))
-            self.append(
-                NoEscape('\\location{' + award['date'] + ' by ' + award['awarder'] + '}'))
-            self.append(NoEscape('\\sectionsep'))
+            title = award['title']
+            url = award['url']            
+            nameWithUrl = f'{title}'+' - ' + createLink(url, award['awarder'])
+            self.append(NoEscape(f'\\textbf{{{nameWithUrl}}} \\hfill {award["date"]}'))
+            self.append(NoEscape('\\vspace{0.5em}\n'))
+            self.append(lt.NewLine())
 
-        self.append(NoEscape('\\sectionsep'))
-
-    # right sections
+        self.append(NoEscape('}%\n'))
 
     def AddExperience(self, experience: dict):
-        # \runsubsection{Facebook}
-        # \descript{| Software Engineer }
-        # \location{Jan 2015 - Present | New York, NY}
-        # \sectionsep
-        self.append(NoEscape('\\section{Experience}'))
+        self.append(NoEscape('\\fieldsection{Experience}{\n'))
         for ex in experience:
-            self.append(NoEscape('\\runsubsection{' + ex['name'] + '}'))
-            self.append(
-                NoEscape('\\descript{\\textbar{} ' + ex['position'] + '}'))
+            name = ex['name']
+            # \\textbar{}
+            position = ex['position']
             startingDate = str(ex['startDate'])
             endDate: str = (
                 'Present' if ex['isWorkingHere'] else ex['endDate'])
-            string = '\\location{' + startingDate + ' - ' + endDate + ' }'
-            self.append(NoEscape(string))
+            worktime = f'{startingDate} - {endDate}'
 
-            # # description
+            nameWithPossition = f'{name}'+' \\textbar{} ' + f'{position}'
+
+            # \vspace{0.5em}
+            self.append(
+                NoEscape(f'\\textbf{{{nameWithPossition}}} \hfill {worktime}'))
+            # self.append(NoEscape('\\newline\n'))
+            # self.append(NoEscape(f'{study_type} \hfill {studytime}\n'))
             if ex['summary']:
-                # \vspace{\topsep} # Hacky fix for awkward extra vertical space
-                self.append(NoEscape('\\vspace{\\topsep}'))
+                #         # \vspace{\topsep} # Hacky fix for awkward extra vertical space
+                #         self.append(NoEscape('\\vspace{\\topsep}'))
                 self.append(NoEscape('\\begin{tightemize}'))
-                # for i in ex['summary'].split:
-                # parse the list items of summeries
                 lis = getListItems(ex['summary'])
                 for li in lis:
                     self.append(NoEscape('\\item ' + li))
+                # self.append(NoEscape('\\item ' + "line1"))
                 self.append(NoEscape('\\end{tightemize}'))
-            # # \sectionsep
-            self.append(NoEscape('\\sectionsep'))
+                pass
+            
+            self.append(NoEscape('\\vspace{0.5em}\n'))
+
+        self.append(NoEscape('}%\n'))
+        self.append(NoEscape('\\vspace{0.5em}\n'))
 
     def AddProjects(self, projects: dict):
-        self.append(NoEscape('\\section{Projects}'))
+        self.append(NoEscape('\\fieldsection{projects}{\n'))
         for project in projects:
-            self.append(NoEscape('\\runsubsection{' + project['name'] + '}'))
-
-            self.append(
-                NoEscape('\\textbar{} ' + createLink(project['url'], "Link"))
-            )
-
+            name = project['name']
+            url = project['url']
+            languages = project['languages']
+            
+            nameWithUrl = f'{name}'+' \\textbar{} ' + createLink(url, "Link")
+            
+            self.append(NoEscape(f'\\textbf{{{nameWithUrl}}} \hfill {languages}'))
+            # self.append(NoEscape('\\newline'))
+            # self.append(NoEscape(f'{study_type} \hfill {studytime}\n'))
+            # self.append(NoEscape('\\newline\n'))
             # # description
             if project['discription']:
                 # \vspace{\topsep} # Hacky fix for awkward extra vertical space
-                self.append(NoEscape('\\vspace{\\topsep}'))
+                # self.append(NoEscape('\\vspace{\\topsep}'))
                 self.append(NoEscape('\\begin{tightemize}'))
                 self.append(NoEscape('\\item ' + project['discription']))
                 self.append(NoEscape('\\end{tightemize}'))
+            
+            self.append(NoEscape('\\vspace{0.5em}\n'))
 
-            self.append(NoEscape('\\sectionsep'))
-
-            # self.append(lt.NewLine())
+        self.append(NoEscape('}%\n'))
 
     def fill_document(self):
         data = self.extractData()
@@ -257,13 +308,13 @@ class MyDocument(lt.Document):
         
         # add education section
         self.AddEducation(data['education'])
-        # add Experence section
+        # # add Experence section
         self.AddExperience(data['experience'])
-        # add the skills section
+        # # add the skills section
         self.AddSkills(data['skills'])
-        # add Projects section
+        # # add Projects section
         self.AddProjects(data['projects'])
-        # add Awards section
+        # # add Awards section
         self.AddCerts(data['certificates'])
 
 def runner(filename: str = 'resume.pdf'):

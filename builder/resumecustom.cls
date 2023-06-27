@@ -90,3 +90,19 @@ Last Updated on \today
 \newenvironment{tightemize}{
 \vspace{-\topsep}\begin{itemize}\itemsep1pt \parskip0pt \parsep0pt}
 {\end{itemize}\vspace{-\topsep}}
+
+
+
+% field command for single page layouts 
+\newcommand{\fieldsection}[2]{%
+  \vspace{-10pt}
+  \section*{\small \textbf{#1}}
+  \vspace{-2pt}
+  \hrule % Add horizontal line under section name
+  \vspace{1em}
+  \hspace*{1.5em}
+  \begin{minipage}{0.95\linewidth} % Set section width to 90% of the page width
+    #2 % Content of the section
+  \end{minipage}
+  \vspace{0.5em}
+}
