@@ -1,10 +1,10 @@
 {
   "basics": {
-    "name": "Mr. Rishbabh Jain",
+    "name": "Rishbabh Jain",
     "label": "Frontend Developer",
     "image": "https://randomuser.me/api/portraits/men/18.jpg",
-    "email": "janedoe@email.com",
-    "phone": "+91 9876543210",
+    "email": "rishabhjainfinal@email.com",
+    "phone": "+91 7618306833",
     "url": "www.e-resume.vercel.app",
     "summary": "I am a web developer having expertise in frontend development and exposure to back- end development. I design and develop web applications using the latest technologies to deliver the product with quality code.",
     "location": {
@@ -14,8 +14,8 @@
       "countryCode": "",
       "region": ""
     },
-    "relExp": "4 years",
-    "totalExp": "6 Years",
+    "relExp": "3 years",
+    "totalExp": "5 Years",
     "objective": "Eager to expand my skill set through external trainings to help boost all major front desk KPIs. Hoping to leverage organizational skills to help ABC Corp introduce time-saving schemes for all executives.",
     "profiles": [
       {
