@@ -59,6 +59,7 @@ jobs:
 
       - name: Run setup.sh
         run: |
+          pwd
           chmod +x setup.sh
           sudo bash setup.sh
 
