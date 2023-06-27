@@ -53,17 +53,18 @@ jobs:
           cache: true
           packages: >-
             hyperref
-
-      - name: Check `tlmgr` version
-        run: tlmgr --version
+            pdftexcmds
 
 
-      #####
+      ##### for testing only
 
-      - name: check texlive binaries
-        run: |
-          which pdflatex
-          pdflatex --version
+      # - name: Check `tlmgr` version
+      #   run: tlmgr --version
+
+      # - name: check texlive binaries
+      #   run: |
+      #     which pdflatex
+      #     pdflatex --version
 
       # running main script
 
