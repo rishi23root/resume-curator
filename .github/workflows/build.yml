@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Cache dependencies
+      - name: Cache python dependencies
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
@@ -32,21 +32,33 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Install dependencies
+      - name: Install python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Cache setup.sh
-        uses: actions/cache@v2
-        with:
-          path: ./setup.sh
-          key: ${{ runner.os }}-setup
+      # install texlive for creating pdf 
+      - name: Setup TeX Live
+        uses: teatimeguest/setup-texlive-action@v2
 
-      - name: Run setup.sh
-        run: |
-          chmod +x setup.sh
-          sudo bash setup.sh
+      - name: Check `tlmgr` version
+        run: tlmgr --version
+        with:
+          version: 2023
+          packages: >-
+            hyperref
+
+      #####
+      # - name: Cache setup.sh
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ./setup.sh
+      #     key: ${{ runner.os }}-setup
+
+      # - name: Run setup.sh
+      #   run: |
+      #     chmod +x setup.sh
+      #     sudo bash setup.sh
 
       - name: Build
         run: python main.py

@@ -54,14 +54,14 @@ def saveTEXFile(texFileData: str):
 
 def createResume(filename: str):
     os.chdir(os.path.join(baseDir, builderDirName))
-    # os.system(
-    #     f'pdflatex resume.tex'
-    # )
+    os.system(
+        f'pdflatex resume.tex'
+    )
     
     # final version of the resume
-    os.system(
-        f'pdflatex resume.tex | tee /proc/sys/vm/drop_caches >/dev/null 2>&1'
-    )
+    # os.system(
+    #     f'pdflatex resume.tex | tee /proc/sys/vm/drop_caches >/dev/null 2>&1'
+    # )
     # cp resume.pdf ../
     # remove the other files other then resume-custom.cls
     allfiles = os.listdir(os.path.join(baseDir, builderDirName))
