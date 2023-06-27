@@ -49,7 +49,7 @@ jobs:
         run: tlmgr --version
 
       - name: list texlive binaries
-        run: ls /home/runner/work/_temp/setup-texlive/2023/pdflatex --version
+        run: ls /home/runner/work/_temp/setup-texlive/2023
 
       #####
       # - name: Cache setup.sh
