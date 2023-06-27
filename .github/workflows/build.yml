@@ -16,26 +16,26 @@ jobs:
         python-version: [3.9]
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      # - name: Checkout repository
+      #   uses: actions/checkout@v2
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+      # - name: Set up Python ${{ matrix.python-version }}
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: ${{ matrix.python-version }}
 
-      - name: Cache python dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+      # - name: Cache python dependencies
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ~/.cache/pip
+      #     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pip-
 
-      - name: Install python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+      # - name: Install python dependencies
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install -r requirements.txt
 
       # install texlive for creating pdf 
       - name: Setup TeX Live
@@ -48,8 +48,8 @@ jobs:
       - name: Check `tlmgr` version
         run: tlmgr --version
 
-      - name: Check `pdflatex` version
-        run: pdflatex --version
+      - name: list texlive binaries
+        run: ls /home/runner/work/_temp/setup-texlive/2023/pdflatex --version
 
       #####
       # - name: Cache setup.sh
@@ -63,11 +63,14 @@ jobs:
       #     chmod +x setup.sh
       #     sudo bash setup.sh
 
-      - name: Build
-        run: python main.py
 
-      - name: Push new resumes
-        uses: mikeal/publish-to-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: 'main'
+      # running main script
+
+      # - name: Build
+      #   run: python main.py
+
+      # - name: Push new resumes
+      #   uses: mikeal/publish-to-github-action@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     BRANCH_NAME: 'main'
