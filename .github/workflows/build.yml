@@ -48,6 +48,9 @@ jobs:
       - name: Check `tlmgr` version
         run: tlmgr --version
 
+      - name: Check `pdflatex` version
+        run: pdflatex --version
+
       #####
       # - name: Cache setup.sh
       #   uses: actions/cache@v2
