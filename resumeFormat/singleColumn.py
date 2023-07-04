@@ -223,7 +223,7 @@ class MyDocument(lt.Document):
         # self.append(NoEscape('\\sectionsep'))
 
     def AddCerts(self, awards: dict):
-        self.append(NoEscape('\\fieldsection{projects}{\n'))
+        self.append(NoEscape('\\fieldsection{certificates}{\n'))
         for award in awards:
             title = award['title']
             url = award['url']            

@@ -34,6 +34,10 @@ chmod +x setup.sh
 # To-do:
 - [x] add 1 column resume
 - [x] add 2 column resume
+- [ ] add web interface to edit the template and download the resume
+    - [ ] give option to upload json file
+    - [ ] add error if all the fields are not filled or found in the uploaded json
+
 - [ ] extract linkedin data and export to json
 - [ ] extract github data and export to json
 
