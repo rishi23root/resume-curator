@@ -52,8 +52,8 @@ jobs:
           version: 2023
           cache: true
           packages: >-
-            hyperref
             pdftexcmds
+            hyperref
 
 
       ##### for testing only
