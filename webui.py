@@ -210,26 +210,48 @@ class ResumeCurator:
 
     def JsonRender(self, label):
         possibleKeys = ['title', 'name', 'institution', 'network']
+        
+        def listWithDictAsValue(*subLabel, data=""):
+            if len(subLabel) == 1:
+                dataSouce = data or st.session_state.data[subLabel[0]]
+            else:
+                dataSouce = data or st.session_state.data[subLabel[0]][subLabel[1]]
+            # dataSouce = data or st.session_state.data[subLabel]
+            tabs = st.tabs(
+                [data[i] for data in dataSouce for i in data.keys() if i in possibleKeys])
+            for index, tab in enumerate(tabs):
+                with tab:
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.button("Edit", key=self.generateUUID())
+                    with col2:
+                        st.button("delete", key=self.generateUUID())
+                    entry = dataSouce[index]
+                    for key, val in entry.items():
+                        if len(subLabel) == 1:
+                            st.session_state.data[subLabel[0]][index][key] = st.text_input( key, val, key=self.generateUUID())
+                        else:
+                            st.session_state.data[subLabel[0]][subLabel[1]][index][key] = st.text_input(
+                                key, val, key=self.generateUUID())
 
         st.header(label.capitalize(), anchor=False)
         with st.expander("Edit", expanded=False):
             dataSouce = st.session_state.data[label]
+            
             if type(dataSouce) == list:
-                # create tabs
-                tabs = st.tabs([data[i] for data in dataSouce for i in data.keys() if i in possibleKeys])
-                for index,tab in enumerate(tabs):
-                    with tab:
-                        col1,col2 = st.columns(2)
-                        with col1:
-                            st.button("Edit", key=self.generateUUID())
-                        with col2:
-                            st.button("delete", key=self.generateUUID())
-                        entry = dataSouce[index]
-                        for key, val in entry.items():
-                            st.text_input(key, val, key=self.generateUUID())
+                listWithDictAsValue(label,data=dataSouce)
             else :
                 for key, val in dataSouce.items():
-                    st.write(key)
+                    if type(val) == dict:
+                        st.subheader(key.capitalize(), anchor=False)
+                        for key2, val2 in val.items():
+                            st.session_state.data[label][key][key2] =st.text_input(key2, val2, key=self.generateUUID())
+                    elif type(val) == list:
+                        st.subheader(key.capitalize(), anchor=False)
+                        listWithDictAsValue(label,key,data=val)
+                    else:
+                        st.session_state.data[label][key] = st.text_input(
+                            key.capitalize(), val, key=self.generateUUID())
 
         # if type(data) == str:
         #     st.text_input(label, data, key=self.generateUUID())
