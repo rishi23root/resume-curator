@@ -14,32 +14,11 @@ def save_json_file(file_path, data):
     with open(file_path, 'w') as file:
         json.dump(data, file, indent=4)
 
-
-# ui helper functions
-# ask for to upload your file
-# else default file is template.json
-def upload_resumeJson(st):
-    uploaded_file = st.file_uploader(
-        "Choose your template file or start editing this one to create a new template",
-        type="json",
-        accept_multiple_files=False
-    )
-    if uploaded_file is None:
-        return load_json_file('template.json')
-    else:
-        # process the upload file
-        bytes_data = uploaded_file.read()
-        # convert the bytes to json data
-        return json.loads(bytes_data)
-
-# Main function
-
-
 def main():
     st.title("Resume Curator")
 
     # ask for template file to add
-    data = upload_resumeJson(st)
+    data = {}
 
     # st.write("filename:", uploaded_file.name)
     st.write(data)
@@ -197,17 +176,6 @@ class ResumeCurator:
             st.session_state.data = josnData.copy()
             self.UploadedFileData = josnData.copy()
 
-    def listWtihDictRender(self, label, data):
-        st.subheader(label, anchor=False)
-        possibleKeys = ['title', 'name', 'institution', 'network']
-        for entry in data:
-            keyThisDataHave = [
-                key for key in possibleKeys if key in data[0].keys()]
-            print(keyThisDataHave)
-
-            # for key, val in entry.items():
-            #     st.text_input(key, val, key=label)
-
     def JsonRender(self, label):
         possibleKeys = ['title', 'name', 'institution', 'network']
         
@@ -252,32 +220,6 @@ class ResumeCurator:
                     else:
                         st.session_state.data[label][key] = st.text_input(
                             key.capitalize(), val, key=self.generateUUID())
-
-        # if type(data) == str:
-        #     st.text_input(label, data, key=self.generateUUID())
-        # else:
-        #     if type(data) == dict:
-        #         st.subheader(label, anchor=False)
-        #         # with st.expander(label):
-        #         for key, val in data.items():
-        #             self.JsonRender(key, val)
-
-        #             # st.subheader(key,anchor=False)
-        #             # st.text_input(key,val,key=label)
-
-        #     elif type(data) == list:
-        #         # it means it have list of elements in it then we can use tabs to render them
-        #         possibleKeys = ['title', 'name', 'institution', 'network']
-        #         keyThisDataHave = [
-        #             key for key in possibleKeys if key in data[0].keys()]
-        #         print(keyThisDataHave)
-
-        #         # data[0].has_key('title')
-        #         # st.tabs([(i) for i in data])
-        #         st.subheader(label, anchor=False)
-        #         for index, item in enumerate(data):
-        #             # with st.expander(label):
-        #             self.JsonRender(label, item)
 
     def runner(self):
 
