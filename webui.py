@@ -1,6 +1,11 @@
-import streamlit as st
 import json
+import string
+from pprint import pprint
 from time import sleep as nap
+import random
+
+import streamlit as st
+
 # Load the JSON file
 
 
@@ -21,22 +26,24 @@ def upload_resumeJson(st):
     )
     if uploaded_file is None:
         return load_json_file('template.json')
-    else :
-        # process the upload file 
+    else:
+        # process the upload file
         bytes_data = uploaded_file.read()
         # convert the bytes to json data
         return json.loads(bytes_data)
 
 # Main function
+
+
 def main():
     st.title("Resume Curator")
-    
-    # ask for template file to add 
+
+    # ask for template file to add
     data = upload_resumeJson(st)
-    
+
     # st.write("filename:", uploaded_file.name)
     st.write(data)
-        
+
     # file_path = st.text_input(
     #     "Enter the path of the JSON file:") or 'template.json'
     # data = load_json_file(file_path )
@@ -93,34 +100,34 @@ def main():
 
 
 class ResumeCurator:
-    def __init__(self,templateFile='template.json'):
+    def __init__(self, templateFile='template.json'):
         st.set_page_config(
-            layout='centered'
-            )
-        
+            layout='wide'
+        )
+
         self.templateFileName = templateFile
-        
+
         # local copy of template file
         self.template = self.load_json_file(self.templateFileName)
-        
+
         # first instance of the uploaded file to check for updates
         self.UploadedFileData = self.template.copy()
-        
+
         # data variable to store the resume updated data
         if 'data' not in st.session_state:
             st.session_state.data = self.template.copy()
-        
+
         st.session_state.title = f"Resume Curator"
         self.mustHaveFiels = list(self.template.keys())
-    
+
     # utils functions
     def load_json_file(self, file_path):
         with open(file_path, 'r') as file:
             data = json.load(file)
         return data
-    
-    def verify_json_data(self,jsonData):
-        # get all the keys in template 
+
+    def verify_json_data(self, jsonData):
+        # get all the keys in template
         templateKeys = self.template.keys()
         placeholder = st.empty()
         with placeholder.container():
@@ -133,13 +140,20 @@ class ResumeCurator:
                     st.write(string)
                     jsonData[key] = self.template[key]
                     nap(.05)
-            nap(1)        
+            nap(1)
         placeholder.empty()
         return jsonData
 
+    def generateUUID(self, length=6):
+        # Generate a random string of specified length
+        letters_and_digits = string.ascii_letters + string.digits
+        random_string = ''.join(random.choice(letters_and_digits)
+                                for _ in range(length))
+        return random_string
+
     def ifDataEdited(self):
         return st.session_state.data != self.UploadedFileData
-        
+
     # element functions
     def upload_resumeJson(self):
         # heading to upload resume json
@@ -151,7 +165,7 @@ class ResumeCurator:
             accept_multiple_files=False
             # on_change=lambda file: st.session_state.data := json.loads(file.read())
         )
-        
+
         if uploaded_file is None:
             st.session_state.data = self.load_json_file(self.templateFileName)
         else:
@@ -163,62 +177,104 @@ class ResumeCurator:
             # if not add them with default values
             josnData = self.verify_json_data(josnData)
             # print(josnData.keys())
-            
+
             # cheeck if user has unsaved changes else pass
             if self.ifDataEdited():
                 # ask for confirmation
-                warn = st.warning("You have unsaved changes. Uploading a new file will discard the current changes. Do you want to continue editing?, click save to save files or generate resume")    
-                
+                warn = st.warning(
+                    "You have unsaved changes. Uploading a new file will discard the current changes. Do you want to continue editing?, click save to save files or generate resume")
+
                 button_placeholder = st.empty()
                 if button_placeholder.button("Yes, continue without saving (not recommended)", use_container_width=True):
                     warn.empty()
                     # print(dir(uploaded_file))
                     uploaded_file.close()
-                    
+
                     # Remove the button
                     button_placeholder.empty()
-            
+
             # update the data variables with the new uploaded file data
             st.session_state.data = josnData.copy()
             self.UploadedFileData = josnData.copy()
 
-    def recursiveJsonRender(self,label,data):
-        # check the type of the field data and render the element accordingly
+    def listWtihDictRender(self, label, data):
+        st.subheader(label, anchor=False)
+        possibleKeys = ['title', 'name', 'institution', 'network']
+        for entry in data:
+            keyThisDataHave = [
+                key for key in possibleKeys if key in data[0].keys()]
+            print(keyThisDataHave)
 
-        # check if the type of data is dict,list or string
-        # if string render the text input
-        # if list render with toggable expander
-        # if dict render with toggable expander
-        if type(data) == str:
-            st.text_input(label,data)
-        else:
-            if type(data) == dict:
-                st.subheader(label)
-                with st.expander(label):
-                    for key,val in data.items():
-                        st.text_input(key,val)
-                    
-            elif type(data) == list:
-                st.subheader(label)
-                for index,item in enumerate(data):
-                    with st.expander(label):
-                        self.recursiveJsonRender(label,item)
-                    
-                
-    
+            # for key, val in entry.items():
+            #     st.text_input(key, val, key=label)
+
+    def JsonRender(self, label):
+        possibleKeys = ['title', 'name', 'institution', 'network']
+
+        st.header(label.capitalize(), anchor=False)
+        with st.expander("Edit", expanded=False):
+            dataSouce = st.session_state.data[label]
+            if type(dataSouce) == list:
+                # create tabs
+                tabs = st.tabs([data[i] for data in dataSouce for i in data.keys() if i in possibleKeys])
+                for index,tab in enumerate(tabs):
+                    with tab:
+                        col1,col2 = st.columns(2)
+                        with col1:
+                            st.button("Edit", key=self.generateUUID())
+                        with col2:
+                            st.button("delete", key=self.generateUUID())
+                        entry = dataSouce[index]
+                        for key, val in entry.items():
+                            st.text_input(key, val, key=self.generateUUID())
+            else :
+                for key, val in dataSouce.items():
+                    st.write(key)
+
+        # if type(data) == str:
+        #     st.text_input(label, data, key=self.generateUUID())
+        # else:
+        #     if type(data) == dict:
+        #         st.subheader(label, anchor=False)
+        #         # with st.expander(label):
+        #         for key, val in data.items():
+        #             self.JsonRender(key, val)
+
+        #             # st.subheader(key,anchor=False)
+        #             # st.text_input(key,val,key=label)
+
+        #     elif type(data) == list:
+        #         # it means it have list of elements in it then we can use tabs to render them
+        #         possibleKeys = ['title', 'name', 'institution', 'network']
+        #         keyThisDataHave = [
+        #             key for key in possibleKeys if key in data[0].keys()]
+        #         print(keyThisDataHave)
+
+        #         # data[0].has_key('title')
+        #         # st.tabs([(i) for i in data])
+        #         st.subheader(label, anchor=False)
+        #         for index, item in enumerate(data):
+        #             # with st.expander(label):
+        #             self.JsonRender(label, item)
+
     def runner(self):
-        self.upload_resumeJson()
-        
+
         st.title(st.session_state.title)
-        if self.ifDataEdited():
-            st.write('changes are there download the updated file',anchor=False)
         
+        # col1,col2 = st.columns(2)
+        # with col1:
+        self.upload_resumeJson()
+    
+        if self.ifDataEdited():
+            st.write('changes are there download the updated file', anchor=False)
+
         if st.session_state.data:
             for filed in self.mustHaveFiels:
-                fieldData = st.session_state.data[filed]
-                self.recursiveJsonRender(filed,fieldData)
+                self.JsonRender(filed)
+        # with col2:
+        #     st.subheader("Preview", anchor=False)
+        #     st.write("preview will be rendered here")
 
-        
 
 if __name__ == "__main__":
     # main()
