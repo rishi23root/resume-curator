@@ -14,6 +14,7 @@ def save_json_file(file_path, data):
     with open(file_path, 'w') as file:
         json.dump(data, file, indent=4)
 
+
 def main():
     st.title("Resume Curator")
 
@@ -97,6 +98,8 @@ class ResumeCurator:
             st.session_state.data = self.template.copy()
 
         st.session_state.title = f"Resume Curator"
+        self.possibleKeys = ['title', 'name', 'institution', 'network']
+
         self.mustHaveFiels = list(self.template.keys())
 
     # utils functions
@@ -178,12 +181,13 @@ class ResumeCurator:
 
     def JsonRender(self, label):
         possibleKeys = ['title', 'name', 'institution', 'network']
-        
+
         def listWithDictAsValue(*subLabel, data=""):
             if len(subLabel) == 1:
                 dataSouce = data or st.session_state.data[subLabel[0]]
             else:
-                dataSouce = data or st.session_state.data[subLabel[0]][subLabel[1]]
+                dataSouce = data or st.session_state.data[subLabel[0]
+                    ][subLabel[1]]
             # dataSouce = data or st.session_state.data[subLabel]
             tabs = st.tabs(
                 [data[i] for data in dataSouce for i in data.keys() if i in possibleKeys])
@@ -197,7 +201,8 @@ class ResumeCurator:
                     entry = dataSouce[index]
                     for key, val in entry.items():
                         if len(subLabel) == 1:
-                            st.session_state.data[subLabel[0]][index][key] = st.text_input( key, val, key=self.generateUUID())
+                            st.session_state.data[subLabel[0]][index][key] = st.text_input(
+                                key, val, key=self.generateUUID())
                         else:
                             st.session_state.data[subLabel[0]][subLabel[1]][index][key] = st.text_input(
                                 key, val, key=self.generateUUID())
@@ -205,64 +210,131 @@ class ResumeCurator:
         st.header(label.capitalize(), anchor=False)
         with st.expander("Edit", expanded=False):
             dataSouce = st.session_state.data[label]
-            
+
             if type(dataSouce) == list:
-                listWithDictAsValue(label,data=dataSouce)
-            else :
+                listWithDictAsValue(label, data=dataSouce)
+            else:
                 for key, val in dataSouce.items():
                     if type(val) == dict:
                         st.subheader(key.capitalize(), anchor=False)
                         for key2, val2 in val.items():
-                            st.session_state.data[label][key][key2] =st.text_input(key2, val2, key=self.generateUUID())
+                            st.session_state.data[label][key][key2] = st.text_input(
+                                key2, val2, key=self.generateUUID())
                     elif type(val) == list:
                         st.subheader(key.capitalize(), anchor=False)
-                        listWithDictAsValue(label,key,data=val)
+                        listWithDictAsValue(label, key, data=val)
                     else:
                         st.session_state.data[label][key] = st.text_input(
                             key.capitalize(), val, key=self.generateUUID())
 
     def staticJsonRender(self, data):
-        self.data = data
+        # globals data
+        # basic
         st.subheader("Personal Information")
-        st.write(self.data['basics']['name'])
-        self.data['basics']['name'] = st.text_input("Name", self.data['basics']['name'])
-        self.data['basics']['label'] = st.text_input(
-            "Label", self.data['basics']['label'])
-        self.data['basics']['image'] = st.text_input(
-            "Image URL", self.data['basics']['image'])
-        self.data['basics']['email'] = st.text_input(
-            "Email", self.data['basics']['email'])
-        self.data['basics']['phone'] = st.text_input(
-            "Phone", self.data['basics']['phone'])
-        self.data['basics']['url'] = st.text_input("URL", self.data['basics']['url'])
-        self.data['basics']['summary'] = st.text_area(
-            "Summary", self.data['basics']['summary'])
+        with st.expander("Edit", expanded=False):
+            data['basics']['name'] = st.text_input(
+                "Name", data['basics']['name'])
+            data['basics']['label'] = st.text_input(
+                "Label", data['basics']['label'])
+            data['basics']['image'] = st.text_input(
+                "Image URL", data['basics']['image'])
+            data['basics']['email'] = st.text_input(
+                "Email", data['basics']['email'])
+            data['basics']['phone'] = st.text_input(
+                "Phone", data['basics']['phone'])
+            data['basics']['url'] = st.text_input("URL", data['basics']['url'])
+            data['basics']['summary'] = st.text_area(
+                "Summary", data['basics']['summary'])
 
         st.subheader("Location")
-        self.data['basics']['location']['address'] = st.text_input(
-            "Address", self.data['basics']['location']['address'])
-        self.data['basics']['location']['postalCode'] = st.text_input(
-            "Postal Code", self.data['basics']['location']['postalCode'])
-        self.data['basics']['location']['city'] = st.text_input(
-            "City", self.data['basics']['location']['city'])
-        self.data['basics']['location']['countryCode'] = st.text_input(
-            "Country Code", self.data['basics']['location']['countryCode'])
-        self.data['basics']['location']['region'] = st.text_input(
-            "Region", self.data['basics']['location']['region'])
-        
-    
-    def runner(self):
+        with st.expander("Edit", expanded=False):
+            data['basics']['location']['address'] = st.text_input(
+                "Address", data['basics']['location']['address'])
+            data['basics']['location']['postalCode'] = st.text_input(
+                "Postal Code", data['basics']['location']['postalCode'])
+            data['basics']['location']['city'] = st.text_input(
+                "City", data['basics']['location']['city'])
+            data['basics']['location']['countryCode'] = st.text_input(
+                "Country Code", data['basics']['location']['countryCode'])
+            data['basics']['location']['region'] = st.text_input(
+                "Region", data['basics']['location']['region'])
 
+        st.subheader("Social Profiles")
+        profiles = st.session_state.data['basics']['profiles']        
+
+        if st.session_state.data['basics']['profiles']:
+            for index in range(len(st.session_state.data['basics']['profiles'])):
+                with st.expander(profiles[index]['network'], expanded=False):                
+                    *a, colx, col = st.columns([1]*10)
+                    addProfile = colx.button('Add New', type='secondary', key=st.session_state.data['basics']['profiles'][index]['network'] + str(index))
+                    deleteProfile = col.button('Delete', type='primary', key=st.session_state.data['basics']['profiles'][index]['network'] + str(index+879))
+                    if addProfile:
+                        st.session_state.data['basics']['profiles'].append({
+                            "network": "new",
+                            "username": "",
+                            "url": ""
+                        })
+
+                    if deleteProfile:
+                        st.session_state.data['basics']['profiles'].pop(index)
+
+                    st.session_state.data['basics']['profiles'][index]['network'] = st.text_input(
+                        "network", st.session_state.data['basics']['profiles'][index]['network'], key=st.session_state.data['basics']['profiles'][index]['network']+st.session_state.data['basics']['profiles'][index]['network'])
+                    st.session_state.data['basics']['profiles'][index]['username'] = st.text_input(
+                        "username", st.session_state.data['basics']['profiles'][index]['username'], key=st.session_state.data['basics']['profiles'][index]['network']+st.session_state.data['basics']['profiles'][index]['username'])
+                    st.session_state.data['basics']['profiles'][index]['url'] = st.text_input(
+                        "url", st.session_state.data['basics']['profiles'][index]['url'], key=st.session_state.data['basics']['profiles'][index]['network']+st.session_state.data['basics']['profiles'][index]['url'])
+            # index += 1
+        st.write(len(st.session_state.data['basics']['profiles']))
+        #     # with tab:
+        #     #     *a, colx, col = st.columns([1]*10)
+        #     #     addProfile = colx.button(
+        #     #         'Add New', type='secondary', key=self.generateUUID())
+        #     #     deleteProfile = col.button(
+        #     #         'Delete', type='primary', key=self.generateUUID())
+
+        #         # create input for each element in the profile
+            # val = 'kfalsjdkl'
+            # justAtest = st.text_input(" Network", val, key=self.generateUUID())
+            # val = justAtest
+            # st.write(index,justAtest)
+            # allProfiles[index]['network'] = st.text_input(" Network", allProfiles[index]['network'], key=self.generateUUID())
+            # allProfiles[index]['username'] = st.text_input("Username", allProfiles[index]['username'], key=self.generateUUID())
+            # allProfiles[index]['url'] = st.text_input("Url", allProfiles[index]['url'], key=self.generateUUID())
+
+        #     # data['basics']['profiles'].insert(index, {
+        #     #     'network': network,
+        #     #     'username': username,
+        #     #     'url': url,
+        #     #     })
+        # st.write(data['basics']['profiles'],allProfiles)
+
+        # st.write(data['basics']['profiles'])
+
+        # with st.expander("Edit", expanded=False):
+        #     # create columns for edit button and add more btn then make tabs
+        #     # for each social profile
+
+        #     st.write("Social Profiles will be rendered here")
+
+        return data
+
+    def runner(self):
         st.title(st.session_state.title)
-        
+
         # col1,col2 = st.columns(2)
         # with col1:
         self.upload_resumeJson()
-    
+
         if self.ifDataEdited():
             st.write('changes are there download the updated file', anchor=False)
+        st.session_state.data = self.staticJsonRender(st.session_state.data)
+        st.write(st.session_state.data['basics']['name'])
 
-        self.staticJsonRender(st.session_state.data)
+        
+        # try forms
+        # data = st.session_state.data
+        # st.session_state.data = self.JsonRender2(data)
         # if st.session_state.data:
         #     for filed in self.mustHaveFiels:
         #         self.JsonRender(filed)
