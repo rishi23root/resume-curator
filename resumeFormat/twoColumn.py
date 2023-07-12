@@ -9,6 +9,7 @@ from util.tolatex import createLink, inBlock
 from constants import resumeJsonFile, buildDir
 import os
 
+
 class MyDocument(lt.Document):
     def __init__(self):
         super().__init__(documentclass='resumecustom',
@@ -65,7 +66,11 @@ class MyDocument(lt.Document):
         # name: str, email: str, phone: str, website: str, address: str
         # name
         # name = "Rahul Kumar"
-        first, last = kwargs['name'].split(" ")
+        try:
+            first, last = kwargs['name'].split(" ")
+        except:
+            first = kwargs['name']
+            last = ''
 
         # profile links
         linkstring = ''

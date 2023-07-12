@@ -33,21 +33,25 @@ class MyDocument(lt.Document):
 
     def extractData(self):
         # extract data from the json file and format it according to the template
-        jsonData = read_json_file(resumeJsonFile)
+        if self.jsonData is None:
+            self.jsonData = read_json_file(resumeJsonFile)
+        else:
+            print("data already extracted and provided")
+            
         userInfoContant = {
-            'name': jsonData['basics']['name'],
-            'email': jsonData['basics']['email'],
-            'phone': jsonData['basics']['phone'],
-            'website': jsonData['basics']['url'],
-            'address': ", ".join([i for i in [jsonData['basics']['location']['city'], jsonData['basics']['location']['postalCode']] if i != '']),
-            'label': jsonData['basics']['label'],
+            'name': self.jsonData['basics']['name'],
+            'email': self.jsonData['basics']['email'],
+            'phone': self.jsonData['basics']['phone'],
+            'website': self.jsonData['basics']['url'],
+            'address': ", ".join([i for i in [self.jsonData['basics']['location']['city'], self.jsonData['basics']['location']['postalCode']] if i != '']),
+            'label': self.jsonData['basics']['label'],
         }
-        links = jsonData['basics']['profiles']
-        experience = jsonData['work']
-        education = jsonData['education']
-        skills = jsonData['skills']
-        projects = jsonData['projects']
-        awards = jsonData['awards']
+        links = self.jsonData['basics']['profiles']
+        experience = self.jsonData['work']
+        education = self.jsonData['education']
+        skills = self.jsonData['skills']
+        projects = self.jsonData['projects']
+        awards = self.jsonData['awards']
 
         return {
             'userInfoContant': userInfoContant,
@@ -64,7 +68,11 @@ class MyDocument(lt.Document):
         # name: str, email: str, phone: str, website: str, address: str
         # name
         # name = "Rahul Kumar"
-        first, last = kwargs['name'].split(" ")
+        try:
+            first, last = kwargs['name'].split(" ")
+        except:
+            first = kwargs['name']
+            last = ''
         # profile links
         linkstring = ''
         for key, val in kwargs.items():
@@ -314,8 +322,10 @@ class MyDocument(lt.Document):
         # # add Awards section
         self.AddCerts(data['certificates'])
 
-def runner(filename: str = 'resume.pdf'):
+def runner(filename: str = 'resume.pdf',jsonData: dict = None):
     doc = MyDocument()
+    if jsonData:
+        doc.jsonData = jsonData
 
     # Call function to add text
     doc.fill_document()
@@ -323,4 +333,4 @@ def runner(filename: str = 'resume.pdf'):
     # # doc.generate_pdf(clean_tex=False)
     doc.generate_tex(filepath=os.path.join(buildDir, 'resume'))
 
-    createResume(filename)
+    return createResume(filename)
