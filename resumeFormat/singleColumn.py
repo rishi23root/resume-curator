@@ -35,8 +35,6 @@ class MyDocument(lt.Document):
         # extract data from the json file and format it according to the template
         if self.jsonData is None:
             self.jsonData = read_json_file(resumeJsonFile)
-        else:
-            print("data already extracted and provided")
             
         userInfoContant = {
             'name': self.jsonData['basics']['name'],
