@@ -33,11 +33,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # - name: Cache setup.sh
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: ./setup.sh
-      #     key: ${{ runner.os }}-setup
+      - name: Cache setup.sh
+        uses: actions/cache@v2
+        with:
+          path: ./setup.sh
+          key: ${{ runner.os }}-setup
       - name: Run setup.sh
         run: |
           chmod +x ./setup.sh
@@ -48,25 +48,26 @@ jobs:
         uses: teatimeguest/setup-texlive-action@v2
         with:
           version: 2023
-          packages: pdftexcmds hyperref 
+          packages: pdftexcmds hyperref
+
 
       ##### for testing only
 
-      - name: Check `tlmgr` version
-        run: tlmgr --version
+      # - name: Check `tlmgr` version
+      #   run: tlmgr --version
 
-      - name: check texlive binaries
-        run: |
-          which pdflatex
-          pdflatex --version
+      # - name: check texlive binaries
+      #   run: |
+      #     which pdflatex
+      #     pdflatex --version
 
       # running main script
 
       - name: Build
-        run: python main.py
+        run: python app.py
 
-      - name: Push new resumes
-        uses: mikeal/publish-to-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: 'main'
+      # - name: Push new resumes
+      #   uses: mikeal/publish-to-github-action@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     BRANCH_NAME: 'main'
