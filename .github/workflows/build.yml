@@ -43,15 +43,15 @@ jobs:
           chmod +x ./install-texlive
           sudo bash ./install-texlive --scheme=medium
           
-      - name: Cache setup
-        uses: actions/cache@v2
-        with:
-          path: ./setup.sh
-          key: ${{ runner.os }}-setup
-      - name: Run setup
-        run: |
-          chmod +x ./setup.sh
-          sudo bash ./setup.sh
+      # - name: Cache setup
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ./setup.sh
+      #     key: ${{ runner.os }}-setup
+      # - name: Run setup
+      #   run: |
+      #     chmod +x ./setup.sh
+      #     sudo bash ./setup.sh
 
           
       - name: check texlive binaries
