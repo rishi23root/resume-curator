@@ -1,6 +1,3 @@
-# apt update
-# apt upgrade -y
-
 # # install all the packages
 # sudo apt install texlive-latex-base -y 
 # sudo apt-get install texlive-fonts-recommended  -y 
