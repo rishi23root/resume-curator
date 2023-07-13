@@ -48,8 +48,7 @@ jobs:
         uses: teatimeguest/setup-texlive-action@v2
         with:
           version: 2023
-          packages: pdftexcmds hyperref pdflatex
-
+          packages: pdftexcmds hyperref 
 
       ##### for testing only
 
