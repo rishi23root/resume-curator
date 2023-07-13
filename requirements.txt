@@ -1,4 +1,4 @@
 beautifulsoup4
 pylatex
 lxml
-streamlit
+flask
