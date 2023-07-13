@@ -1,11 +1,9 @@
-name: resume builder
+name: resume curator
 
 on:
   push:
     branches:
       - main
-  schedule:
-    - cron: '0 0 * * 0' # on every sunday 
 
 jobs:
   build:
@@ -50,10 +48,7 @@ jobs:
         uses: teatimeguest/setup-texlive-action@v2
         with:
           version: 2023
-          cache: true
-          packages: >-
-            pdftexcmds
-            hyperref
+          packages: pdftexcmds hyperref
 
 
       ##### for testing only
