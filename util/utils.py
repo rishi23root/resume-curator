@@ -2,7 +2,30 @@ import json
 import shutil
 from pathlib import Path
 import os
-from constants import baseDir, builderDirName, outputDir
+from constants import templateDir, baseDir, builderDirName, outputDir
+
+import importlib
+from functools import lru_cache
+
+
+
+@lru_cache()
+# get list of templates
+def listTemplates():
+    dirContent = os.listdir(templateDir)
+    # remove all the directories
+    return [eachFile.split('.')[0] for eachFile in dirContent if os.path.isfile(
+        os.path.join(templateDir, eachFile))]
+
+@lru_cache()
+# extract the template to run
+def getTemplates(templateName:str) -> callable or None:
+    onlyTemplates = listTemplates()
+    # crate dict with all the templates
+    functionCallForEach = {each: importlib.import_module(f'resumeFormat.{each}').runner for each in onlyTemplates}
+    if templateName not in functionCallForEach:
+        return None
+    return functionCallForEach[templateName]
 
 
 def read_json_file(file_path: str):
@@ -13,17 +36,18 @@ def read_json_file(file_path: str):
     except Exception as e:
         raise Exception('Error in reading json file, check the json format')
 
-def createResume(filename: str) -> Path:
+def createResume(filename: str,isSilent:bool=True) -> Path:
     os.chdir(os.path.join(baseDir, builderDirName))
-    os.system(
-        f'pdflatex resume.tex'
-    )
-    
-    # final version of the resume
-    # os.system(
-    #     f'pdflatex resume.tex | tee /proc/sys/vm/drop_caches >/dev/null 2>&1'
-    # )
-    # cp resume.pdf ../
+    if not isSilent:
+        os.system(
+            f'pdflatex resume.tex'
+        )
+    else:
+        # final version of the resume
+        os.system(
+            f'pdflatex resume.tex | tee /proc/sys/vm/drop_caches >/dev/null 2>&1'
+        )
+
     # remove the other files other then resume-custom.cls
     allfiles = os.listdir(os.path.join(baseDir, builderDirName))
     # print(allfiles)
@@ -43,7 +67,10 @@ def createResume(filename: str) -> Path:
 
 
 if __name__ == "__main__":
-    # print(read_resume_josn())
-    # print(extract_template(1))
-    # print(createSection('hello', 'world'))
+    
+    
+    # import inspect
+    # to test the templates
+    # print(inspect.signature(getTemplates('twoColumn')))
+
     pass
