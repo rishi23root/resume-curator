@@ -44,11 +44,11 @@ jobs:
           sudo bash ./setup.sh
 
       # install texlive for creating pdf 
-      - name: Setup TeX Live
-        uses: teatimeguest/setup-texlive-action@v2
-        with:
-          version: 2023
-          packages: pdftexcmds hyperref
+      # - name: Setup TeX Live
+      #   uses: teatimeguest/setup-texlive-action@v2
+      #   with:
+      #     version: 2023
+      #     packages: pdftexcmds hyperref
 
 
       ##### for testing only
@@ -66,8 +66,8 @@ jobs:
       - name: Build
         run: python app.py
 
-      # - name: Push new resumes
-      #   uses: mikeal/publish-to-github-action@master
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     BRANCH_NAME: 'main'
+      - name: Push new resumes
+        uses: mikeal/publish-to-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: 'main'

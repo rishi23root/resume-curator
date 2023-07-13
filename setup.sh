@@ -1,13 +1,13 @@
 apt update
 apt upgrade -y
 
-# install all the packages
-sudo apt install texlive-latex-base -y 
-sudo apt-get install texlive-fonts-recommended  -y 
-sudo apt-get install texlive-latex-extra -y 
+# # install all the packages
+# sudo apt install texlive-latex-base -y 
+# sudo apt-get install texlive-fonts-recommended  -y 
+# sudo apt-get install texlive-latex-extra -y 
 
-which pdflatex
-pdflatex --version
+# which pdflatex
+# pdflatex --version
 
 # cd /tmp
 # wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz 
@@ -28,5 +28,8 @@ pdflatex --version
 # wait
 
 # tlmgr init-usertree
-# tlmgr install hyperref
 
+./install-texlive --scheme=medium
+# to auto install requirements 
+# tlmgr install texliveonfly
+tlmgr install hyperref
