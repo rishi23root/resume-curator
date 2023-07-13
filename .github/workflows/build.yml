@@ -41,7 +41,7 @@ jobs:
       - name: Run texlive installer
         run: |
           chmod +x ./install-texlive
-          sudo bash ./install-texlive --scheme=medium
+          sudo bash ./install-texlive --scheme=small
           
       # - name: Cache setup
       #   uses: actions/cache@v2
@@ -63,8 +63,7 @@ jobs:
       #   run: tlmgr --version
       
       - name: listting texlive binaries
-        run: ls -l /root
-        # /texlive/2023/bin/x86_64-linux
+        run: sudo ls -l /root/texlive/2023/bin/x86_64-linux
 
       # install texlive for creating pdf 
       # - name: Setup TeX Live
