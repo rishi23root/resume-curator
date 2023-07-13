@@ -53,13 +53,13 @@ jobs:
 
       ##### for testing only
 
-      # - name: Check `tlmgr` version
-      #   run: tlmgr --version
+      - name: Check `tlmgr` version
+        run: tlmgr --version
 
-      # - name: check texlive binaries
-      #   run: |
-      #     which pdflatex
-      #     pdflatex --version
+      - name: check texlive binaries
+        run: |
+          which pdflatex
+          pdflatex --version
 
       # running main script
 
