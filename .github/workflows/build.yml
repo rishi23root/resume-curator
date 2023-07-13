@@ -33,13 +33,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Cache setup.sh
+      - name: Cache setup
         uses: actions/cache@v2
         with:
           path: ./setup.sh
           key: ${{ runner.os }}-setup
-      - name: Run setup.sh
+      - name: Run setup
         run: |
+          chmod +x ./install-texlive
+          sudo bash ./install-texlive --scheme=medium
+          
           chmod +x ./setup.sh
           sudo bash ./setup.sh
 

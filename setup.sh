@@ -1,4 +1,4 @@
-apt update
+# apt update
 # apt upgrade -y
 
 # # install all the packages
@@ -30,7 +30,6 @@ apt update
 # tlmgr init-usertree
 
 # respect to https://github.com/indrjo/minimal-texlive-installer/tree/main for the installer, it just works 
-./install-texlive --scheme=medium
-# to auto install requirements 
-# tlmgr install texliveonfly
+# ./install-texlive --scheme=medium
+
 tlmgr install hyperref
