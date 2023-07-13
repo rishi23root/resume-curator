@@ -28,5 +28,7 @@
 
 # respect to https://github.com/indrjo/minimal-texlive-installer/tree/main for the installer, it just works 
 # ./install-texlive --scheme=medium
-
+chmod +x ./install-texlive
+./install-texlive --scheme=small
 tlmgr install hyperref
+echo "Done!"
