@@ -31,4 +31,8 @@
 chmod +x ./install-texlive
 ./install-texlive --scheme=small
 tlmgr install hyperref
+tlmgr install texliveonfly
+
+source ~/.bashrc
+pip install -r requirements.txt
 echo "Done!"
