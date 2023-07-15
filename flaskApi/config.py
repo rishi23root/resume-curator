@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-import os 
+import os
+
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
@@ -18,8 +20,7 @@ class Config:
     # Settings applicable to all environments
     SECRET_KEY = os.getenv(
         'SECRET_KEY', default='who know what is the acctual value is 🔓️ ?')
-    
-    
+
 
 class DevelopmentConfig(Config):
     DEBUG = True
@@ -27,6 +28,3 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     FLASK_ENV = 'production'
-
-
-

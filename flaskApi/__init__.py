@@ -1,8 +1,5 @@
-from api import app
-
-
-
+from .api import app
 
 if __name__ == '__main__':
-    # for testing 
+    # for testing
     app.run()

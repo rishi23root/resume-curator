@@ -1,6 +1,5 @@
-from flaskApi import create_app
-
-application = create_app()
+from flaskApi import app 
 
 if __name__ == '__main__':
-    application.run()
+    app.run()
+    # app.secret_key = 'super secret key'

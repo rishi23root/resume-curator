@@ -6,14 +6,12 @@
 # 1. create resume and save in some folder
 # 2. send the resume to the frontend in byte format and delete the file from the folder
 
-from pathlib import Path
 import os
-from util.constants import baseDir
 import uuid
-from util.utils import getTemplates, read_json_file
+from pathlib import Path
 
-# todo tasks
-# 1. authenticate user from the clerk api
+from util.constants import baseDir
+from util.utils import getTemplates, read_json_file
 
 
 def athenticateUser(request):

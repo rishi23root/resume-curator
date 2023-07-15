@@ -1,9 +1,11 @@
-from flask import jsonify, request, send_file
-from flaskUtils import listTemplates, generateResume, athenticateUser, varifyData
-import os 
-from util.constants import baseDir
-from flask import Flask
+import os
 
+from flask import Flask, jsonify, request, send_file
+
+from util.constants import baseDir
+from util.utils import listTemplates
+
+from .flaskUtils import athenticateUser, generateResume, varifyData
 
 app = Flask(__name__)
 
