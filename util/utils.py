@@ -36,7 +36,7 @@ def read_json_file(file_path: str):
     except Exception as e:
         raise Exception('Error in reading json file, check the json format')
 
-def createResume(filename: str,isSilent:bool=False) -> Path:
+def createResume(filename: str,isSilent:bool=True) -> Path:
     os.chdir(os.path.join(baseDir, builderDirName))
     if not isSilent:
         os.system(
@@ -50,7 +50,7 @@ def createResume(filename: str,isSilent:bool=False) -> Path:
 
     # remove the other files other then resume-custom.cls
     allfiles = os.listdir(os.path.join(baseDir, builderDirName))
-    print(allfiles)
+    # print(allfiles)
     allfiles.remove('resumecustom.cls')
     try:
         allfiles.remove('resume.pdf')
