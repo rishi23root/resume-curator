@@ -52,7 +52,10 @@ def createResume(filename: str,isSilent:bool=False) -> Path:
     allfiles = os.listdir(os.path.join(baseDir, builderDirName))
     print(allfiles)
     allfiles.remove('resumecustom.cls')
-    allfiles.remove('resume.pdf')
+    try:
+        allfiles.remove('resume.pdf')
+    except ValueError as e:
+        raise Exception('Error in creating the resume, check the logs',e)
     
     # allfiles.remove('resume.tex') # for testing only
     for i in allfiles:
