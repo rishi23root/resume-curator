@@ -36,16 +36,17 @@ def read_json_file(file_path: str):
     except Exception as e:
         raise Exception('Error in reading json file, check the json format')
 
-def createResume(filename: str,isSilent:bool=True) -> Path:
+
+def createResume(filename: str, isSilent: bool = True, texliveonfly=True) -> Path:
     os.chdir(os.path.join(baseDir, builderDirName))
     if not isSilent:
         os.system(
-            f'texliveonfly -c pdflatex resume.tex'
+            f'{"texliveonfly -c" if texliveonfly else "" } pdflatex resume.tex'
         )
     else:
         # final version of the resume
         os.system(
-            f'texliveonfly -c pdflatex resume.tex | tee /proc/sys/vm/drop_caches >/dev/null 2>&1'
+            f'{"texliveonfly -c" if texliveonfly else "" } pdflatex resume.tex | tee /proc/sys/vm/drop_caches >/dev/null 2>&1'
         )
 
     # remove the other files other then resume-custom.cls
