@@ -2,3 +2,5 @@ beautifulsoup4
 pylatex
 lxml
 flask
+python-dotenv
+pytest

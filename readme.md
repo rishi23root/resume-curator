@@ -5,7 +5,11 @@ create your own templates and build your own template with latex and python
 ---
 ## To Running the Project
 0. clone the repo
-1. make setup.sh executable and run it ```sudo chmod +x setup.sh && sudo ./setup.sh```
+1. make setup.sh executable and run it ```sudo chmod +x ./scripts/setup.sh && sudo ./scripts/setup.sh```
+2. ```bash
+    source ~/.bashrc
+    source ~/.zshrc #if you are using zsh
+    ```
 2. edit the existing `tempalte.json`
 3. setup the flask on production server 
 4. run the flask app ```python3 app.py```

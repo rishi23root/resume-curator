@@ -1,6 +1,41 @@
+from flask.testing import FlaskClient
 import requests
 import json
 import re
+
+import pytest
+from api import app
+
+
+
+
+# Import your Flask app here
+
+
+@pytest.fixture
+def client() -> FlaskClient:
+    app.testing = True
+    with app.test_client() as client:
+        yield client
+
+
+def test_get_templates(client: FlaskClient):
+    response = client.get('/templates')
+    assert response.status_code == 200
+    data = json.loads(response.get_data(as_text=True))
+    assert isinstance(data, list)
+
+
+def test_download_template(client: FlaskClient):
+    response = client.get('/download_template')
+    assert response.status_code == 200
+    data = json.loads(response.get_data(as_text=True))
+    assert isinstance(data, dict)
+    # Add more specific assertions for the template data if needed
+
+
+
+
 
 def createResume():
     url = 'http://localhost:5000/create_resume'
@@ -60,6 +95,6 @@ def downloadTemplate():
     else:
         print('Error:', response.text)
         
-listTemplates()
-downloadTemplate()
-createResume()
+# listTemplates()
+# downloadTemplate()
+# createResume()

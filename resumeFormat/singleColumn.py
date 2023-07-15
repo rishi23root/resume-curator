@@ -3,7 +3,7 @@ import pylatex as lt
 from util.htmlParser import getListItems
 from util.utils import read_json_file, createResume
 from util.tolatex import createLink
-from constants import resumeJsonFile, buildDir
+from util.constants import resumeJsonFile, buildDir
 import os
 
 

@@ -2,7 +2,7 @@ import json
 import shutil
 from pathlib import Path
 import os
-from constants import templateDir, baseDir, builderDirName, outputDir
+from util.constants import templateDir, baseDir, builderDirName, outputDir
 
 import importlib
 from functools import lru_cache
@@ -50,7 +50,7 @@ def createResume(filename: str,isSilent:bool=False) -> Path:
 
     # remove the other files other then resume-custom.cls
     allfiles = os.listdir(os.path.join(baseDir, builderDirName))
-    # print(allfiles)
+    print(allfiles)
     allfiles.remove('resumecustom.cls')
     allfiles.remove('resume.pdf')
     
