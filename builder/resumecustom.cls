@@ -51,14 +51,16 @@ Last Updated on \today
 }
 \newcommand{\namesectionsinglelayout}[3]{
 \centering{
-\fontsize{30pt}{45pt}\selectfont 
-\fontfamily{lmr}\selectfont #1 
-\fontfamily{lmr}\selectfont #2
+  \fontsize{30pt}{45pt}\selectfont 
+  \fontfamily{lmr}\selectfont #1 
+  \fontfamily{lmr}\selectfont #2
 } \\[5pt]
 \centering{
-\color{headings}
-\fontfamily{lmr}\fontsize{11pt}{14pt}\selectfont #3}
-\vspace{-15pt}
+  \color{headings}
+  \fontfamily{lmr}\fontsize{11pt}{-14pt}\selectfont #3
+  \vspace{-10pt}
+}
+\vspace{5pt}
 }
 
 % Section separators 

@@ -104,9 +104,12 @@ class MyDocument(lt.Document):
             NoEscape(
                 '\n\t' + kwargs['label'] +
                 '\n\n\t\\urlstyle{same}\n\t' +
-                linkstring + '\n\n' +
-                '\n\t' + " \\textbar{} ".join(socialLinks) +
-                '\n'
+                linkstring + 
+                "\n\\newline"+
+                '\\vspace{-0.7em}\n'+
+                '\\begin{center} ' +
+                " \\textbar{} ".join(socialLinks) +
+                '\\end{center}\n'
             )
         ]
         nameSection = lt.Command(
@@ -190,44 +193,6 @@ class MyDocument(lt.Document):
 
         self.append(NoEscape('}%\n'))
 
-
-        # with self.create(lt.Section('Skill')):
-        #     self.append(NoEscape('\\subsection{Programming}'))
-
-        #     under5000 = []
-        #     for i in languages:
-        #         if int(i['level']) > 60:
-        #             under5000.append(i['name'])
-        #     # languages
-        #     if under5000:
-        #         self.append(lt.utils.bold(
-        #             NoEscape('\\location{Over 5000 lines:}')))
-        #         self.append(NoEscape(' \\textbullet{} '.join(under5000)))
-        #     if len(under5000) < len(languages):
-        #         self.append(lt.utils.bold(
-        #             NoEscape('\\location{Over 1000 lines:}')))
-        #         self.append(NoEscape(' \\textbullet{} '.join(
-        #             [i['name'] for i in languages if i not in under5000]
-        #         )))
-        #     self.append(lt.NewLine())
-
-        #     # familar
-        #     if familar:
-        #         self.append(lt.utils.bold(NoEscape('\\location{Familiar:}\n')))
-        #         for i in familar:
-        #             self.append(NoEscape(' \\textbullet{} ' + i['name']))
-        #         self.append(lt.NewLine())
-
-        #     # tools
-        #     if tools:
-        #         self.append(lt.utils.bold(NoEscape('\\location{Tools:}\n')))
-        #         for i in tools:
-        #             self.append(NoEscape(' \\textbullet{} ' + i['name']))
-
-        # # pprint(skills)
-        # # section space
-        # self.append(NoEscape('\\sectionsep'))
-
     def AddCerts(self, awards: dict):
         self.append(NoEscape('\\fieldsection{certificates}{\n'))
         for award in awards:
@@ -262,10 +227,15 @@ class MyDocument(lt.Document):
                 #         # \vspace{\topsep} # Hacky fix for awkward extra vertical space
                 #         self.append(NoEscape('\\vspace{\\topsep}'))
                 self.append(NoEscape('\\begin{tightemize}'))
-                lis = getListItems(ex['summary'])
-                for li in lis:
-                    self.append(NoEscape('\\item ' + li))
-                # self.append(NoEscape('\\item ' + "line1"))
+                if "<li>" in ex['summary']:
+                    lis = getListItems(ex['summary'])
+                    for li in lis:
+                        self.append(NoEscape('\\item ' + li))
+                else:
+                    # give a space
+                    self.append(NoEscape("\\vspace{10pt}"))
+                    self.append(NoEscape(ex['summary']))
+                    # self.append(NoEscape('\\item ' + "line1"))
                 self.append(NoEscape('\\end{tightemize}'))
                 pass
             
@@ -292,7 +262,8 @@ class MyDocument(lt.Document):
                 # \vspace{\topsep} # Hacky fix for awkward extra vertical space
                 # self.append(NoEscape('\\vspace{\\topsep}'))
                 self.append(NoEscape('\\begin{tightemize}'))
-                self.append(NoEscape('\\item ' + project['discription']))
+                self.append(NoEscape("\\vspace{10pt}"))
+                self.append(NoEscape(project['discription']))
                 self.append(NoEscape('\\end{tightemize}'))
             
             self.append(NoEscape('\\vspace{0.5em}\n'))
