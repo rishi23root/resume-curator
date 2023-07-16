@@ -3,7 +3,7 @@
 # check if gunicorn is installed
 if ! [ -x "$(command -v gunicorn)" ]; then
     echo 'Error: gunicorn is not installed.' >&2
-    sudo apt-get install gunicorn > /dev/null
+    pip install install gunicorn > /dev/null
     echo 'Done! ✅'
 fi
 
