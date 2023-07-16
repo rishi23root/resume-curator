@@ -18,6 +18,7 @@ else
     echo "Installing texliveonfly..."
     $texlivePath/tlmgr install texliveonfly > /dev/null
     echo "Done! ✅"
+    echo Installed here: $texlivePath
 fi
 
 # install pip if not installed
