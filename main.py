@@ -7,7 +7,7 @@ if __name__ == '__main__':
     with open('template.json') as f:
         data = json.load(f)
     # testing for updating the json data in the middle
-    data['basics']['name'] = 'Rahul' # idk just a simple name to test  
+    # data['basics']['name'] = 'Rahul' # idk just a simple name to test  
 
     for template in listTemplates():
         templateCall = getTemplates(template)

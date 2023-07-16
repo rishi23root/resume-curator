@@ -141,19 +141,21 @@ class MyDocument(lt.Document):
 
     def AddSkills(self, skills: dict):
         languages = skills['languages'] + skills['frameworks']
-        familar = skills['databases'] + \
-            skills['libraries'] + skills['technologies']
+        familar = skills['databases'] + skills['libraries'] + skills['technologies']
         tools = skills['tools']
         
         self.append(NoEscape('\\fieldsection{Skills}{\n'))
         # add space
         self.append(NoEscape('\\vspace{0.5em}\n'))
         
-        # rfsdhflksd
         under5000 = []
+        under1000 = []
         for i in languages:
             if int(i['level']) > 60:
                 under5000.append(i['name'])
+            else:
+                under1000.append(i['name'])
+        
         # languages
         if under5000:
             self.append(lt.utils.bold(NoEscape('\\textbf{Over 5000 lines:}')))
@@ -162,13 +164,21 @@ class MyDocument(lt.Document):
             self.append(NoEscape(' \\textbullet{} '.join(under5000)))
             self.append(NoEscape('\\vspace{0.2em}\n'))
             self.append(lt.NewLine())
-
-        if len(under5000) < len(languages):
-            self.append(lt.utils.bold(NoEscape('\\textbf{Over 1000 lines:}\t')))
+        
+        if under1000:
+            self.append(lt.utils.bold(NoEscape('\\textbf{Over 5000 lines:}')))
+            # new line
             self.append(lt.NewLine())
-            self.append(NoEscape(' \\textbullet{} '.join([i['name'] for i in languages if i not in under5000])))
+            self.append(NoEscape(' \\textbullet{} '.join(under1000)))
             self.append(NoEscape('\\vspace{0.2em}\n'))
             self.append(lt.NewLine())
+
+        # if len(under5000) < len(languages):
+        #     self.append(lt.utils.bold(NoEscape('\\textbf{Over 1000 lines:}\t')))
+        #     self.append(lt.NewLine())
+        #     self.append(NoEscape(' \\textbullet{} '.join([i['name'] for i in languages if i not in under5000])))
+        #     self.append(NoEscape('\\vspace{0.2em}\n'))
+        #     self.append(lt.NewLine())
 
         # familar
         if familar:
