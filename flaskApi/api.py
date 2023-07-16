@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, jsonify, request, send_file
+from flask_cors import CORS
 
 from util.constants import baseDir
 from util.utils import listTemplates
@@ -8,6 +9,7 @@ from util.utils import listTemplates
 from .flaskUtils import athenticateUser, generateResume, varifyData
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/templates', methods=['GET'])
 def list_template():

@@ -1,6 +1,10 @@
+# resume creator 
 beautifulsoup4
 pylatex
 lxml
-flask
 python-dotenv
+
+# server
+flask
+flask-cors
 pytest
