@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source ./scripts/constant.sh
 # make everything executable in the scripts folder
 chmod +x ./scripts/*

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 serviceName="buildyourresume"
 serviceFilePath="/etc/systemd/system/$serviceName.service"

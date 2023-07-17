@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source scripts/constant.sh
 
 sudo chmod 777 $(pwd)/$sockFileName

@@ -1,4 +1,4 @@
-# expects 1 argument: path to systemd service 
+#!/usr/bin/env bash
 source scripts/constant.sh
 
 

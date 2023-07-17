@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # install pdflatex tlmgr  
 # respect to https://github.com/indrjo/minimal-texlive-installer/tree/main for the installer, it just works 
 # check if pdflatx, tlmgr and texliveonfly is installed
