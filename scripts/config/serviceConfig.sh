@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source scripts/constant.sh
+source ./scripts/constant.sh
 
 
 # get no of cores for gunicorn workers
@@ -25,7 +25,8 @@ After=network.target
 User=$USER
 Group=www-data
 WorkingDirectory=$(pwd)
-ExecStart=$(which gunicorn) --access-logfile - --workers $workers --bind unix:$sockFileName wsgi:app
+Environment="PATH=$(pwd)/env/bin"
+ExecStart=$(pwd)/env/bin/gunicorn --workers $workers --bind unix:$sockFileName -m 007 wsgi:app
 
 [Install]
 WantedBy=multi-user.target

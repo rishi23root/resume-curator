@@ -4,9 +4,10 @@
 # respect to https://github.com/indrjo/minimal-texlive-installer/tree/main for the installer, it just works 
 # check if pdflatx, tlmgr and texliveonfly is installed
 # if not install it
-if command -v pdflatex >/dev/null && command -v tlmgr >/dev/null && command -v texliveonfly >/dev/null; then
+if command -v pdflatex > /dev/null && command -v tlmgr > /dev/null && command -v texliveonfly > /dev/null; then
     echo "All required packages are installed. ✅"
 else
+    echo "Installing texlive and texliveonfly..."
     chmod +x ./scripts/install-texlive
     ./scripts/install-texlive --scheme=small
 
@@ -22,6 +23,8 @@ else
     echo "Done! ✅"
     echo Installed here: $texlivePath
 fi
+
+
 
 # install pip if not installed
 if ! [ -x "$(command -v pip)" ]; then
@@ -39,17 +42,34 @@ update_pip() {
 
 update_pip
 
+# set up python virtual environment
+echo "Setting up python virtual environment..."
+echo ""
+# check if venv exists
+if [ -d "env" ]; then
+    echo "venv exists. 😎"
+    source ./env/bin/activate
+else
+    echo "venv does not exist. 🚫"
+    echo "Creating env..."
+    python3 -m venv env
+    source ./env/bin/activate
+    echo "Done! ✅"
+fi
 
 # check if requirements.txt exists and install requirements
 if [ -f "requirements.txt" ]; then
     echo "requirements.txt found. 😎 installing requirements..."
-    sudo pip install -r requirements.txt > /dev/null
+    sudo ./env/bin/pip install -r requirements.txt > /dev/null
     echo "Done! ✅"
 else
     echo "requirements.txt not found. 🚫"
     exit 1
 fi
 
+echo "Python virtual environment setup complete! ✅"
+deactivate
+echo ""
 
 
 # make all files in scripts executable

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-source scripts/constant.sh
+source ./scripts/constant.sh
 
-sudo chmod 777 $(pwd)/$sockFileName
+# sudo chmod 777 $(pwd)/$sockFileName
 
 
 echo "Setting up nginx file config"
@@ -17,8 +17,6 @@ server {
     listen 80;
     server_name $websiteUrl;
     
-    location = /favicon.ico { access_log off; log_not_found off; }
-        
     location / {
         include proxy_params;
         proxy_pass http://unix:$(pwd)/$sockFileName;

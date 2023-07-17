@@ -6,7 +6,7 @@ chmod +x ./scripts/*
 
 
 # Run the setup script
-# ./scripts/setup.sh
+./scripts/setup.sh
 
 # if nginx is not installed install it
 if ! [ -x "$(command -v nginx)" ]; then
@@ -23,4 +23,11 @@ git pull
 # Run the server
 ./scripts/hostFlaskApi.sh
 
-echo $websiteUrl
+echo http://$websiteUrl
+
+# Run the checks 
+echo "Checking if gunicorn is running"
+sudo systemctl status $serviceName | grep active
+
+echo "Checking if nginx is running"
+sudo systemctl status nginx | grep active

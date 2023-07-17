@@ -2,13 +2,14 @@
 source scripts/constant.sh
 
 # check if gunicorn is installed
-if ! [ -x "$(command -v gunicorn)" ]; then
+if ! [ -x "$(command -v env/bin/gunicorn)" ]; then
+    source $(pwd)/env/bin/activate
     echo 'Error: gunicorn is not installed.' >&2
-    pip install install gunicorn > /dev/null
+    sudo env/bin/pip install gunicorn 
     echo 'Done! ✅'
+    deactivate
     echo ""
 fi
-
 
 
 # # Make a systemd service file if not exists make full service file setup
