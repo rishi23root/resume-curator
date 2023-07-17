@@ -2,7 +2,7 @@
 
 source ./scripts/constant.sh
 
-# sudo chmod 777 $(pwd)/$sockFileName
+# use proxy insted of unix socket
 
 
 echo "Setting up nginx file config"
@@ -18,15 +18,12 @@ server {
     server_name $websiteUrl;
     
     location / {
-        include proxy_params;
-        proxy_pass http://unix:$(pwd)/$sockFileName;
+        proxy_pass http://localhost:$port;
+        include /etc/nginx/proxy_params;
+        proxy_redirect off;
     }
 }
 END
 echo "--------------------------------------------------------------------------"
 echo ""
 echo "nginx avilable site file setup complete! ✅" $nginxFilePath
-
-
-
-# sudo chmod 777 $(pwd)/$sockFileName

@@ -26,7 +26,7 @@ User=$USER
 Group=www-data
 WorkingDirectory=$(pwd)
 Environment="PATH=$(pwd)/env/bin"
-ExecStart=$(pwd)/env/bin/gunicorn --workers $workers --bind unix:$sockFileName -m 007 wsgi:app
+ExecStart=$(pwd)/env/bin/gunicorn --workers $workers --bind 0.0.0.0:$port wsgi:app
 
 [Install]
 WantedBy=multi-user.target

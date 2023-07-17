@@ -4,6 +4,7 @@ source ./scripts/constant.sh
 
 cleanUpNginx
 cleanUpService
+cleanUpCertbot
 
 
 echo "Checking if gunicorn is running"

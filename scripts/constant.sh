@@ -4,7 +4,11 @@ serviceName="buildyourresume"
 serviceFilePath="/etc/systemd/system/$serviceName.service"
 nginxFilePath="/etc/nginx/sites-available/$serviceName"
 websiteUrl="api.buildyourresume.online"
-sockFileName="$serviceName.sock"
+port=5000
+email="rishabhjainfinal@gmail.com"
+
+
+
 
 cleanUpService(){
     # remove the service file
@@ -28,6 +32,14 @@ cleanUpNginx(){
     sudo systemctl daemon-reload
 }
 
+cleanUpCertbot(){
+    # if certbot is installed
+    if [ -x "$(command -v certbot)" ]; then
+        echo "Removing certbot"
+        sudo apt-get remove certbot
+        echo ""
+    fi
+}
 
 
 # just old code hunny
