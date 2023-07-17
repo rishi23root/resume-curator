@@ -56,3 +56,4 @@ chmod +x ./scripts/*.sh
 echo "Done! ✅"
 
 echo "Setup Done! 🎉"
+echo "" 

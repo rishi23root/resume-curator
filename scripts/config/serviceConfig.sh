@@ -1,9 +1,6 @@
 # expects 1 argument: path to systemd service 
-serviceFilePath=$1
+source scripts/constant.sh
 
-# creating the file 
-echo "Creating systemd service file... $serviceFilePath"
-sudo touch $serviceFilePath
 
 # get no of cores for gunicorn workers
 cores=$(nproc --all)
@@ -14,6 +11,10 @@ workers=$(( $cores * 2 + 1 ))
 # write to the file
 echo "Setting up systemd service file config"
 echo ""
+# creating the file 
+echo "Creating systemd service file... $serviceFilePath"
+sudo touch $serviceFilePath
+echo "--------------------------------------------------------------------------"
 # sudo cat $serviceFilePath << END
 sudo tee $serviceFilePath << END
 [Unit]
@@ -24,13 +25,12 @@ After=network.target
 User=$USER
 Group=www-data
 WorkingDirectory=$(pwd)
-ExecStart=$(which gunicorn) --access-logfile - --workers $workers --bind unix:flask-app.sock wsgi:app
+ExecStart=$(which gunicorn) --access-logfile - --workers $workers --bind unix:$sockFileName wsgi:app
 
 [Install]
 WantedBy=multi-user.target
 END
-
+echo "--------------------------------------------------------------------------"
 echo ""
 echo "systemd service file setup complete! ✅" $serviceFilePath
-echo "Done! ✅"
 
