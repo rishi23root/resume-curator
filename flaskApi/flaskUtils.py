@@ -15,6 +15,7 @@ from util.utils import getTemplates, read_json_file
 
 
 def athenticateUser(request):
+    # all the authentication code will be handeled by the next-backend
     return True
 
 
