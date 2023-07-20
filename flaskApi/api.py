@@ -7,6 +7,7 @@ from util.constants import baseDir
 from util.utils import listTemplates
 
 from .flaskUtils import athenticateUser, generateResume, varifyData
+from urllib.parse import urlsplit
 
 app = Flask(__name__)
 CORS(app)
@@ -65,8 +66,11 @@ def create_resume():
     except Exception as e:
         # print(e.with_traceback())
         # get only the site url
-        domain = "".join(request.base_url.split('/')[:3])
-        return jsonify({'error': f'Invalid content template, Download template from here {domain}/download_template'}), 422
+        url_parts = urlsplit(request.base_url)
+
+        base_url = url_parts.scheme + "://" + url_parts.netloc
+        print(base_url)
+        return jsonify({'error': f'Invalid content template, Download template from here {base_url}/download_template'}), 422
 
 
 @app.route('/create_resume_bulk', methods=['POST'])
