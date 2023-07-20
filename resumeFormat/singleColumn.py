@@ -133,7 +133,7 @@ class MyDocument(lt.Document):
             # \vspace{0.5em}
             self.append(NoEscape(f'\\textbf{{{institution}}} \\hfill {area}\n'))
             self.append(NoEscape('\\newline\n'))
-            self.append(NoEscape(f'{study_type} \hfill {studytime}\n'))
+            self.append(NoEscape(f'{study_type} \\hfill {studytime}\n'))
             self.append(NoEscape('\\vspace{0.5em}\n'))
             self.append(NoEscape('\\newline\n'))
 
