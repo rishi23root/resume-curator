@@ -3,8 +3,12 @@ import json
 import re
 import os 
 
+# baseUrl = 'http://localhost:5000/'
+baseUrl = 'https://api.buildyourresume.online/'
+
+
 def createResume():
-    url = 'http://localhost:5000/create_resume'
+    url = baseUrl + 'create_resume'
 
     # Example JSON data
     with open('template.json') as f:
@@ -34,7 +38,7 @@ def createResume():
 
 
 def listTemplates():
-    url = 'http://localhost:5000/templates'
+    url = baseUrl + 'templates'
 
     # Make the GET request
     response = requests.get(url)
@@ -47,7 +51,7 @@ def listTemplates():
 
 
 def downloadTemplate():
-    url = 'http://localhost:5000/download_template'
+    url = baseUrl + 'download_template'
 
     # Make the GET request
     response = requests.get(url)
