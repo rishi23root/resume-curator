@@ -11,7 +11,6 @@ if ! [ -x "$(command -v env/bin/gunicorn)" ]; then
     echo ""
 fi
 
-
 # # Make a systemd service file if not exists make full service file setup
 cleanUpService
 if [ ! -f $serviceFilePath ]; then
@@ -34,11 +33,11 @@ if [ ! -f $nginxFilePath ]; then
     echo ""
 fi
 
+
+chmod +x ./scripts/config/certbotConfig.sh
+
 # install cert bot and get ssl certificate
 # if ssl certificate is not present
 if [ ! -f /etc/letsencrypt/live/$websiteUrl/fullchain.pem ]; then
-    echo "Installing certbot and getting ssl certificate"
-    sudo ./scripts/config/certbotConfig.sh
-    echo "Done ✅"
-    echo ""
+    ./scripts/config/certbotConfig.sh
 fi
