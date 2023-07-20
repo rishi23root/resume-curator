@@ -19,9 +19,9 @@ def inBlock(blockName: str, argStr: str):
 # ex - {minipage}[t]{0.66\textwidth}
 
 def latexBlock(blockName: str, argStr: str,endingStr:str="") -> callable:
-    starting = f"\{blockName}{argStr}"
+    starting = f"\\{blockName}{argStr}"
     if blockName == "section" and endingStr == "":
-        endingStr = f"\{blockName}sep"
+        endingStr = f"\\{blockName}sep"
         
     def wrapper(middle: str) -> str:
         return f"""{starting}\n{middle}\n{endingStr}"""

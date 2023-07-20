@@ -131,7 +131,7 @@ class MyDocument(lt.Document):
             studytime = f'{start_date} - {end_date if not isStudyingHere else "Present"}'
 
             # \vspace{0.5em}
-            self.append(NoEscape(f'\\textbf{{{institution}}} \hfill {area}\n'))
+            self.append(NoEscape(f'\\textbf{{{institution}}} \\hfill {area}\n'))
             self.append(NoEscape('\\newline\n'))
             self.append(NoEscape(f'{study_type} \hfill {studytime}\n'))
             self.append(NoEscape('\\vspace{0.5em}\n'))
@@ -230,7 +230,7 @@ class MyDocument(lt.Document):
 
             # \vspace{0.5em}
             self.append(
-                NoEscape(f'\\textbf{{{nameWithPossition}}} \hfill {worktime}'))
+                NoEscape(f'\\textbf{{{nameWithPossition}}} \\hfill {worktime}'))
             # self.append(NoEscape('\\newline\n'))
             # self.append(NoEscape(f'{study_type} \hfill {studytime}\n'))
             if ex['summary']:
@@ -263,7 +263,7 @@ class MyDocument(lt.Document):
             
             nameWithUrl = f'{name}'+' \\textbar{} ' + createLink(url, "Link")
             
-            self.append(NoEscape(f'\\textbf{{{nameWithUrl}}} \hfill {languages}'))
+            self.append(NoEscape(f'\\textbf{{{nameWithUrl}}} \\hfill {languages}'))
             # self.append(NoEscape('\\newline'))
             # self.append(NoEscape(f'{study_type} \hfill {studytime}\n'))
             # self.append(NoEscape('\\newline\n'))
