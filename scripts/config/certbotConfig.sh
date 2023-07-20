@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-source scripts/constant.sh
+
+source ./scripts/constant.sh
 
 # sudo add-apt-repository ppa:certbot/certbot > /dev/null
 sudo apt install certbot python3-certbot-nginx -y 
