@@ -28,7 +28,7 @@ if [ ! -f $nginxFilePath ]; then
     sudo ln -s $nginxFilePath /etc/nginx/sites-enabled/
     sudo nginx -t
     sudo systemctl restart nginx
-    # sudo ufw delete allow 5000
+    sudo ufw delete allow 5000
     sudo ufw allow 'Nginx Full'
     echo "Done ✅"
     echo ""
@@ -38,7 +38,7 @@ fi
 # if ssl certificate is not present
 if [ ! -f /etc/letsencrypt/live/$websiteUrl/fullchain.pem ]; then
     echo "Installing certbot and getting ssl certificate"
-    ./scripts/config/certbotConfig.sh
+    sudo ./scripts/config/certbotConfig.sh
     echo "Done ✅"
     echo ""
 fi

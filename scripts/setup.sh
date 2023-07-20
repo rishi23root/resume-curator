@@ -4,6 +4,13 @@
 # respect to https://github.com/indrjo/minimal-texlive-installer/tree/main for the installer, it just works 
 # check if pdflatx, tlmgr and texliveonfly is installed
 # if not install it
+# check if texlive path is added to path
+# if not add it
+if [ -d "$HOME/texlive/2023/bin/x86_64-linux" ]; then
+    source $HOME/.bashrc 
+else
+    echo "texlive is not installed. 🚫"
+fi
 if command -v pdflatex > /dev/null && command -v tlmgr > /dev/null && command -v texliveonfly > /dev/null; then
     echo "All required packages are installed. ✅"
 else
@@ -30,7 +37,7 @@ fi
 if ! [ -x "$(command -v pip)" ]; then
     echo 'Error: pip is not installed.' 
     echo 'Installing pip ..' 
-    sudo apt-get install python-pip > /dev/null
+    sudo apt-get install python3-pip -y > /dev/null
     echo 'Done! ✅' 
 fi
 
@@ -52,7 +59,8 @@ if [ -d "env" ]; then
 else
     echo "venv does not exist. 🚫"
     echo "Creating env..."
-    python3 -m venv env
+    sudo apt install python3.10-venv
+    sudo python3 -m venv env
     source ./env/bin/activate
     echo "Done! ✅"
 fi
