@@ -3,8 +3,8 @@ import json
 import re
 import os 
 
-baseUrl = 'http://localhost:5000/'
-# baseUrl = 'https://api.buildyourresume.online/'
+# baseUrl = 'http://localhost:5000/'
+baseUrl = 'https://api.buildyourresume.online/'
 
 
 def createResume():
