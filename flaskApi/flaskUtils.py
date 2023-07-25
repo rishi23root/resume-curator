@@ -29,10 +29,10 @@ def generateResume(data: dict, templateName: str) -> Path or None:
     if templateCall is not None:
         return templateCall(fileName, data)
     else:
-        return None
+        return None # type: ignore
 
 
-def varifyData(data: dict) -> bool:
+def varifyData(data: dict) :
     # varify the data
     if data is None:
         return False, "data is None"

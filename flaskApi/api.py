@@ -30,6 +30,8 @@ def download_template():
 @app.route('/create_resume', methods=['POST'])
 def create_resume():
     # 0. Receive the data from the frontend
+    print(request.headers)
+    print(request.method)
 
     # a. Authenticate user (implement your authentication logic here)
     if not athenticateUser(request):
