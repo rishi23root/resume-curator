@@ -1,3 +1,4 @@
+import subprocess
 import os 
 
 templateFolderName = 'resumeFormat'
@@ -21,3 +22,13 @@ outputDir = os.path.join(baseDir, outputDirName)
 if os.path.isdir(outputDir) == False:
     os.mkdir(outputDir)
 
+# set default liveonfly path
+
+texlivePath = '/texlive/2023/bin/x86_64-linux'
+# get the base path of the texliveonfly
+# a= os.system(, shell=True)
+# print(a)
+command = "echo $(dirname $(which texliveonfly))"
+# subprocess.run(["ls", "-l"])
+a = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).stdout.read().decode('utf-8')
+print(a)
