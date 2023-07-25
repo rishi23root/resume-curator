@@ -7,3 +7,6 @@ env
 /logs/*
 !/logs/.gitkeep
 
+
+/output/*
+!/output/.gitkeep

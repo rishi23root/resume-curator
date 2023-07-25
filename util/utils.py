@@ -3,7 +3,7 @@ import shutil
 from pathlib import Path
 import os
 from util.constants import templateDir, baseDir, builderDirName, outputDir
-
+import subprocess
 import importlib
 from functools import lru_cache
 
@@ -39,16 +39,21 @@ def read_json_file(file_path: str):
 
 def createResume(filename: str, isSilent: bool = True, texliveonfly=True) -> Path:
     os.chdir(os.path.join(baseDir, builderDirName))
-    if not isSilent:
-        os.system(
-            f'{"texliveonfly -c" if texliveonfly else "" } pdflatex resume.tex'
-        )
-    else:
-        # final version of the resume
-        os.system(
-            f'{"texliveonfly -c" if texliveonfly else "" } pdflatex resume.tex | tee /proc/sys/vm/drop_caches >/dev/null 2>&1'
-        )
-
+    command = f'{"texliveonfly -c" if texliveonfly else "" } pdflatex resume.tex {"| tee /proc/sys/vm/drop_caches >/dev/null 2>&1" if isSilent else ""}'
+    
+    try:
+            
+        output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout.read(
+        ).decode('utf-8').strip()
+        
+        # solve error like this
+        # check how to read error from system command if any
+        # /bin/sh: 1: texliveonfl: not found
+        
+        print(output)
+    except Exception as e:
+        print(e)
+        exit(1)
     # remove the other files other then resume-custom.cls
     allfiles = os.listdir(os.path.join(baseDir, builderDirName))
     # print(allfiles)
@@ -67,7 +72,7 @@ def createResume(filename: str, isSilent: bool = True, texliveonfly=True) -> Pat
     shutil.move(os.path.join(baseDir, builderDirName, 'resume.pdf'),
                 os.path.join(outputDir, filename))
     
-    return os.path.join(outputDir, filename)
+    return os.path.join(str(outputDir ), filename) # type: ignore
 
 
 if __name__ == "__main__":

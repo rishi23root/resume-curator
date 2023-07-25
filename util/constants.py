@@ -1,5 +1,5 @@
 import subprocess
-import os 
+import os
 
 templateFolderName = 'resumeFormat'
 resumeJsonFileName = 'template.json'
@@ -24,11 +24,20 @@ if os.path.isdir(outputDir) == False:
 
 # set default liveonfly path
 
-texlivePath = '/texlive/2023/bin/x86_64-linux'
-# get the base path of the texliveonfly
-# a= os.system(, shell=True)
-# print(a)
-command = "echo $(dirname $(which texliveonfly))"
-# subprocess.run(["ls", "-l"])
-a = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).stdout.read().decode('utf-8')
-print(a)
+
+def tivetextPaht():
+    command = "echo $(dirname $(which texliveonfly))"
+    defalttexlivePath = '/texlive/2023/bin/x86_64-linux'
+    a = subprocess.Popen(command, shell=True,
+                         stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()
+
+    if a:
+        print("current texliveonfly path is :", a)
+        return a
+    else:
+        homePath = subprocess.Popen(
+            "echo $HOME", shell=True, stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()
+        print("current texliveonfly path is :", homePath+defalttexlivePath)
+        return homePath+defalttexlivePath
+
+textlivePath = tivetextPaht()
