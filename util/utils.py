@@ -37,7 +37,7 @@ def read_json_file(file_path: str):
         raise Exception('Error in reading json file, check the json format')
 
 
-def createResume(filename: str, isSilent: bool = False  , texliveonfly=True) -> Path:
+def createResume(filename: str, isSilent: bool = True  , texliveonfly=True) -> Path:
     os.chdir(os.path.join(baseDir, builderDirName))
     command = f'{os.path.join(textlivePath,"texliveonfly")+" -c" if texliveonfly else "" } pdflatex resume.tex {"| tee /proc/sys/vm/drop_caches >/dev/null 2>&1" if isSilent else ""}'
 
