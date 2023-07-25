@@ -9,7 +9,7 @@ workers=$(( $cores * 2 + 1 ))
 # echo "workers: $workers"
 
 # edit access to log folder
-sudo chmod 777 logs
+sudo chmod 777 logs/*
 # write to the file
 echo "Setting up systemd service file config"
 echo ""
