@@ -69,8 +69,8 @@ def downloadTemplate():
 
 
 if __name__ == '__main__':
-    listTemplates()
+    # listTemplates()
     downloadTemplate()
-    createResume()
+    # createResume()
     
-    os.remove('template.json')
+    # os.remove('template.json')
