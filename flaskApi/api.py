@@ -78,9 +78,7 @@ def create_resume():
         base_url = url_parts.scheme + "://" + url_parts.netloc
         # print(base_url)
         return jsonify({
-            'error': f'Invalid content template, Download template from here {base_url}/download_template',
-            'details': str(e),
-            'data': request.get_json()['data'].keys()
+            'error': f'Invalid content template, Download template from here {base_url}/download_template'
             }), 422
 
 

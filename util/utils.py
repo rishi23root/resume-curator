@@ -52,6 +52,8 @@ def createResume(filename: str, isSilent: bool = True  , texliveonfly=True) -> P
     elif error:
         print(error.decode())
         raise Exception("unable to create the resume, check the logs")
+    elif not success and not error:
+        raise Exception("check for access for texliveonfly",output)
 
     # remove the other files other then resume-custom.cls
     allfiles = os.listdir(os.path.join(baseDir, builderDirName))
