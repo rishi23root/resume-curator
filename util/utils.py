@@ -2,7 +2,7 @@ import json
 import shutil
 from pathlib import Path
 import os
-from util.constants import templateDir, baseDir, builderDirName, outputDir, textlivePath
+from util.constants import templateDir, baseDir, builderDirName, outputDir, textlivePath,buildDir
 import subprocess
 import importlib
 from functools import lru_cache
@@ -19,7 +19,7 @@ def listTemplates():
 
 @lru_cache()
 # extract the template to run
-def getTemplates(templateName:str) -> callable or None:
+def getTemplates(templateName:str) -> callable or None: # type: ignore
     onlyTemplates = listTemplates()
     # crate dict with all the templates
     functionCallForEach = {each: importlib.import_module(f'resumeFormat.{each}').runner for each in onlyTemplates}
@@ -37,34 +37,28 @@ def read_json_file(file_path: str):
         raise Exception('Error in reading json file, check the json format')
 
 
-def createResume(filename: str, isSilent: bool = True  , texliveonfly=True) -> Path:
+def createResume(filename: str, isSilent: bool = True  , texliveonfly=True) -> Path or None:  # type: ignore
     os.chdir(os.path.join(baseDir, builderDirName))
-    command = f'{os.path.join(textlivePath,"texliveonfly")+" -c" if texliveonfly else "" } pdflatex resume.tex {"| tee /proc/sys/vm/drop_caches >/dev/null 2>&1" if isSilent else ""}'
-
-    try:
-        output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read(
-        ).decode('utf-8').strip()
-        if not isSilent:
-            print(output)
-    except subprocess.CalledProcessError as e:
-        print(e)
-        exit(0)
-
+    command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } pdflatex {os.path.join(buildDir,"resume.tex")}'
+    # command = f'{os.path.join(textlivePath,"texliveonfly")+" -c" if texliveonfly else "" } pdflatex resume.tex '
     # print(command)
-    # try:
-    # subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    # solve error like this
-    # check how to read error from system command if any
-    # /bin/sh: 1: texliveonfl: not found
-        
-    # except subprocess.CalledProcessError as e:
-    #     print("Cannot find the ")
-    #     exit(0)
-    
+    # output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
+    output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    success, error = output.communicate() # get the output and error 
+    if success:
+        if not isSilent :
+            print("success")
+            print("Output: ",success.decode())
+    elif error:
+        print(error.decode())
+        raise Exception("unable to create the resume, check the logs")
+
     # remove the other files other then resume-custom.cls
     allfiles = os.listdir(os.path.join(baseDir, builderDirName))
     # print(allfiles)
     allfiles.remove('resumecustom.cls')
+    allfiles.remove('texliveonfly.py')
+    # allfiles.remove('test.py')
     try:
         allfiles.remove('resume.pdf')
     except ValueError as e:

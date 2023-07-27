@@ -29,15 +29,16 @@ def tivetextPaht():
     command = "echo $(dirname $(which texliveonfly))"
     defalttexlivePath = '/texlive/2023/bin/x86_64-linux'
     a = subprocess.Popen(command, shell=True,
-                         stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()
+            stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
 
     if a:
         print("current texliveonfly path is :", a)
         return a
     else:
         homePath = subprocess.Popen(
-            "echo $HOME", shell=True, stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()
+            "echo $HOME", shell=True, stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
         print("current texliveonfly path is :", homePath+defalttexlivePath)
         return homePath+defalttexlivePath
+
 
 textlivePath = tivetextPaht()
