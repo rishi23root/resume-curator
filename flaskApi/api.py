@@ -12,6 +12,7 @@ from urllib.parse import urlsplit
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route('/templates', methods=['GET'])
 def list_template():
     return jsonify(listTemplates())
@@ -32,15 +33,15 @@ def create_resume():
     # 0. Receive the data from the frontend
     print(request.headers)
     print(request.method)
-    
+
     # muybe texliveonfly is not able to be accessed by the python env try with out
 
     # a. Authenticate user (implement your authentication logic here)
     if not athenticateUser(request):
         return "Authentication failed!", 401
 
-    print(request.headers)
-    
+    # print(request.headers)
+
     # b. Get the JSON data from the frontend
     content_type = request.headers.get('Content-Type')
     if content_type != 'application/json':
@@ -75,8 +76,9 @@ def create_resume():
         url_parts = urlsplit(request.base_url)
 
         base_url = url_parts.scheme + "://" + url_parts.netloc
-        print(base_url)
-        return jsonify({'error': f'Invalid content template, Download template from here {base_url}/download_template'}), 422
+        # print(base_url)
+        return jsonify({'error': f'Invalid content template, Download template from here {base_url}/download_template'},
+                       'details', e), 422
 
 
 @app.route('/create_resume_bulk', methods=['POST'])
