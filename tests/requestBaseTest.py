@@ -4,7 +4,7 @@ import re
 import os 
 
 baseUrl = 'http://localhost:5000/'
-baseUrl = 'https://api.buildyourresume.online/'
+# baseUrl = 'https://api.buildyourresume.online/'
 
 
 def createResume():
@@ -23,7 +23,7 @@ def createResume():
     }
 
     # Make the POST request
-    print(data)
+    print(data.keys())
     response = requests.post(url, data=json.dumps(data), headers=headers)
     # Handle the response
     if response.status_code == 200:

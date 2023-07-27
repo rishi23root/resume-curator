@@ -11,6 +11,9 @@ if [ -d "$HOME/texlive/2023/bin/x86_64-linux" ]; then
 else
     echo "texlive is not installed. 🚫"
 fi
+
+sudo chmod +x ./builder/*
+
 if command -v pdflatex > /dev/null && command -v tlmgr > /dev/null && command -v texliveonfly > /dev/null; then
     echo "All required packages are installed. ✅"
 else
@@ -31,6 +34,7 @@ else
     
     echo Installed here: $texlivePath
 fi
+
 
 
 
