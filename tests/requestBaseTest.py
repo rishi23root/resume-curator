@@ -23,9 +23,8 @@ def createResume():
     }
 
     # Make the POST request
+    print(data)
     response = requests.post(url, data=json.dumps(data), headers=headers)
-    print(response.text)
-    print(response.json)
     # Handle the response
     if response.status_code == 200:
         # Save the response content (resume) to a file
@@ -36,6 +35,9 @@ def createResume():
         print('Resume downloaded successfully.')
     else:
         print('Error:', response.text)
+        print(response.headers)
+        # print(response.json())
+
 
 
 def listTemplates():

@@ -39,6 +39,8 @@ def create_resume():
     if not athenticateUser(request):
         return "Authentication failed!", 401
 
+    print(request.headers)
+    
     # b. Get the JSON data from the frontend
     content_type = request.headers.get('Content-Type')
     if content_type != 'application/json':
