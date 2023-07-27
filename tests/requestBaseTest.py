@@ -3,8 +3,8 @@ import json
 import re
 import os 
 
-# baseUrl = 'http://localhost:5000/'
-baseUrl = 'http://api.buildyourresume.online/'
+baseUrl = 'http://localhost:5000/'
+# baseUrl = 'http://api.buildyourresume.online/'
 
 
 def createResume():
@@ -24,7 +24,8 @@ def createResume():
 
     # Make the POST request
     response = requests.post(url, data=json.dumps(data), headers=headers)
-    print(response.status_code)
+    print(response.text)
+    print(response.json)
     # Handle the response
     if response.status_code == 200:
         # Save the response content (resume) to a file
@@ -69,8 +70,8 @@ def downloadTemplate():
 
 
 if __name__ == '__main__':
-    # listTemplates()
+    listTemplates()
     downloadTemplate()
-    # createResume()
+    createResume()
     
-    # os.remove('template.json')
+    os.remove('template.json')
