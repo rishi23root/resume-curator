@@ -32,6 +32,8 @@ def create_resume():
     # 0. Receive the data from the frontend
     print(request.headers)
     print(request.method)
+    
+    # muybe texliveonfly is not able to be accessed by the python env try with out
 
     # a. Authenticate user (implement your authentication logic here)
     if not athenticateUser(request):
