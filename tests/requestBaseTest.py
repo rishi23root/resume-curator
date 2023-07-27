@@ -4,7 +4,7 @@ import re
 import os 
 
 baseUrl = 'http://localhost:5000/'
-# baseUrl = 'http://api.buildyourresume.online/'
+baseUrl = 'https://api.buildyourresume.online/'
 
 
 def createResume():
@@ -34,6 +34,7 @@ def createResume():
             f.write(response.content)
         print('Resume downloaded successfully.')
     else:
+        print(response.status_code)
         print('Error:', response.text)
         print(response.headers)
         # print(response.json())

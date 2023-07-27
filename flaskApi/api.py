@@ -77,8 +77,11 @@ def create_resume():
 
         base_url = url_parts.scheme + "://" + url_parts.netloc
         # print(base_url)
-        return jsonify({'error': f'Invalid content template, Download template from here {base_url}/download_template'},
-                       'details', e), 422
+        return jsonify({
+            'error': f'Invalid content template, Download template from here {base_url}/download_template',
+            'details': str(e),
+            'data': request.get_json()['data'].keys()
+            }), 422
 
 
 @app.route('/create_resume_bulk', methods=['POST'])
