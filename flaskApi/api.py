@@ -91,7 +91,7 @@ def create_resume():
         # get only the site url
         url_parts = urlsplit(request.base_url)
 
-        base_url = url_parts.scheme + "://" + url_parts.netloc
+        base_url = url_parts.scheme + "://" + 'buildyourreseume.online'
         # print(base_url)
         # if env is debug then show the error
         return jsonify({
