@@ -33,6 +33,7 @@ create your own templates and build your own template with latex and python
     - [x] add error if all the fields are not filled or found in the uploaded json
 - [x] setup the flask on production server
 - [ ] add more templates
+- using docker is promissing - mrchoke/texlive:latest or 2023 (version 2023 cheked)
 
 
 <!-- open to contribution section -->

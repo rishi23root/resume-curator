@@ -4,35 +4,6 @@ defaultCompiler = "pdflatex"
 defaultArguments = "-synctex=1 -interaction=nonstopmode"
 defaultSpeechSetting = "never"
 
-#
-# texliveonfly.py (formerly lualatexonfly.py) - "Downloading on the fly"
-#     (similar to miktex) for texlive.
-#
-# Given a .tex file, runs lualatex (by default) repeatedly, using error messages
-#     to install missing packages.
-#
-#
-# Version 1.2 ; October 4, 2011
-#
-# Written on Ubuntu 10.04 with TexLive 2011
-# Python 2.6+ or 3
-# Should work on Linux and OS X
-#
-# Copyright (C) 2011 Saitulaa Naranong
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, see <http://www.gnu.org/copyleft/gpl.html>.
-
 import re, subprocess, os, time,  optparse, sys, shlex
 
 scriptName = os.path.basename(__file__)     #the name of this script file

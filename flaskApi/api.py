@@ -1,8 +1,7 @@
 import os
 
-from flask import Flask, jsonify, request, send_file
+from flask import jsonify, request, send_file
 from flask_cors import CORS
-import json
 
 from util.constants import baseDir
 from util.utils import listTemplates
@@ -10,19 +9,20 @@ from util.utils import listTemplates
 from .flaskUtils import athenticateUser, generateResume, varifyData
 from urllib.parse import urlsplit
 
-app = Flask(__name__)
-CORS(app)
+from .app import app
 
 
 @app.route('/test', methods=['GET'])
 def test():
     # checkif the texliveonfly is working
     # check if pdflatex is accssible
-    
+
     return jsonify(listTemplates())
+
 
 @app.route('/templates', methods=['GET'])
 def list_template():
+    # print(124)
     return jsonify(listTemplates())
 
 
@@ -39,8 +39,7 @@ def download_template():
 @app.route('/create_resume', methods=['POST'])
 def create_resume():
     # 0. Receive the data from the frontend
-    print(request.headers)
-    print(request.method)
+    # print(dir(request))
 
     # muybe texliveonfly is not able to be accessed by the python env try with out
 
@@ -67,18 +66,27 @@ def create_resume():
 
         # 1. Create resume and save in some folder and return the path of the resume
         resume_output_path = generateResume(data, templateName=templateName)
-        print("generated file path", resume_output_path)
-        # 2. Send the resume to the frontend in byte format and delete the file from the folder
+        if resume_output_path is not None:    
+            print("generated file path", resume_output_path)
 
-        try:
-            return send_file(resume_output_path, download_name=f'{templateName}.pdf', as_attachment=True)
-        finally:
-            os.remove(resume_output_path)
+            # 2. Send the resume to the frontend in byte format and delete the file from the folder
+            try:
+                return send_file(resume_output_path, download_name=f'{templateName}.pdf', as_attachment=True)
+            finally:
+                os.remove(resume_output_path)
+        else:
+            raise Exception("Resume not generated, internal error")
 
     except KeyError as e:
+        # print(e)
+        app.logger.error(e)
         return jsonify({'error': f'Invalid data, missing key {e}'}), 422
 
     except Exception as e:
+        app.logger.error(e)
+        if "Resume not generated, internal error" in e.__str__():
+            return e.__str__(), 500
+
         # print(e.with_traceback())
         # get only the site url
         url_parts = urlsplit(request.base_url)
@@ -86,14 +94,9 @@ def create_resume():
         base_url = url_parts.scheme + "://" + url_parts.netloc
         # print(base_url)
         # if env is debug then show the error
-        app.logger.error(e)
-        if app.debug:
-            return json.dumps(e), 422
-        
-        else:
-            return jsonify({
-                'error': f'Invalid content template, Download template from here {base_url}/download_template'
-                }), 422
+        return jsonify({
+            'error': f'Invalid content template, Download template from here {base_url}/download_template'
+        }), 422
 
 
 @app.route('/create_resume_bulk', methods=['POST'])

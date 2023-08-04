@@ -41,7 +41,6 @@ def createResume():
         # print(response.json())
 
 
-
 def listTemplates():
     url = baseUrl + 'templates'
 
