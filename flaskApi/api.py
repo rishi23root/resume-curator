@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
+import json
 
 from util.constants import baseDir
 from util.utils import listTemplates
@@ -84,9 +85,14 @@ def create_resume():
 
         base_url = url_parts.scheme + "://" + url_parts.netloc
         # print(base_url)
-        return jsonify({
-            'error': f'Invalid content template, Download template from here {base_url}/download_template'
-            }), 422
+        # if env is debug then show the error
+        if app.debug:
+            return json.dumps(e), 422
+        
+        else:
+            return jsonify({
+                'error': f'Invalid content template, Download template from here {base_url}/download_template'
+                }), 422
 
 
 @app.route('/create_resume_bulk', methods=['POST'])
