@@ -43,3 +43,9 @@ create your own templates and build your own template with latex and python
 3. make changes
 4. push the changes
 5. create a pull request
+
+
+<!-- todos -->
+
+## Todos
+1. shorten the latex installations 

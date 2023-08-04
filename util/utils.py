@@ -78,11 +78,31 @@ def createResume(filename: str, isSilent: bool = True  , texliveonfly=True) -> P
     return os.path.join(str(outputDir ), filename) # type: ignore
 
 
+
+# testing scripts
+def testPdflatexAccess(isSilent: bool = True, texliveonfly=True):
+    command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } pdflatex {os.path.join(buildDir,"resume.tex")}'
+    # command = f'{os.path.join(textlivePath,"texliveonfly")+" -c" if texliveonfly else "" } pdflatex resume.tex '
+    # print(command)
+    # output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
+    output = subprocess.Popen(
+        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    success, error = output.communicate()  # get the output and error
+    if success:
+        if not isSilent:
+            print("success")
+            print("Output: ", success.decode())
+    elif error:
+        print(error.decode())
+        raise Exception("unable to create the resume, check the logs")
+    elif not success and not error:
+        raise Exception("check for access for texliveonfly", output)
+
 if __name__ == "__main__":
     
     
     # import inspect
     # to test the templates
     # print(inspect.signature(getTemplates('twoColumn')))
-
+    
     pass

@@ -13,6 +13,13 @@ app = Flask(__name__)
 CORS(app)
 
 
+@app.route('/test', methods=['GET'])
+def test():
+    # checkif the texliveonfly is working
+    # check if pdflatex is accssible
+    
+    return jsonify(listTemplates())
+
 @app.route('/templates', methods=['GET'])
 def list_template():
     return jsonify(listTemplates())
