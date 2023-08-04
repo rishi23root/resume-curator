@@ -86,6 +86,7 @@ def create_resume():
         base_url = url_parts.scheme + "://" + url_parts.netloc
         # print(base_url)
         # if env is debug then show the error
+        app.logger.error(e)
         if app.debug:
             return json.dumps(e), 422
         
