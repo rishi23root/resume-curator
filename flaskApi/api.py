@@ -8,16 +8,18 @@ from util.utils import listTemplates
 
 from .flaskUtils import athenticateUser, generateResume, varifyData
 from urllib.parse import urlsplit
-
+from util.utils import testPdflatexAccess
 from .app import app
 
 
-# @app.route('/test', methods=['GET'])
-# def test():
+@app.route('/test', methods=['GET'])
+def test():
     # checkif the texliveonfly is working
     # check if pdflatex is accssible
-
-    # return jsonify(listTemplates())
+    # check the access of the pylatex package
+    
+    systemReturn = testPdflatexAccess()
+    return jsonify({'return': systemReturn}) if len(systemReturn) else "Test passed" # type: ignore
 
 
 @app.route('/templates', methods=['GET'])

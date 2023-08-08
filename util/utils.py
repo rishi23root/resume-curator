@@ -10,6 +10,13 @@ from functools import lru_cache
 from flaskApi.app import app
 
 
+def runSystemCommad(command: str):
+    """run the system command and return the output, error and execution object """
+    output = subprocess.Popen(
+        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return output.communicate(), output
+
+
 @lru_cache()
 # get list of templates
 def listTemplates():
@@ -40,16 +47,19 @@ def read_json_file(file_path: str):
         raise Exception('Error in reading json file, check the json format')
 
 
-def createResume(filename: str, isSilent: bool = True, texliveonfly=True) :
+def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
     os.chdir(os.path.join(baseDir, builderDirName))
     command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } pdflatex {os.path.join(buildDir,"resume.tex")}'
 
     try:
-        runSystemCommad(command)
+        isSuccess, discription = creatRumeFromSystem(command)  # type: ignore
+        if not isSuccess:
+            raise Exception(discription)
+
     except Exception as e:
         app.logger.error(e)
-        return None 
-    
+        return None
+
     # remove the other files other then resume-custom.cls
     allfiles = os.listdir(os.path.join(baseDir, builderDirName))
     # not these files
@@ -75,49 +85,35 @@ def createResume(filename: str, isSilent: bool = True, texliveonfly=True) :
     return os.path.join(str(outputDir), filename)  # type: ignore
 
 
-def runSystemCommad(command: str):
+def creatRumeFromSystem(command: str):
     "error  binary not found showing in the exit code 1"
     # print('testing')
     try:
-        output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        success, error = output.communicate()  # get the output and error
+        (success, error), output = runSystemCommad(command)
+        # get the output and error
         # print exit code
-        
+
         # succes if string contains the word success
         if success and 'in house texliveonfly' in success.decode():
             print("success")
+            return True, (success)
             # print("Output: ", success.decode())
-        elif error or 'in house texliveonfly' not in success.decode() :
-            raise Exception("unable to create the resume, check the logs",error.decode())
+        elif error or 'in house texliveonfly' not in success.decode():
+            raise Exception(
+                "unable to create the resume, check the logs", error.decode())
         elif not success and not error:
             raise Exception("check for access for texliveonfly", output)
-    
-    except Exception as e:
-        # print('Error : ', e)
-        # app.logger.error(e)
-        raise Exception(e)
 
-    # raise Exception('jksdfhsdhjkfsdfjkh fsdjklhfadksjflk ;')
+    except Exception as e:
+        return False, str(e)
 
 
 # testing scripts
 def testPdflatexAccess(isSilent: bool = True, texliveonfly=True):
     command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } pdflatex {os.path.join(buildDir,"resume.tex")}'
-    # command = f'{os.path.join(textlivePath,"texliveonfly")+" -c" if texliveonfly else "" } pdflatex resume.tex '
-    # print(command)
-    # output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
-    output = subprocess.Popen(
-        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    success, error = output.communicate()  # get the output and error
-    if success:
-        if not isSilent:
-            print("success")
-            print("Output: ", success.decode())
-    elif error:
-        print(error.decode())
-        raise Exception("unable to create the resume, check the logs")
-    elif not success and not error:
-        raise Exception("check for access for texliveonfly", output)
+    command = f'which pdflatex; uname; $PATH; id'
+    (success, error), output = runSystemCommad(command)  # type: ignore
+    return success.decode('utf-8'), error.decode()
 
 
 if __name__ == "__main__":
