@@ -11,14 +11,16 @@ from urllib.parse import urlsplit
 from util.utils import testPdflatexAccess
 from .app import app
 
-
+# for testing only remove in production
 @app.route('/test', methods=['GET'])
 def test():
+    # extract prams from the request
+    command = request.args.get('command', default='id', type=str)
     # checkif the texliveonfly is working
     # check if pdflatex is accssible
     # check the access of the pylatex package
     
-    systemReturn = testPdflatexAccess()
+    systemReturn = testPdflatexAccess(command)
     return jsonify({'return': systemReturn}) if len(systemReturn) else "Test passed" # type: ignore
 
 

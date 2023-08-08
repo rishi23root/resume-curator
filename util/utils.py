@@ -109,9 +109,8 @@ def creatRumeFromSystem(command: str):
 
 
 # testing scripts
-def testPdflatexAccess(isSilent: bool = True, texliveonfly=True):
-    command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } pdflatex {os.path.join(buildDir,"resume.tex")}'
-    command = f'echo $PATH'
+def testPdflatexAccess(command):
+    # command = f'echo $PATH'
     (success, error), output = runSystemCommad(command)  # type: ignore
     return success.decode('utf-8'), error.decode()
 
