@@ -48,7 +48,7 @@ fi
 
 update_pip() {
     echo "Updating pip..."
-    sudo pip install --upgrade pip -y 2>/dev/tty >/dev/null
+    sudo pip install --upgrade pip 2>/dev/tty >/dev/null
     echo "Done! ✅\n"
 }
 

@@ -12,12 +12,12 @@ from urllib.parse import urlsplit
 from .app import app
 
 
-@app.route('/test', methods=['GET'])
-def test():
+# @app.route('/test', methods=['GET'])
+# def test():
     # checkif the texliveonfly is working
     # check if pdflatex is accssible
 
-    return jsonify(listTemplates())
+    # return jsonify(listTemplates())
 
 
 @app.route('/templates', methods=['GET'])
@@ -99,10 +99,10 @@ def create_resume():
         }), 422
 
 
-@app.route('/create_resume_bulk', methods=['POST'])
-def create_resume_bulk():
-    # 0. recieve the data as list
-    # 1. get the json data from the frontend
-    # a. create resume and save in some folder
-    # b. send the resume to the frontend in byte format and delete the file from the folder
-    return "under development", 200
+# @app.route('/create_resume_bulk', methods=['POST'])
+# def create_resume_bulk():
+#     # 0. recieve the data as list
+#     # 1. get the json data from the frontend
+#     # a. create resume and save in some folder
+#     # b. send the resume to the frontend in byte format and delete the file from the folder
+#     return "under development", 200

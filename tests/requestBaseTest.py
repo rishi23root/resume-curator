@@ -25,7 +25,7 @@ def createResume():
 
     # Make the POST request
     print(data.keys())
-    response = requests.post(url, data=json.dumps(data), headers=headers)
+    response = requests.get(url, data=json.dumps(data), headers=headers)
     # Handle the response
     if response.status_code == 200:
         # Save the response content (resume) to a file
