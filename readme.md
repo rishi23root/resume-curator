@@ -48,5 +48,7 @@ create your own templates and build your own template with latex and python
 
 <!-- todos -->
 
-## Todos
-1. shorten the latex installations 
+## Todos errors and bugs solving
+1. server is not making logs in the log file
+2. gunicorn is responsible ? if not then what is the problem
+3. maybe gunicorn is taking logs in the logs files 
