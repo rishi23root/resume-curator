@@ -19,16 +19,16 @@ server {
     listen 80;
     server_name $websiteUrl;
     
+    location / {
+        proxy_pass http://localhost:$port;
+        include /etc/nginx/proxy_params;
+        proxy_redirect off;
+    }
     location /create_resume {
         proxy_method POST;
         proxy_http_version 1.1;
         proxy_pass http://localhost:$port/create_resume;
         client_max_body_size 10M;
-    }
-    location /* {
-        proxy_pass http://localhost:$port;
-        include /etc/nginx/proxy_params;
-        proxy_redirect off;
     }
 }
 END
