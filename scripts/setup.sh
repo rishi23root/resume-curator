@@ -14,7 +14,7 @@ fi
 
 sudo chmod +x ./builder/*
 
-if command -v pdflatex > /dev/null && command -v tlmgr > /dev/null && command -v texliveonfly > /dev/null; then
+if command -v pdflatex 2>/dev/tty >/dev/null && command -v tlmgr 2>/dev/tty >/dev/null && command -v texliveonfly 2>/dev/tty >/dev/null; then
     echo "All required packages are installed. ✅"
 else
     echo "Installing texlive and texliveonfly..."
@@ -29,7 +29,7 @@ else
 
     # to install missing packages on the fly
     echo "Installing texliveonfly..."
-    $texlivePath/tlmgr install texliveonfly > /dev/null
+    $texlivePath/tlmgr install texliveonfly 2>/dev/tty >/dev/null
     echo "Done! ✅"
     
     echo Installed here: $texlivePath
@@ -42,13 +42,13 @@ fi
 if ! [ -x "$(command -v pip)" ]; then
     echo 'Error: pip is not installed.' 
     echo 'Installing pip ..' 
-    sudo apt-get install python3-pip -y > /dev/null
+    sudo apt-get install python3-pip -y 2>/dev/tty >/dev/null
     echo 'Done! ✅' 
 fi
 
 update_pip() {
     echo "Updating pip..."
-    sudo pip install --upgrade pip -y > /dev/null
+    sudo pip install --upgrade pip -y 2>/dev/tty >/dev/null
     echo "Done! ✅\n"
 }
 
@@ -64,8 +64,8 @@ if [ -d "env" ]; then
 else
     echo "venv does not exist. 🚫"
     echo "Creating env..."
-    sudo apt install python3.10-venv
-    sudo python3 -m venv env
+    sudo apt install python3.10-venv -y 2>/dev/tty >/dev/null
+    sudo python3 -m venv env 2>/dev/tty >/dev/null
     source ./env/bin/activate
     echo "Done! ✅"
 fi
@@ -73,7 +73,7 @@ fi
 # check if requirements.txt exists and install requirements
 if [ -f "requirements.txt" ]; then
     echo "requirements.txt found. 😎 installing requirements..."
-    sudo ./env/bin/pip install -r requirements.txt > /dev/null
+    sudo ./env/bin/pip install -r requirements.txt 2>/dev/tty >/dev/null
     echo "Done! ✅"
 else
     echo "requirements.txt not found. 🚫"

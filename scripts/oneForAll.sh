@@ -12,7 +12,7 @@ chmod +x ./scripts/*
 if ! [ -x "$(command -v nginx)" ]; then
     echo 'Error: nginx is not installed.' >&2
     echo 'Installing nginx ..' 
-    sudo apt-get install nginx -y > /dev/null
+    sudo apt-get install nginx -y 2>/dev/tty >/dev/null
     echo 'Done! ✅' 
 fi
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 source scripts/constant.sh
 
+# give ufw access to 
+sudo ufw --force enable
+
 # check if gunicorn is installed
 if ! [ -x "$(command -v env/bin/gunicorn)" ]; then
     source $(pwd)/env/bin/activate
