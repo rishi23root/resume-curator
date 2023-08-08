@@ -49,7 +49,9 @@ def read_json_file(file_path: str):
 
 def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
     os.chdir(os.path.join(baseDir, builderDirName))
-    command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } pdflatex {os.path.join(buildDir,"resume.tex")}'
+    
+    pdflatexPath = "/home/rishi/texlive/2023/bin/x86_64-linux/pdflatex"
+    command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } {pdflatexPath} {os.path.join(buildDir,"resume.tex")}'
 
     try:
         isSuccess, discription = creatRumeFromSystem(command)  # type: ignore
