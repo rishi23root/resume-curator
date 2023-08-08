@@ -25,6 +25,9 @@ server {
         proxy_redirect off;
     }
     location /create_resume {
+        if (\$request_method !~ ^(POST)$ ) {
+            return 405;
+        }
         proxy_method POST;
         proxy_http_version 1.1;
         proxy_pass http://localhost:$port/create_resume;
