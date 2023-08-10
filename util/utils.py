@@ -53,6 +53,7 @@ def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
     try:
         isSuccess, discription = creatRumeFromSystem(
             texliveonfly)  # type: ignore
+        app.logger.info("isSuccess", discription)
         if not isSuccess:
             raise Exception(discription)
 
@@ -92,6 +93,7 @@ def creatRumeFromSystem(texliveonfly=True):
     # get the path of the pdflatex
     pdflatexPath = textlivePath + "/pdflatex"
     command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } {pdflatexPath} {os.path.join(buildDir,"resume.tex")}'
+    
     app.logger.info("command", command)
     # generate the resume itself
     try:
