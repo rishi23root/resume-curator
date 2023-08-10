@@ -66,6 +66,8 @@ if [ -d $virtualEnv ]; then
 else
     echo "venv does not exist. 🚫"
     echo "Creating $virtualEnv..."
+
+    sudo apt-get install python3-virtualenv -y
     pip3 install virtualenv
     virtualenv $virtualEnv
     source $virtualEnv/bin/activate 2>/dev/tty >/dev/null
