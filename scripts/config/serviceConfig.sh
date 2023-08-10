@@ -47,8 +47,8 @@ After=network.target
 User=$USER
 Group=www-data
 WorkingDirectory=$(pwd)
-Environment="PATH=$(pwd)/env/bin"
-ExecStart=sudo su $USER -c '$(pwd)/env/bin/gunicorn --workers $workers --bind 0.0.0.0:$port wsgi:app --access-logfile $(pwd)/logs/access.log --error-logfile $(pwd)/logs/error.log --capture-output --log-level debug'
+Environment="PATH=$(pwd)/$virtualEnv/bin"
+ExecStart=sudo su $USER -c '$(pwd)/$virtualEnv/bin/gunicorn --workers $workers --bind 0.0.0.0:$port wsgi:app --access-logfile $(pwd)/logs/access.log --error-logfile $(pwd)/logs/error.log --capture-output --log-level debug'
 
 [Install]
 WantedBy=multi-user.target
