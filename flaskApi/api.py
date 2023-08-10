@@ -11,6 +11,11 @@ from urllib.parse import urlsplit
 from util.utils import testPdflatexAccess
 from .app import app
 
+@app.route('/', methods=['GET'])
+def index():
+    return jsonify({'info': "Welcome to Build Your Resume API, please visit https://buildyourresume.online for more information."})
+
+######################################################3
 # for testing only remove in production
 @app.route('/test', methods=['GET'])
 def test():
@@ -22,6 +27,8 @@ def test():
     
     systemReturn = testPdflatexAccess(command)
     return jsonify({'return': systemReturn}) if len(systemReturn) else "Test passed" # type: ignore
+
+######################################################3
 
 
 @app.route('/templates', methods=['GET'])

@@ -4,6 +4,7 @@ from pathlib import Path
 import os
 
 from util.constants import templateDir, baseDir, builderDirName, outputDir, textlivePath, buildDir
+from util.constants import textlivePath
 import subprocess
 import importlib
 from functools import lru_cache
@@ -49,12 +50,9 @@ def read_json_file(file_path: str):
 
 def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
     os.chdir(os.path.join(baseDir, builderDirName))
-    
-    pdflatexPath = "/home/rishi/texlive/2023/bin/x86_64-linux/pdflatex"
-    command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } {pdflatexPath} {os.path.join(buildDir,"resume.tex")}'
-
     try:
-        isSuccess, discription = creatRumeFromSystem(command)  # type: ignore
+        isSuccess, discription = creatRumeFromSystem(
+            texliveonfly)  # type: ignore
         if not isSuccess:
             raise Exception(discription)
 
@@ -73,7 +71,7 @@ def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
     try:
         allfiles.remove('resume.pdf')
     except ValueError as e:
-        raise Exception('Error in creating the resume, check the logs', e)
+        raise Exception('Error in creating the resume', e)
 
     # allfiles.remove('resume.tex') # for testing only
     for i in allfiles:
@@ -87,9 +85,15 @@ def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
     return os.path.join(str(outputDir), filename)  # type: ignore
 
 
-def creatRumeFromSystem(command: str):
+def creatRumeFromSystem(texliveonfly=True):
     "error  binary not found showing in the exit code 1"
     # print('testing')
+
+    # get the path of the pdflatex
+    pdflatexPath = textlivePath + "/pdflatex"
+    command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } {pdflatexPath} {os.path.join(buildDir,"resume.tex")}'
+
+    # generate the resume itself
     try:
         (success, error), output = runSystemCommad(command)
         # get the output and error
