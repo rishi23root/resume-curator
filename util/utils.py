@@ -96,12 +96,13 @@ def creatRumeFromSystem(texliveonfly=True):
     pdflatexPath = textlivePath + "/pdflatex"
     command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } {pdflatexPath} {os.path.join(buildDir,"resume.tex")}'
 
-    app.logger.info({"command": command})
+    # app.logger.info({"command": command})
     # generate the resume itself
     try:
         (success, error), output = runSystemCommad(command)
         # get the output and error
         # print exit code
+        app.logger.info({"success": success, "error": error})
 
         # succes if string contains the word success
         if success and 'in house texliveonfly' in success.decode():

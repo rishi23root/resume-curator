@@ -3,6 +3,7 @@ source scripts/constant.sh
 
 # give ufw access to 
 sudo ufw --force enable
+sudo ufw allow OpenSSH
 
 chmod +x ./scripts/config/*
 

@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 source scripts/constant.sh
 
+sudo apt update -y 2>/dev/tty >/dev/null
+sudo apt upgrade -y 2>/dev/tty >/dev/null
+sudo apt-get dist-upgrade -y 2>/dev/tty >/dev/null
+
 
 # install pdflatex tlmgr  
 # respect to https://github.com/indrjo/minimal-texlive-installer/tree/main for the installer, it just works 
