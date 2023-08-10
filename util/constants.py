@@ -1,5 +1,6 @@
 import subprocess
 import os
+from util.utils import runSystemCommad
 
 templateFolderName = 'resumeFormat'
 resumeJsonFileName = 'template.json'
@@ -48,3 +49,7 @@ def tivetextPaht():
 
 
 textlivePath = tivetextPaht()
+
+# add the texlive path to the $PATH
+runSystemCommad(f'export PATH=$PATH:{textlivePath}')
+runSystemCommad(f'source ~/.bashrc')
