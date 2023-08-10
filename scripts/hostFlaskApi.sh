@@ -4,6 +4,9 @@ source scripts/constant.sh
 # give ufw access to 
 sudo ufw --force enable
 
+chmod +x ./scripts/config/*
+
+
 # check if gunicorn is installed
 if ! [ -x "$(command -v env/bin/gunicorn)" ]; then
     source $(pwd)/env/bin/activate
@@ -37,7 +40,6 @@ if [ ! -f $nginxFilePath ]; then
 fi
 
 
-chmod +x ./scripts/config/certbotConfig.sh
 
 # install cert bot and get ssl certificate
 # if ssl certificate is not present
