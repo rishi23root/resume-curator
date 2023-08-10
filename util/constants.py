@@ -45,15 +45,15 @@ def tivetextPaht():
     except Exception as e:
         raise Exception("texlive not found in the system", e)
 
-    print(a)
+    # print(a)
     return a
 
 
 textlivePath = tivetextPaht()
 
 # add the texlive path to the $PATH
-(success, error), output = runSystemCommad(f'export PATH=$PATH:{textlivePath}')
-app.logger.info({"success": success, "error": error})
+# (success, error), output = runSystemCommad(f'export PATH=$PATH:{textlivePath}')
+# app.logger.info({"success": success, "error": error})
 
-(success, error), output = runSystemCommad(f'. ~/.bashrc')
-app.logger.info({"success": success, "error": error})
+# (success, error), output = runSystemCommad(f'. ~/.bashrc')
+# app.logger.info({"success": success, "error": error})

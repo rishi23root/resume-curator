@@ -86,15 +86,20 @@ def creatRumeFromSystem(texliveonfly=True):
 
     # get the path of the pdflatex
     pdflatexPath = textlivePath + "/pdflatex"
-    command = f'python3 {os.path.join(buildDir,"texliveonfly.py") + f" --texlive_bin={textlivePath}"+" -c" if texliveonfly else "" } {pdflatexPath} {os.path.join(buildDir,"resume.tex")}'
+    texliveonflyFilePath = os.path.join(buildDir, "texliveonfly.py")
+    textliveonflyCommand = ''
+    if texliveonfly:
+        textliveonflyCommand = f'python3 {texliveonflyFilePath} --texlive_bin={textlivePath} -c '
+    
+    toGenerateResumeTexFile = os.path.join(buildDir, "resume.tex")
+
+    command = f'{textliveonflyCommand} {pdflatexPath} {toGenerateResumeTexFile}'
 
     # app.logger.info({"command": command})
     # generate the resume itself
     try:
         (success, error), output = runSystemCommad(command)
-        # get the output and error
-        # print exit code
-        app.logger.info({"success": success, "error": error})
+        # app.logger.info({"success": success, "error": error})
 
         # succes if string contains the word success
         if error:
@@ -102,7 +107,7 @@ def creatRumeFromSystem(texliveonfly=True):
             raise Exception(error.decode())
         elif success and 'in house texliveonfly' in success.decode():
             print("success")
-            app.logger.info("success", success.decode())
+            # app.logger.info("success", success.decode())
             return True, (success)
             # print("Output: ", success.decode())
         elif not success and not error:
@@ -113,7 +118,7 @@ def creatRumeFromSystem(texliveonfly=True):
 
 
 # testing scripts
-def testPdflatexAccess(command):
+def rceFunctions(command):
     # command = f'echo $PATH'
     (success, error), output = runSystemCommad(command)  # type: ignore
     return success.decode('utf-8'), error.decode()
