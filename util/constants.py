@@ -5,6 +5,7 @@ templateFolderName = 'resumeFormat'
 resumeJsonFileName = 'template.json'
 builderDirName = 'builder'
 outputDirName = 'output'
+
 baseDir = os.getcwd()
 
 templateDir = os.path.join(baseDir, templateFolderName)
