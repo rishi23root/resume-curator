@@ -11,4 +11,5 @@ venv
 /output/*
 !/output/.gitkeep
 
-/dump
+/tests/*.pdf
+/tests/*.json

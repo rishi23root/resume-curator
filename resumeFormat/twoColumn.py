@@ -286,6 +286,8 @@ class MyDocument(lt.Document):
 
 
 def runner(filename: str = 'resume.pdf', jsonData: dict = None): # type: ignore
+    name = filename.split('.')[0]
+
     doc = MyDocument()
     if jsonData:
         doc.jsonData = jsonData
@@ -294,6 +296,6 @@ def runner(filename: str = 'resume.pdf', jsonData: dict = None): # type: ignore
     doc.fill_document()
 
     # # doc.generate_pdf(clean_tex=False)
-    doc.generate_tex(filepath=os.path.join(buildDir, 'resume'))
+    doc.generate_tex(filepath=os.path.join(buildDir, name))
 
     return createResume(filename)
