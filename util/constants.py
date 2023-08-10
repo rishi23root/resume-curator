@@ -55,5 +55,5 @@ textlivePath = tivetextPaht()
 (success, error), output = runSystemCommad(f'export PATH=$PATH:{textlivePath}')
 app.logger.info({"success": success, "error": error})
 
-(success, error), output = runSystemCommad(f'source ~/.bashrc')
+(success, error), output = runSystemCommad(f'. ~/.bashrc')
 app.logger.info({"success": success, "error": error})
