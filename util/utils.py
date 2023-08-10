@@ -102,9 +102,11 @@ def creatRumeFromSystem(texliveonfly=True):
         # succes if string contains the word success
         if success and 'in house texliveonfly' in success.decode():
             print("success")
+            app.logger.info("success", success.decode())
             return True, (success)
             # print("Output: ", success.decode())
         elif error or 'in house texliveonfly' not in success.decode():
+            app.logger.error("error", error.decode())
             raise Exception(
                 "unable to create the resume, check the logs", error.decode())
         elif not success and not error:
