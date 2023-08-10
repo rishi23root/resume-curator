@@ -40,7 +40,7 @@ fi
 
 # install pip if not installed
 if ! [ -x "$(command -v pip)" ]; then
-    echo 'Error: pip is not installed.' 
+    echo '🚫 Error: pip is not installed.' 
     echo 'Installing pip ..' 
     sudo apt-get install python3-pip -y 2>/dev/tty >/dev/null
     echo 'Done! ✅' 

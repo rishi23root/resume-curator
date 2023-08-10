@@ -36,7 +36,7 @@ def createResume():
         print('Resume downloaded successfully.')
     else:
         print(response.status_code)
-        print('Error:', response.text)
+        print('🚫 Error:', response.text)
         print(response.headers)
         # print(response.json())
 
@@ -51,7 +51,7 @@ def listTemplates():
     if response.status_code == 200:
         print('Templates:', response.json())
     else:
-        print('Error:', response.text)
+        print('🚫 Error:', response.text)
 
 
 def downloadTemplate():
@@ -69,7 +69,7 @@ def downloadTemplate():
             f.write(response.content)
         print('Template downloaded successfully.')
     else:
-        print('Error:', response.text)
+        print('🚫 Error:', response.text)
 
 
 if __name__ == '__main__':

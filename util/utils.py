@@ -45,7 +45,7 @@ def read_json_file(file_path: str):
             data = json.load(f)
         return data
     except Exception as e:
-        raise Exception('Error in reading json file, check the json format')
+        raise Exception('🚫 Error in reading json file, check the json format')
 
 
 def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
@@ -71,7 +71,7 @@ def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
     try:
         allfiles.remove('resume.pdf')
     except ValueError as e:
-        raise Exception('Error in creating the resume', e)
+        raise Exception('🚫 Error in creating the resume', e)
 
     # allfiles.remove('resume.tex') # for testing only
     for i in allfiles:

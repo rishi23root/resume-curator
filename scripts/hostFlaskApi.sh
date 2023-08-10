@@ -10,7 +10,7 @@ chmod +x ./scripts/config/*
 # check if gunicorn is installed
 if ! [ -x "$(command -v env/bin/gunicorn)" ]; then
     source $(pwd)/env/bin/activate
-    echo 'Error: gunicorn is not installed.' >&2
+    echo '🚫 Error: gunicorn is not installed.' >&2
     sudo env/bin/pip install gunicorn 
     echo 'Done! ✅'
     deactivate
@@ -43,6 +43,4 @@ fi
 
 # install cert bot and get ssl certificate
 # if ssl certificate is not present
-if [ ! -f /etc/letsencrypt/live/$websiteUrl/fullchain.pem ]; then
-    ./scripts/config/certbotConfig.sh
-fi
+./scripts/config/certbotConfig.sh

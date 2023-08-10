@@ -63,7 +63,7 @@ def create_resume():
     # b. Get the JSON data from the frontend
     content_type = request.headers.get('Content-Type')
     if content_type != 'application/json':
-        return jsonify({'error': 'Invalid content type. Expected JSON.'}), 400
+        return jsonify({'🚫 Error': 'Invalid content type. Expected JSON.'}), 400
 
     try:
         # get data from the request
@@ -91,7 +91,7 @@ def create_resume():
     except KeyError as e:
         # print(e)
         app.logger.error(e)
-        return jsonify({'error': f'Invalid data, missing key {e}'}), 422
+        return jsonify({'🚫 Error': f'Invalid data, missing key {e}'}), 422
 
     except Exception as e:
         app.logger.error(e)
@@ -106,7 +106,7 @@ def create_resume():
         # print(base_url)
         # if env is debug then show the error
         return jsonify({
-            'error': f'Invalid content template, Download template from here {base_url}/download_template'
+            '🚫 Error': f'Invalid content template, Download template from here {base_url}/download_template'
         }), 422
 
 
