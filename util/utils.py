@@ -9,6 +9,7 @@ from functools import lru_cache
 from flaskApi.app import app
 from .runSystem import runSystemCommad
 
+
 @lru_cache()
 # get list of templates
 def listTemplates():
@@ -85,7 +86,7 @@ def creatRumeFromSystem(texliveonfly=True):
 
     # get the path of the pdflatex
     pdflatexPath = textlivePath + "/pdflatex"
-    command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } {pdflatexPath} {os.path.join(buildDir,"resume.tex")}'
+    command = f'python3 {os.path.join(buildDir,"texliveonfly.py") + f" --texlive_bin={textlivePath}"+" -c" if texliveonfly else "" } {pdflatexPath} {os.path.join(buildDir,"resume.tex")}'
 
     # app.logger.info({"command": command})
     # generate the resume itself
