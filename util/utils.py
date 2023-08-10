@@ -71,7 +71,7 @@ def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
     try:
         allfiles.remove('resume.pdf')
     except ValueError as e:
-        raise Exception('🚫 Error in creating the resume', e)
+        raise Exception('🚫 Error in creating the resume', e, allfiles)
 
     # allfiles.remove('resume.tex') # for testing only
     for i in allfiles:
