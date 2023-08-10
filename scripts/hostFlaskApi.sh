@@ -3,12 +3,16 @@ source scripts/constant.sh
 
 # give ufw access to 
 sudo ufw --force enable
+sudo ufw allow OpenSSH
+
+chmod +x ./scripts/config/*
+
 
 # check if gunicorn is installed
-if ! [ -x "$(command -v env/bin/gunicorn)" ]; then
-    source $(pwd)/env/bin/activate
-    echo 'Error: gunicorn is not installed.' >&2
-    sudo env/bin/pip install gunicorn 
+if ! [ -x "$(command -v $virtualEnv/bin/gunicorn)" ]; then
+    source $(pwd)/$virtualEnv/bin/activate
+    echo '🚫 Error: gunicorn is not installed.' >&2
+    sudo $virtualEnv/bin/pip install gunicorn 
     echo 'Done! ✅'
     deactivate
     echo ""
@@ -37,10 +41,7 @@ if [ ! -f $nginxFilePath ]; then
 fi
 
 
-chmod +x ./scripts/config/certbotConfig.sh
 
 # install cert bot and get ssl certificate
 # if ssl certificate is not present
-if [ ! -f /etc/letsencrypt/live/$websiteUrl/fullchain.pem ]; then
-    ./scripts/config/certbotConfig.sh
-fi
+./scripts/config/certbotConfig.sh

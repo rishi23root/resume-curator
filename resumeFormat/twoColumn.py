@@ -15,7 +15,7 @@ class MyDocument(lt.Document):
         super().__init__(documentclass='resumecustom',
                          page_numbers=False,
                          document_options={},
-                         fontenc=None,
+                         fontenc=None, # type: ignore
                          lmodern=False,
                          textcomp=False,
                          microtype=False)
@@ -285,7 +285,9 @@ class MyDocument(lt.Document):
         # add sub mini pages for other data like education, experience, skills etc
 
 
-def runner(filename: str = 'resume.pdf', jsonData: dict = None):
+def runner(filename: str = 'resume.pdf', jsonData: dict = None): # type: ignore
+    name = filename.split('.')[0]
+
     doc = MyDocument()
     if jsonData:
         doc.jsonData = jsonData
@@ -294,6 +296,6 @@ def runner(filename: str = 'resume.pdf', jsonData: dict = None):
     doc.fill_document()
 
     # # doc.generate_pdf(clean_tex=False)
-    doc.generate_tex(filepath=os.path.join(buildDir, 'resume'))
+    doc.generate_tex(filepath=os.path.join(buildDir, name))
 
     return createResume(filename)

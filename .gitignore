@@ -2,7 +2,7 @@
 __pycache__
 testing
 .pytest_cache
-env
+venv
 
 /logs/*
 !/logs/.gitkeep
@@ -11,4 +11,5 @@ env
 /output/*
 !/output/.gitkeep
 
-/dump
+/tests/*.pdf
+/tests/*.json

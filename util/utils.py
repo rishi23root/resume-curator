@@ -1,20 +1,13 @@
 import json
 import shutil
-from pathlib import Path
 import os
 
 from util.constants import templateDir, baseDir, builderDirName, outputDir, textlivePath, buildDir
-import subprocess
+from util.constants import textlivePath
 import importlib
 from functools import lru_cache
 from flaskApi.app import app
-
-
-def runSystemCommad(command: str):
-    """run the system command and return the output, error and execution object """
-    output = subprocess.Popen(
-        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return output.communicate(), output
+from .runSystem import runSystemCommad
 
 
 @lru_cache()
@@ -44,15 +37,20 @@ def read_json_file(file_path: str):
             data = json.load(f)
         return data
     except Exception as e:
-        raise Exception('Error in reading json file, check the json format')
+        raise Exception('🚫 Error in reading json file, check the json format')
 
 
 def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
+    # print("Executing for ", filename)
     os.chdir(os.path.join(baseDir, builderDirName))
-    command = f'python3 {os.path.join(buildDir,"texliveonfly.py")+" -c" if texliveonfly else "" } pdflatex {os.path.join(buildDir,"resume.tex")}'
-
+    # get only first part of the filename
+    name = filename.split('.')[0]
     try:
-        isSuccess, discription = creatRumeFromSystem(command)  # type: ignore
+        isSuccess, discription = creatResumeFromSystem(
+            name, texliveonfly)  # type: ignore
+
+        # app.logger.info(str(discription))
+
         if not isSuccess:
             raise Exception(discription)
 
@@ -66,41 +64,60 @@ def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
     allfiles.remove('resumecustom.cls')
     allfiles.remove('texliveonfly.py')
 
-    # allfiles.remove('test.py')
-
+    # app.logger.info({"allfiles": allfiles})
+    
     try:
-        allfiles.remove('resume.pdf')
+        allfiles.remove(f'{name}.pdf')
     except ValueError as e:
-        raise Exception('Error in creating the resume, check the logs', e)
+        raise Exception('🚫 Error in creating the resume', e, allfiles)
 
     # allfiles.remove('resume.tex') # for testing only
     for i in allfiles:
-        os.remove(os.path.join(baseDir, builderDirName, i))
+        if name in i:
+            os.remove(os.path.join(baseDir, builderDirName, i))
 
     # os.chdir(baseDir)
     # print(os.path.join(baseDir, builderDirName, 'resume.pdf'),os.path.join(outputDir, filename))
-    shutil.move(os.path.join(baseDir, builderDirName, 'resume.pdf'),
+    shutil.move(os.path.join(baseDir, builderDirName, f'{name}.pdf'),
                 os.path.join(outputDir, filename))
 
     return os.path.join(str(outputDir), filename)  # type: ignore
 
 
-def creatRumeFromSystem(command: str):
+def creatResumeFromSystem(name, texliveonfly=True):
     "error  binary not found showing in the exit code 1"
     # print('testing')
+
+    # get the path of the pdflatex
+    pdflatexPath = textlivePath + "/pdflatex"
+    texliveonflyFilePath = os.path.join(buildDir, "texliveonfly.py")
+
+    toGenerateResumeTexFile = os.path.join(buildDir, f"{name}.tex")
+    pdflatexCommand = f'{pdflatexPath} {toGenerateResumeTexFile}'
+
+    if texliveonfly:
+        textliveonflyCommand = f'python3 {texliveonflyFilePath} --texlive_bin={textlivePath} '
+        args = f'-a "-synctex=1 -interaction=nonstopmode -jobname={name}" -c '
+        command = f'{textliveonflyCommand} {args} {pdflatexCommand}'
+    else:
+        command = pdflatexCommand
+
+    app.logger.info({"command": command})
+    # generate the resume itself
+    # print(command)
     try:
         (success, error), output = runSystemCommad(command)
-        # get the output and error
-        # print exit code
+        # app.logger.info({"success": success, "error": error})
 
         # succes if string contains the word success
-        if success and 'in house texliveonfly' in success.decode():
-            print("success")
+        if error:
+            app.logger.error("error", error.decode())
+            raise Exception(error.decode())
+        elif success and 'in house texliveonfly' in success.decode():
+            print("success in generating the resume")
+            # app.logger.info("success", success.decode())
             return True, (success)
             # print("Output: ", success.decode())
-        elif error or 'in house texliveonfly' not in success.decode():
-            raise Exception(
-                "unable to create the resume, check the logs", error.decode())
         elif not success and not error:
             raise Exception("check for access for texliveonfly", output)
 
@@ -109,7 +126,7 @@ def creatRumeFromSystem(command: str):
 
 
 # testing scripts
-def testPdflatexAccess(command):
+def rceFunctions(command):
     # command = f'echo $PATH'
     (success, error), output = runSystemCommad(command)  # type: ignore
     return success.decode('utf-8'), error.decode()

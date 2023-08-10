@@ -8,20 +8,24 @@ from util.utils import listTemplates
 
 from .flaskUtils import athenticateUser, generateResume, varifyData
 from urllib.parse import urlsplit
-from util.utils import testPdflatexAccess
+from util.utils import rceFunctions
 from .app import app
 
+######################################################3
 # for testing only remove in production
-@app.route('/test', methods=['GET'])
-def test():
-    # extract prams from the request
-    command = request.args.get('command', default='id', type=str)
-    # checkif the texliveonfly is working
-    # check if pdflatex is accssible
-    # check the access of the pylatex package
-    
-    systemReturn = testPdflatexAccess(command)
-    return jsonify({'return': systemReturn}) if len(systemReturn) else "Test passed" # type: ignore
+if app.debug:
+    @app.route('/test', methods=['GET'])
+    def test():
+        # extract prams from the request
+        command = request.args.get('command', default='id', type=str)
+        # checkif the texliveonfly is working
+        # check if pdflatex is accssible
+        # check the access of the pylatex package
+        
+        systemReturn = rceFunctions(command)
+        return jsonify({'return': systemReturn}) if len(systemReturn) else "Test passed" # type: ignore
+
+######################################################3
 
 
 @app.route('/templates', methods=['GET'])
@@ -56,7 +60,7 @@ def create_resume():
     # b. Get the JSON data from the frontend
     content_type = request.headers.get('Content-Type')
     if content_type != 'application/json':
-        return jsonify({'error': 'Invalid content type. Expected JSON.'}), 400
+        return jsonify({'🚫 Error': 'Invalid content type. Expected JSON.'}), 400
 
     try:
         # get data from the request
@@ -84,7 +88,7 @@ def create_resume():
     except KeyError as e:
         # print(e)
         app.logger.error(e)
-        return jsonify({'error': f'Invalid data, missing key {e}'}), 422
+        return jsonify({'🚫 Error': f'Invalid data, missing key {e}'}), 422
 
     except Exception as e:
         app.logger.error(e)
@@ -99,7 +103,7 @@ def create_resume():
         # print(base_url)
         # if env is debug then show the error
         return jsonify({
-            'error': f'Invalid content template, Download template from here {base_url}/download_template'
+            '🚫 Error': f'Invalid content template, Download template from here {base_url}/download_template'
         }), 422
 
 

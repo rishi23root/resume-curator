@@ -1,10 +1,13 @@
 import subprocess
 import os
+from util.runSystem import runSystemCommad
+from flaskApi.app import app
 
 templateFolderName = 'resumeFormat'
 resumeJsonFileName = 'template.json'
 builderDirName = 'builder'
 outputDirName = 'output'
+
 baseDir = os.getcwd()
 
 templateDir = os.path.join(baseDir, templateFolderName)
@@ -26,19 +29,31 @@ if os.path.isdir(outputDir) == False:
 
 
 def tivetextPaht():
-    command = "echo $(dirname $(which texliveonfly))"
-    defalttexlivePath = '/texlive/2023/bin/x86_64-linux'
-    a = subprocess.Popen(command, shell=True,
-            stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
+    # check if the texliveonfly is installed or not
+    # in home or default logical path
+    try:
+        # command = "which pdflatex | xargs dirname"
+        # a = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
 
-    if a:
-        print("current texliveonfly path is :", a)
-        return a
-    else:
+        # if a == '. . .' or a == '':
+        defalttexlivePath = '/texlive/2023/bin/x86_64-linux'
         homePath = subprocess.Popen(
             "echo $HOME", shell=True, stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
-        print("current texliveonfly path is :", homePath+defalttexlivePath)
-        return homePath+defalttexlivePath
+        a = (homePath+defalttexlivePath)
+        # elif not a:
+        #     raise Exception("empty", a)
+    except Exception as e:
+        raise Exception("texlive not found in the system", e)
+
+    # print(a)
+    return a
 
 
 textlivePath = tivetextPaht()
+
+# add the texlive path to the $PATH
+# (success, error), output = runSystemCommad(f'export PATH=$PATH:{textlivePath}')
+# app.logger.info({"success": success, "error": error})
+
+# (success, error), output = runSystemCommad(f'. ~/.bashrc')
+# app.logger.info({"success": success, "error": error})

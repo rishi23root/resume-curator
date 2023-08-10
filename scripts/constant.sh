@@ -6,6 +6,7 @@ nginxFilePath="/etc/nginx/sites-available/$serviceName"
 websiteUrl="api.buildyourresume.online"
 port=5000
 email="rishabhjainfinal@gmail.com"
+virtualEnv='venv'
 
 
 

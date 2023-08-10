@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+source scripts/constant.sh
+
+sudo apt update -y 2>/dev/tty >/dev/null
+sudo apt upgrade -y 2>/dev/tty >/dev/null
+sudo apt-get dist-upgrade -y 2>/dev/tty >/dev/null
+
 
 # install pdflatex tlmgr  
 # respect to https://github.com/indrjo/minimal-texlive-installer/tree/main for the installer, it just works 
@@ -40,7 +46,7 @@ fi
 
 # install pip if not installed
 if ! [ -x "$(command -v pip)" ]; then
-    echo 'Error: pip is not installed.' 
+    echo '🚫 Error: pip is not installed.' 
     echo 'Installing pip ..' 
     sudo apt-get install python3-pip -y 2>/dev/tty >/dev/null
     echo 'Done! ✅' 
@@ -58,22 +64,24 @@ update_pip
 echo "Setting up python virtual environment..."
 echo ""
 # check if venv exists
-if [ -d "env" ]; then
+if [ -d $virtualEnv ]; then
     echo "venv exists. 😎"
-    source ./env/bin/activate
+    source $virtualEnv/bin/activate
 else
     echo "venv does not exist. 🚫"
-    echo "Creating env..."
-    sudo apt install python3.10-venv -y 2>/dev/tty >/dev/null
-    sudo python3 -m venv env 2>/dev/tty >/dev/null
-    source ./env/bin/activate
+    echo "Creating $virtualEnv..."
+
+    sudo apt-get install python3-virtualenv -y
+    pip3 install virtualenv
+    virtualenv $virtualEnv
+    source $virtualEnv/bin/activate 2>/dev/tty >/dev/null
     echo "Done! ✅"
 fi
 
 # check if requirements.txt exists and install requirements
 if [ -f "requirements.txt" ]; then
     echo "requirements.txt found. 😎 installing requirements..."
-    sudo ./env/bin/pip install -r requirements.txt 2>/dev/tty >/dev/null
+    sudo $virtualEnv/bin/pip install -r requirements.txt 2>/dev/tty >/dev/null
     echo "Done! ✅"
 else
     echo "requirements.txt not found. 🚫"

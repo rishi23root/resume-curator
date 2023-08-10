@@ -1,14 +1,16 @@
 import requests
 import json
 import re
-import os 
+import os
 
 baseUrl = 'http://localhost:5000/'
 
-# baseUrl = 'https://api.buildyourresume.online/'
+baseUrl = 'https://api.buildyourresume.online/'
+
+print('testing', baseUrl)
 
 
-def createResume():
+def createResume(templateName="singleColumn"):
     url = baseUrl + 'create_resume'
 
     # Example JSON data
@@ -17,7 +19,7 @@ def createResume():
 
     data = {
         "data": data,
-        "template": "singleColumn"
+        "template": templateName
     }
     headers = {
         'Content-Type': 'application/json'
@@ -36,7 +38,7 @@ def createResume():
         print('Resume downloaded successfully.')
     else:
         print(response.status_code)
-        print('Error:', response.text)
+        print('🚫 Error:', response.text)
         print(response.headers)
         # print(response.json())
 
@@ -51,7 +53,7 @@ def listTemplates():
     if response.status_code == 200:
         print('Templates:', response.json())
     else:
-        print('Error:', response.text)
+        print('🚫 Error:', response.text)
 
 
 def downloadTemplate():
@@ -69,12 +71,13 @@ def downloadTemplate():
             f.write(response.content)
         print('Template downloaded successfully.')
     else:
-        print('Error:', response.text)
+        print('🚫 Error:', response.text)
 
 
 if __name__ == '__main__':
     listTemplates()
     downloadTemplate()
     createResume()
-    
-    os.remove('template.json')
+    createResume('twoColumn')
+
+    # os.remove('template.json')

@@ -2,6 +2,7 @@
 an automated python-latex workflow to curate resume from a 2 most successful templates
 create your own templates and build your own template with latex and python
 
+tested and seems to be working on ubuntu 20.04
 ---
 ## To Running the Project locally
 0. clone the repo
