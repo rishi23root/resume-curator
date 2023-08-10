@@ -30,18 +30,18 @@ def tivetextPaht():
     # check if the texliveonfly is installed or not
     # in home or default logical path
     try:
-        command = "which pdflatex | xargs dirname"
-        a = subprocess.Popen(command, shell=True,stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
+        # command = "which pdflatex | xargs dirname"
+        # a = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
 
-        if a=='. . .':
-            defalttexlivePath = '/texlive/2023/bin/x86_64-linux'
-            homePath = subprocess.Popen(
-                "echo $HOME", shell=True, stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
-            a = (homePath+defalttexlivePath)
-        elif not a:
-            raise Exception("empty",a)
+        # if a == '. . .' or a == '':
+        defalttexlivePath = '/texlive/2023/bin/x86_64-linux'
+        homePath = subprocess.Popen(
+            "echo $HOME", shell=True, stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
+        a = (homePath+defalttexlivePath)
+        # elif not a:
+        #     raise Exception("empty", a)
     except Exception as e:
-        raise Exception("texlive not found in the system",e)
+        raise Exception("texlive not found in the system", e)
 
     print(a)
     return a
