@@ -1,7 +1,7 @@
 import subprocess
 import os
 from util.runSystem import runSystemCommad
-
+from flaskApi.app import app
 
 templateFolderName = 'resumeFormat'
 resumeJsonFileName = 'template.json'
@@ -52,5 +52,8 @@ def tivetextPaht():
 textlivePath = tivetextPaht()
 
 # add the texlive path to the $PATH
-runSystemCommad(f'export PATH=$PATH:{textlivePath}')
-runSystemCommad(f'source ~/.bashrc')
+(success, error), output = runSystemCommad(f'export PATH=$PATH:{textlivePath}')
+app.logger.info({"success": success, "error": error})
+
+(success, error), output = runSystemCommad(f'source ~/.bashrc')
+app.logger.info({"success": success, "error": error})

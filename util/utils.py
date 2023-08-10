@@ -1,6 +1,5 @@
 import json
 import shutil
-from pathlib import Path
 import os
 
 from util.constants import templateDir, baseDir, builderDirName, outputDir, textlivePath, buildDir
