@@ -6,6 +6,7 @@ import os
 baseUrl = 'http://localhost:5000/'
 
 # baseUrl = 'https://api.buildyourresume.online/'
+baseUrl = 'http://34.131.48.249:5000/'
 
 
 def createResume():

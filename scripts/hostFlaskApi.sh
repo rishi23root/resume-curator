@@ -8,10 +8,10 @@ chmod +x ./scripts/config/*
 
 
 # check if gunicorn is installed
-if ! [ -x "$(command -v env/bin/gunicorn)" ]; then
-    source $(pwd)/env/bin/activate
+if ! [ -x "$(command -v $virtualEnv/bin/gunicorn)" ]; then
+    source $(pwd)/$virtualEnv/bin/activate
     echo '🚫 Error: gunicorn is not installed.' >&2
-    sudo env/bin/pip install gunicorn 
+    sudo $virtualEnv/bin/pip install gunicorn 
     echo 'Done! ✅'
     deactivate
     echo ""
