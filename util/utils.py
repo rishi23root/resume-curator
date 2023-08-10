@@ -5,18 +5,10 @@ import os
 
 from util.constants import templateDir, baseDir, builderDirName, outputDir, textlivePath, buildDir
 from util.constants import textlivePath
-import subprocess
 import importlib
 from functools import lru_cache
 from flaskApi.app import app
-
-
-def runSystemCommad(command: str):
-    """run the system command and return the output, error and execution object """
-    output = subprocess.Popen(
-        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return output.communicate(), output
-
+from .runSystem import runSystemCommad
 
 @lru_cache()
 # get list of templates

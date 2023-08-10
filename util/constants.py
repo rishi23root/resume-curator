@@ -1,6 +1,7 @@
 import subprocess
 import os
-from util.utils import runSystemCommad
+from util.runSystem import runSystemCommad
+
 
 templateFolderName = 'resumeFormat'
 resumeJsonFileName = 'template.json'
