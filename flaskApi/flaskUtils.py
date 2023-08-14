@@ -10,8 +10,8 @@ import os
 import uuid
 from pathlib import Path
 
+from util.baseFunc import getTemplates, read_json_file
 from util.constants import baseDir
-from util.utils import getTemplates, read_json_file
 
 
 def athenticateUser(request):

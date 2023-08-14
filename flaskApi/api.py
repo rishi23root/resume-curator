@@ -1,15 +1,15 @@
 import os
+from urllib.parse import urlsplit
 
 from flask import jsonify, request, send_file
 from flask_cors import CORS
 
+from util.baseFunc import listTemplates  # circular import issue
 from util.constants import baseDir
-from util.utils import listTemplates
-
-from .flaskUtils import athenticateUser, generateResume, varifyData
-from urllib.parse import urlsplit
 from util.utils import rceFunctions
+
 from .app import app
+from .flaskUtils import athenticateUser, generateResume, varifyData
 
 ######################################################3
 # for testing only remove in production

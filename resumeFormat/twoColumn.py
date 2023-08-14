@@ -1,13 +1,16 @@
 # handel all the logic for the two column resume format
 # create resume.tex file from the template.json file
 
-from pylatex.utils import NoEscape
-import pylatex as lt
-from util.htmlParser import getListItems
-from util.utils import read_json_file, createResume
-from util.tolatex import createLink, inBlock
-from util.constants import resumeJsonFile, buildDir
 import os
+
+import pylatex as lt
+from pylatex.utils import NoEscape
+
+from util.baseFunc import read_json_file
+from util.constants import buildDir, resumeJsonFile
+from util.htmlParser import getListItems
+from util.tolatex import createLink, inBlock
+from util.utils import createResume
 
 
 class MyDocument(lt.Document):

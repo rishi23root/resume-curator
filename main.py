@@ -1,6 +1,7 @@
 # create resumes on different templates
 import json
-from util.utils import getTemplates, listTemplates
+
+from util.baseFunc import getTemplates, listTemplates
 
 if __name__ == '__main__':
     # read the json file template.json

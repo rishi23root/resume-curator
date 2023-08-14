@@ -3,7 +3,7 @@ import re
 
 from flask.testing import FlaskClient
 
-from util.utils import read_json_file
+from util.baseFunc import read_json_file
 
 
 def test_get_templates(client: FlaskClient):

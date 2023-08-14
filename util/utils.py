@@ -1,44 +1,16 @@
-import json
-import shutil
 import os
+import shutil
 
-from util.constants import templateDir, baseDir, builderDirName, outputDir, textlivePath, buildDir
-from util.constants import textlivePath
-import importlib
-from functools import lru_cache
-from flaskApi.app import app
+from util.constants import (baseDir, buildDir, builderDirName, outputDir,
+                            textlivePath)
+
 from .runSystem import runSystemCommad
 
-
-@lru_cache()
-# get list of templates
-def listTemplates():
-    dirContent = os.listdir(templateDir)
-    # remove all the directories
-    return [eachFile.split('.')[0] for eachFile in dirContent if os.path.isfile(
-        os.path.join(templateDir, eachFile))]
-
-
-@lru_cache()
-# extract the template to run
-def getTemplates(templateName: str) -> callable or None:  # type: ignore
-    onlyTemplates = listTemplates()
-    # crate dict with all the templates
-    functionCallForEach = {each: importlib.import_module(
-        f'resumeFormat.{each}').runner for each in onlyTemplates}
-    if templateName not in functionCallForEach:
-        return None
-    return functionCallForEach[templateName]
-
-
-def read_json_file(file_path: str):
-    try:
-        with open(file_path, 'r') as f:
-            data = json.load(f)
-        return data
-    except Exception as e:
-        raise Exception('🚫 Error in reading json file, check the json format')
-
+try :
+    # if not called from the main.py
+    from flaskApi.app import app
+except Exception as e:
+    from .baseFunc import app
 
 def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
     # print("Executing for ", filename)
@@ -65,7 +37,7 @@ def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
     allfiles.remove('texliveonfly.py')
 
     # app.logger.info({"allfiles": allfiles})
-    
+
     try:
         allfiles.remove(f'{name}.pdf')
     except ValueError as e:
@@ -102,7 +74,7 @@ def creatResumeFromSystem(name, texliveonfly=True):
     else:
         command = pdflatexCommand
 
-    app.logger.info({"command": command})
+    # app.logger.info({"command": command})
     # generate the resume itself
     # print(command)
     try:
@@ -111,7 +83,7 @@ def creatResumeFromSystem(name, texliveonfly=True):
 
         # succes if string contains the word success
         if error:
-            app.logger.error("error", error.decode())
+            app.logger.error("error", error.decode()) # type: ignore
             raise Exception(error.decode())
         elif success and 'in house texliveonfly' in success.decode():
             print("success in generating the resume")
