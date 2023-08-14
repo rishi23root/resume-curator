@@ -1,7 +1,5 @@
 import subprocess
 import os
-from util.runSystem import runSystemCommad
-from flaskApi.app import app
 
 templateFolderName = 'resumeFormat'
 resumeJsonFileName = 'template.json'

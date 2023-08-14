@@ -1,7 +1,6 @@
 import requests
 import json
 import re
-import os
 
 baseUrl = 'http://localhost:5000/'
 
