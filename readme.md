@@ -53,3 +53,6 @@ tested and seems to be working on ubuntu 20.04
 1. server is not making logs in the log file
 2. gunicorn is responsible ? if not then what is the problem
 3. maybe gunicorn is taking logs in the logs files 
+
+to run
+python wsgi.py 
