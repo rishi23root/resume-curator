@@ -5,6 +5,9 @@ source ./scripts/constant.sh
 chmod +x ./scripts/*
 
 
+# get new changes from git
+git pull
+
 # Run the setup script
 ./scripts/setup.sh
 
@@ -16,9 +19,6 @@ if ! [ -x "$(command -v nginx)" ]; then
     echo 'Done! ✅' 
 fi
 
-
-# get new changes from git
-git pull
 
 # Run the server
 ./scripts/hostFlaskApi.sh
