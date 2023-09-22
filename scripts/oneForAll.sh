@@ -35,5 +35,7 @@ sudo systemctl status nginx | grep active
 
 # generate output files 
 echo "Generating output templates pdf files"
+source venv/bin/activate
 python3 main.py > /dev/null
+deactivate
 echo 'Done! ✅' 
