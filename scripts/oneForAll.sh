@@ -33,7 +33,14 @@ echo "Checking if nginx is running"
 sudo systemctl status nginx | grep active
 
 
+# providing space
+echo ""
+
 # generate output files 
 echo "Generating output templates pdf files"
-python3 main.py > /dev/null
+source $(pwd)/$virtualEnv/bin/activate
+python3 main.py 
 echo 'Done! ✅' 
+deactivate
+
+echo ""
