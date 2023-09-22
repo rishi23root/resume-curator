@@ -44,4 +44,4 @@ fi
 
 # install cert bot and get ssl certificate
 # if ssl certificate is not present
-./scripts/config/certbotConfig.sh
+./scripts/config/certbotConfig.sh 

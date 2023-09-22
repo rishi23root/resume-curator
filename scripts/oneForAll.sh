@@ -39,7 +39,7 @@ echo ""
 # generate output files 
 echo "Generating output templates pdf files"
 source $(pwd)/$virtualEnv/bin/activate
-python3 main.py > /dev/null
+python3 main.py 
 echo 'Done! ✅' 
 deactivate
 
