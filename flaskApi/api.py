@@ -5,8 +5,9 @@ from flask import jsonify, request, send_file
 from flask_cors import CORS
 
 from util.baseFunc import listTemplates  # circular import issue
-from util.constants import baseDir
+from util.constants import baseDir,outputDir
 from util.utils import rceFunctions
+from util.pdfImage import convertToPageImage
 
 from .app import app
 from .flaskUtils import athenticateUser, generateResume, varifyData
@@ -32,6 +33,24 @@ if app.debug:
 def list_template():
     # print(124)
     return jsonify(listTemplates())
+
+@app.route('/getTemplatePreview', methods=['GET'])
+def getTemplatePreview():
+    # print(124)
+    # get template name in get url
+    templateName = request.args.get('templateName', default='id', type=str)
+    print(templateName)
+    if templateName not in listTemplates():
+        return jsonify({'🚫 Error': 'Invalid template name.'}), 400
+    # check if template name exists in list of templates
+    # then return the file array
+    pages = convertToPageImage(os.path.join(outputDir,templateName+'.pdf'))
+    # print(pages) 
+    # then return the file array
+    # convertToPageImage
+    return jsonify(pages)
+
+
 
 
 @app.route('/download_template', methods=['GET'])
