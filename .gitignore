@@ -8,7 +8,7 @@ venv
 !/logs/.gitkeep
 
 
-/output/*
+# /output/*
 !/output/.gitkeep
 
 /tests/*.pdf

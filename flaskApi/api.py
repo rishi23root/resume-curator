@@ -38,7 +38,11 @@ def list_template():
 def getTemplatePreview():
     # print(124)
     # get template name in get url
-    templateName = request.args.get('templateName', default='id', type=str)
+    templateName = request.args.get('templateName', type=str)
+    # if no template name provided then tell the user how to get
+    # print(templateName)
+    if not templateName:
+        return jsonify({'🚫 Error': 'no template name specify. trying adding ?templateName=<templateNamehere>'}), 400
     # print(templateName)
     if templateName not in listTemplates():
         return jsonify({'🚫 Error': 'Invalid template name.'}), 400
