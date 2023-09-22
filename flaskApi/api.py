@@ -39,7 +39,7 @@ def getTemplatePreview():
     # print(124)
     # get template name in get url
     templateName = request.args.get('templateName', default='id', type=str)
-    print(templateName)
+    # print(templateName)
     if templateName not in listTemplates():
         return jsonify({'🚫 Error': 'Invalid template name.'}), 400
     # check if template name exists in list of templates
@@ -49,9 +49,6 @@ def getTemplatePreview():
     # then return the file array
     # convertToPageImage
     return jsonify(pages)
-
-
-
 
 @app.route('/download_template', methods=['GET'])
 def download_template():
