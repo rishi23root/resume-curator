@@ -31,3 +31,9 @@ sudo systemctl status $serviceName | grep active
 
 echo "Checking if nginx is running"
 sudo systemctl status nginx | grep active
+
+
+# generate output files 
+echo "Generating output templates pdf files"
+python3 main.py > /dev/null
+echo 'Done! ✅' 
