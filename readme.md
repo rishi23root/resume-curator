@@ -6,7 +6,10 @@ tested and seems to be working on ubuntu 20.04
 ---
 ## To Running the Project locally
 0. clone the repo
-1. make setup.sh executable and run it ```sudo chmod +x ./scripts/setup.sh && sudo ./scripts/setup.sh```
+1. make setup.sh executable and run it (installing smallest version of pdflatex possible)
+    ```
+    sudo chmod +x ./scripts/setup.sh && sudo ./scripts/setup.sh
+    ```
 2. ```bash
     source ~/.bashrc
     source ~/.zshrc #if you are using zsh
@@ -18,7 +21,10 @@ tested and seems to be working on ubuntu 20.04
 ## To Running the Project on server
 0. clone the repo
 0.5. edit the /scripts/constants.sh file and add the server domain name 
-1. make setup.sh executable and run it ```sudo chmod +x ./scripts/oneForAll.sh && sudo ./scripts/oneForAll.sh```
+1. make setup.sh executable and run it 
+    ```
+    sudo chmod +x ./scripts/oneForAll.sh && sudo ./scripts/oneForAll.sh
+    ```
 2. ```bash
     source ~/.bashrc
     source ~/.zshrc #if you are using zsh
@@ -27,14 +33,8 @@ tested and seems to be working on ubuntu 20.04
 
 
 # To-do:
-- [x] add 1 column resume
-- [x] add 2 column resume
-- [x] add api to edit the template and download the resume
-    - [x] give option to upload json file
-    - [x] add error if all the fields are not filled or found in the uploaded json
-- [x] setup the flask on production server
-- [ ] add more templates
-- using docker is promissing - mrchoke/texlive:latest or 2023 (version 2023 cheked)
+- [x] make latex installing bit faster if possible
+- [ ] add more templates 
 
 
 <!-- open to contribution section -->
