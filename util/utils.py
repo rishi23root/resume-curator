@@ -27,7 +27,11 @@ def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
             raise Exception(discription)
 
     except Exception as e:
-        app.logger.error(e)
+        # print(e)
+        try:
+            app.logger.error(e)
+        except:
+            pass
         return None
 
     # remove the other files other then resume-custom.cls
@@ -79,12 +83,18 @@ def creatResumeFromSystem(name, texliveonfly=True):
     # print(command)
     try:
         (success, error), output = runSystemCommad(command)
+        # print(success.decode('utf-8'))
         # app.logger.info({"success": success, "error": error})
 
         # succes if string contains the word success
         if error:
-            app.logger.error("error", error.decode()) # type: ignore
-            raise Exception(error.decode())
+            print(app)
+            try:
+                app.logger.error("error", error.decode()) # type: ignore
+            except:
+                raise Exception(error.decode())
+        elif success and 'Unable to start' in success.decode():
+            raise Exception("check for access for texliveonfly", success.decode())
         elif success and 'in house texliveonfly' in success.decode():
             print("success in generating the resume")
             # app.logger.info("success", success.decode())

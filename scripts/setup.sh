@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 source scripts/constant.sh
 
-sudo apt update -y 2>/dev/tty >/dev/null
-sudo apt upgrade -y 2>/dev/tty >/dev/null
-sudo apt-get dist-upgrade -y 2>/dev/tty >/dev/null
+# sudo chmod +x ./scripts/setup.sh && sudo ./scripts/setup.sh
+sudo apt-get update -y 
+sudo apt-get upgrade -y 
+sudo apt-get dist-upgrade -y 
 
 
 # install pdflatex tlmgr  
@@ -25,7 +26,7 @@ if command -v pdflatex 2>/dev/tty >/dev/null && command -v tlmgr 2>/dev/tty >/de
 else
     echo "Installing texlive and texliveonfly..."
     chmod +x ./scripts/install-texlive
-    ./scripts/install-texlive --scheme=small
+    ./scripts/install-texlive --scheme=minimal
 
     texlivePath=$HOME/texlive/2023/bin/x86_64-linux
     # make this path executable for every user
@@ -100,3 +101,13 @@ echo "Done! ✅"
 
 echo "Setup Done! 🎉"
 echo "" 
+
+
+# running a fail run to install required packages (just to insall everything need,can be installed on first run !important) but this is better
+echo "Installing packages used by all resumes "
+python3 main.py 2>/dev/tty >/dev/null
+python3 main.py 2>/dev/tty >/dev/null
+# removing generated pdf
+rm output/*.pdf
+
+echo "Done! ✅"
