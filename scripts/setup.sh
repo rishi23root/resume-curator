@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 source scripts/constant.sh
 
-sudo apt update -y 2>/dev/tty >/dev/null
-sudo apt upgrade -y 2>/dev/tty >/dev/null
-sudo apt-get dist-upgrade -y 2>/dev/tty >/dev/null
+# sudo chmod +x ./scripts/setup.sh && sudo ./scripts/setup.sh
+sudo apt-get update -y 
+sudo apt-get upgrade -y 
+sudo apt-get dist-upgrade -y 
 
 
 # install pdflatex tlmgr  
