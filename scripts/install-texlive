@@ -104,13 +104,14 @@ echo ":: starting the installer..."
 TEXLIVE_INSTALL_PREFIX=$prefix ./install-tl \
   --scheme $scheme --no-interaction
 
-tlmgr install latex-bin
-
 ## POST-INSTALLATION PHASE ************************************************
 
 # Fix PATH, so that we make TeX Live programs visible. To do so, we need to
 # extract the year that is also the version of the TeX Live just installed.
 year=`sed -n '1p' release-texlive.txt | sed -E 's/^[^0-9]+//g'`
+
+# install pdflatex 
+$prefix/$year/bin/x86_64-linux/tlmgr install latex-bin
 
 # Write an appropriate file in $HOME.
 cat <<EOF > $texliverc
@@ -124,7 +125,7 @@ EOF
 
 [ $adjust_bashrc == yes ] && cat <<EOF >> ~/.bashrc
 
-# Register TeX Live paths
+# Register TeX Live pathsgit
 [ -f $texliverc ] && source $texliverc
 
 EOF
