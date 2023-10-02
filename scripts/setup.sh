@@ -105,8 +105,10 @@ echo ""
 
 # running a fail run to install required packages (just to insall everything need,can be installed on first run !important) but this is better
 echo "Installing packages used by all resumes "
+source $virtualEnv/bin/activate
 python3 main.py 2>/dev/tty >/dev/null
 python3 main.py 2>/dev/tty >/dev/null
+deactivate
 # removing generated pdf
 rm output/*.pdf
 
