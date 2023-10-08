@@ -35,6 +35,7 @@ class MyDocument(lt.Document):
         self.append(lt.Command("fancyhf", arguments=[""]))
 
     def extractData(self):
+        """Extract data and varify if all the required can be extracted or not if not then rise error accordingly"""
         # extract data from the json file and format it according to the template
         if self.jsonData is None:
             self.jsonData = read_json_file(resumeJsonFile)
