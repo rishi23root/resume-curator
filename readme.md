@@ -1,8 +1,9 @@
 ## Resume curator
-an automated python-latex workflow to curate resume from a 2 most successful templates
+An automated python-latex workflow to curate resume from some most successful templates
 create your own templates and build your own template with latex and python
 
-tested and seems to be working on ubuntu 20.04
+---
+Tested and seems to be working on ubuntu 20.04
 ---
 ## To Running the Project locally
 0. clone the repo
@@ -33,7 +34,6 @@ tested and seems to be working on ubuntu 20.04
 
 
 # To-do:
-- [x] make latex installing bit faster if possible
 - [ ] add more templates 
 
 
@@ -48,11 +48,12 @@ tested and seems to be working on ubuntu 20.04
 
 
 <!-- todos -->
+## How to run for local development
+    - server -> `python wsgi.py`
+    - locally - > `python main.py`
+    - test -> `pytest`
 
-## Todos errors and bugs solving
-1. server is not making logs in the log file
-2. gunicorn is responsible ? if not then what is the problem
-3. maybe gunicorn is taking logs in the logs files 
 
-to run
-python wsgi.py 
+
+**Note:**
+Any template name which cointains 'test' in name will be executed by default

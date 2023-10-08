@@ -1,44 +1,18 @@
-import os
-
 import pylatex as lt
 from pylatex.utils import NoEscape
 
-from util.baseFunc import read_json_file
-from util.constants import buildDir, resumeJsonFile
+from util.baseTemplate import Template
 from util.htmlParser import getListItems
 from util.tolatex import createLink
-from util.utils import createResume
 
 
-class MyDocument(lt.Document):
+class base(Template):
     def __init__(self):
-        super().__init__(documentclass='resumecustom',
-                         page_numbers=False,
-                         document_options={},
-                         fontenc=None, # type: ignore
-                         lmodern=False,
-                         textcomp=False,
-                         microtype=False)
-
-        # self.preamble.append(lt.Command('title', 'Rishi23root resume builder'))
-        # self.preamble.append(lt.Command('author', 'Rishi23root'))
-        # self.preamble.append(lt.Command('date', NoEscape(r'\today')))
-        # self.append(NoEscape(r'\maketitle'))
-
-        # setup for base data
-        self.change_document_style("fancy")
-        self.remove(lt.Command("pagestyle", arguments=["empty"]))
-        self.remove(lt.Command("normalsize"))
-        self.packages.remove(lt.Package("inputenc", options=["utf8"]))
-        # adding imp packages to start the document
-        self.packages.append(lt.Package('fancyhdr'))
-        self.append(lt.Command("fancyhf", arguments=[""]))
-
+        super().__init__()
+    
     def extractData(self):
-        # extract data from the json file and format it according to the template
-        if self.jsonData is None:
-            self.jsonData = read_json_file(resumeJsonFile)
-            
+        """Extract data and varify if all the required can be extracted or not if not then rise error accordingly"""
+                    
         userInfoContant = {
             'name': self.jsonData['basics']['name'],
             'email': self.jsonData['basics']['email'],
@@ -63,6 +37,7 @@ class MyDocument(lt.Document):
             'certificates': awards,
             'projects': projects
         }
+
 
     # header
     def AddUserProfile(self, **kwargs):
@@ -120,7 +95,6 @@ class MyDocument(lt.Document):
         self.append(nameSection)
 
     # left sections
-
     def AddEducation(self, education: dict):
         self.append(NoEscape('\\fieldsection{Education}{\n'))
         for edu in education:
@@ -303,17 +277,3 @@ class MyDocument(lt.Document):
         self.AddProjects(data['projects'])
         # # add Awards section
         self.AddCerts(data['certificates'])
-
-def runner(filename: str = 'resume.pdf',jsonData: dict = None): # type: ignore
-    name = filename.split('.')[0]
-    doc = MyDocument()
-    if jsonData:
-        doc.jsonData = jsonData
-
-    # Call function to add text
-    doc.fill_document()
-
-    # # doc.generate_pdf(clean_tex=False)
-    doc.generate_tex(filepath=os.path.join(buildDir, name))
-
-    return createResume(filename)
