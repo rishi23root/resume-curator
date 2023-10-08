@@ -6,29 +6,33 @@ from pprint import pprint
 
 from util.constants import templateDir
 
+# Can update it to some other reasonable way later 
+notRealTemaplate= 'test'
 
 @lru_cache()
 def listTemplates():
-    """get list of templates"""
+    """get list of templates can be use"""
     dirContent = os.listdir(templateDir)
     # remove all the directories
-    return [eachFile.split('.')[0] for eachFile in dirContent if os.path.isfile(
+    templateNames =  [eachFile.split('.')[0] for eachFile in dirContent if os.path.isfile(
         os.path.join(templateDir, eachFile))]
+    # filter out templates name with example or testing
+    templateNames = list(filter(lambda templateName: notRealTemaplate not in templateName , templateNames))
+    return templateNames
 
 @lru_cache()
 def extractFuncCallsForTemplate():
     """return a dict of all runner functions for the tempalates"""
     onlyTemplates = listTemplates()
-    # crate dict with all the templates
+    # create dict with all the templates
     return {
-        each: importlib.import_module(f'resumeFormat.{each}').runner for each in onlyTemplates
+        each: importlib.import_module(f'resumeFormat.{each}').base.run for each in onlyTemplates
     }
 
 @lru_cache()
 def getTemplates(templateName: str) -> callable or None:  # type: ignore
     """extract the template to run"""
     functionCallForEach= extractFuncCallsForTemplate()
-    print(functionCallForEach[templateName])
     if templateName not in functionCallForEach: return None
     return functionCallForEach[templateName]
 

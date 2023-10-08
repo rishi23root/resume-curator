@@ -52,3 +52,8 @@ Tested and seems to be working on ubuntu 20.04
     - server -> `python wsgi.py`
     - locally - > `python main.py`
     - test -> `pytest`
+
+
+
+**Note:**
+Any template name which cointains 'test' in name will be executed by default
