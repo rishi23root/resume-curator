@@ -8,28 +8,33 @@ from util.constants import templateDir
 
 
 @lru_cache()
-# get list of templates
 def listTemplates():
+    """get list of templates"""
     dirContent = os.listdir(templateDir)
     # remove all the directories
     return [eachFile.split('.')[0] for eachFile in dirContent if os.path.isfile(
         os.path.join(templateDir, eachFile))]
 
-
 @lru_cache()
-# extract the template to run
-def getTemplates(templateName: str) -> callable or None:  # type: ignore
+def extractFuncCallsForTemplate():
+    """return a dict of all runner functions for the tempalates"""
     onlyTemplates = listTemplates()
     # crate dict with all the templates
-    functionCallForEach = {
-        each: importlib.import_module(f'resumeFormat.{each}').runner   for each in onlyTemplates
-        }
-    if templateName not in functionCallForEach:
-        return None
+    return {
+        each: importlib.import_module(f'resumeFormat.{each}').runner for each in onlyTemplates
+    }
+
+@lru_cache()
+def getTemplates(templateName: str) -> callable or None:  # type: ignore
+    """extract the template to run"""
+    functionCallForEach= extractFuncCallsForTemplate()
+    print(functionCallForEach[templateName])
+    if templateName not in functionCallForEach: return None
     return functionCallForEach[templateName]
 
 
 def read_json_file(file_path: str):
+    """read the json file"""
     try:
         with open(file_path, 'r') as f:
             data = json.load(f)
@@ -38,7 +43,7 @@ def read_json_file(file_path: str):
         raise Exception('🚫 Error in reading json file, check the json format')
 
 
-# local logger
+# local logger 
 class logger:
     def error(self, x):
         print("[ERROR] : ",end='')
