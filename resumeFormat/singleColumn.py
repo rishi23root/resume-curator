@@ -26,7 +26,12 @@ class base(Template):
         education = self.jsonData['education']
         skills = self.jsonData['skills']
         projects = self.jsonData['projects']
-        awards = self.jsonData['awards']
+        awards = self.jsonData['awards']      
+        
+        # at last masking Data
+        mask = {}
+        if self.jsonData.get('mask'):
+            mask = self.jsonData['mask']
 
         return {
             'userInfoContant': userInfoContant,
@@ -35,7 +40,8 @@ class base(Template):
             'education': education,
             'skills': skills,
             'certificates': awards,
-            'projects': projects
+            'projects': projects,
+            'mask':mask,
         }
 
 
@@ -95,8 +101,8 @@ class base(Template):
         self.append(nameSection)
 
     # left sections
-    def AddEducation(self, education: dict):
-        self.append(NoEscape('\\fieldsection{Education}{\n'))
+    def AddEducation(self, education: dict,mask:dict):
+        self.append(NoEscape('\\fieldsection{'+mask['education']+'}{\n'))
         for edu in education:
             institution = edu['institution']
             study_type = edu['studyType']
@@ -116,12 +122,12 @@ class base(Template):
 
         self.append(NoEscape('}%\n'))
 
-    def AddSkills(self, skills: dict):
+    def AddSkills(self, skills: dict,mask:dict):
         languages = skills['languages'] + skills['frameworks']
         familar = skills['databases'] + skills['libraries'] + skills['technologies']
         tools = skills['tools']
         
-        self.append(NoEscape('\\fieldsection{Skills}{\n'))
+        self.append(NoEscape('\\fieldsection{'+mask['skills']+'}{\n'))
         # add space
         self.append(NoEscape('\\vspace{0.5em}\n'))
         
@@ -180,8 +186,8 @@ class base(Template):
 
         self.append(NoEscape('}%\n'))
 
-    def AddCerts(self, awards: dict):
-        self.append(NoEscape('\\fieldsection{certificates}{\n'))
+    def AddCerts(self, awards: dict,mask:dict):
+        self.append(NoEscape('\\fieldsection{'+mask['awards']+'}{\n'))
         for award in awards:
             title = award['title']
             url = award['url']            
@@ -192,8 +198,8 @@ class base(Template):
 
         self.append(NoEscape('}%\n'))
 
-    def AddExperience(self, experience: dict):
-        self.append(NoEscape('\\fieldsection{Experience}{\n'))
+    def AddExperience(self, experience: dict,mask:dict):
+        self.append(NoEscape('\\fieldsection{'+mask['work']+'}{\n'))
         for ex in experience:
             name = ex['name']
             # \\textbar{}
@@ -231,8 +237,8 @@ class base(Template):
         self.append(NoEscape('}%\n'))
         self.append(NoEscape('\\vspace{0.5em}\n'))
 
-    def AddProjects(self, projects: dict):
-        self.append(NoEscape('\\fieldsection{projects}{\n'))
+    def AddProjects(self, projects: dict,mask:dict):
+        self.append(NoEscape('\\fieldsection{'+mask['projects']+'}{\n'))
         for project in projects:
             name = project['name']
             url = project['url']
@@ -268,12 +274,12 @@ class base(Template):
         self.append(lt.NewLine())
         
         # add education section
-        self.AddEducation(data['education'])
+        self.AddEducation(data['education'],data['mask'])
         # # add Experence section
-        self.AddExperience(data['experience'])
+        self.AddExperience(data['experience'],data['mask'])
         # # add the skills section
-        self.AddSkills(data['skills'])
+        self.AddSkills(data['skills'],data['mask'])
         # # add Projects section
-        self.AddProjects(data['projects'])
+        self.AddProjects(data['projects'],data['mask'])
         # # add Awards section
-        self.AddCerts(data['certificates'])
+        self.AddCerts(data['certificates'],data['mask'])

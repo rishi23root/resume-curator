@@ -239,5 +239,13 @@
       "url":"https://drive.google.com/file/d/1btwUi5c5t2rQ2gISsCOkLZiS01-g17OL/view?usp=sharing",
       "id": "1"
     }
-  ]
+  ],
+  "mask":{
+    "basics": "1basics",
+    "skills": "1skills",
+    "education": "1education",
+    "work": "1work",
+    "projects": "1projects",
+    "awards": "1certificates"
+  }
 }
