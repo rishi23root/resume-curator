@@ -27,6 +27,11 @@ class base(Template):
         projects = self.jsonData['projects']
         awards = self.jsonData['awards']
 
+        # at last masking Data
+        mask = {}
+        if self.jsonData.get('mask'):
+            mask = self.jsonData['mask']
+
         return {
             'userInfoContant': userInfoContant,
             'links': links,
@@ -34,7 +39,8 @@ class base(Template):
             'education': education,
             'skills': skills,
             'certificates': awards,
-            'projects': projects
+            'projects': projects,
+            'mask':mask,
         }
 
     # header
@@ -88,10 +94,10 @@ class base(Template):
                 self.append(NoEscape(createLink( link['url'], lt.utils.bold(username))))
                 self.append("\n")
 
-    def AddEducation(self, education: dict):
+    def AddEducation(self, education: dict,mask:dict):
         # add the education section
         # print(education)
-        with self.create(lt.Section('Education')):
+        with self.create(lt.Section(mask['education'])):
             for edu in education:
                 institution = edu['institution']
                 study_type = edu['studyType']
@@ -113,7 +119,7 @@ class base(Template):
                     
             # self.append(NoEscape('\\sectionsep'))
     
-    def AddSkills(self, skills: dict):
+    def AddSkills(self, skills: dict,mask:dict):
         languages = skills['languages'] + skills['frameworks']
         familar = skills['databases'] + skills['libraries'] + skills['technologies']
         tools = skills['tools']
@@ -161,7 +167,7 @@ class base(Template):
         # section space
         self.append(NoEscape('\\sectionsep'))
     
-    def AddCerts(self, awards: dict):
+    def AddCerts(self, awards: dict,mask:dict):
         self.append(lt.Section('Certificates'))
         for award in awards:
             self.append(NoEscape('\\subsection{Programming}'))
@@ -174,7 +180,7 @@ class base(Template):
 
 
     # right sections
-    def AddExperience(self, experience: dict):
+    def AddExperience(self, experience: dict,mask:dict):
         # \runsubsection{Facebook}
         # \descript{| Software Engineer }
         # \location{Jan 2015 - Present | New York, NY}
@@ -209,7 +215,7 @@ class base(Template):
             # # \sectionsep
             self.append(NoEscape('\\sectionsep'))
     
-    def AddProjects(self, projects: dict):
+    def AddProjects(self, projects: dict,mask:dict):
         self.append(NoEscape('\\section{Projects}'))
         for project in projects:
             self.append(NoEscape('\\runsubsection{' + project['name'] + '}'))
@@ -243,17 +249,17 @@ class base(Template):
             # add the links section
             self.AddLinks(data['links'])
             # add education section
-            self.AddEducation(data['education'])
+            self.AddEducation(data['education'],data['mask'])
             # add the skills section
-            self.AddSkills(data['skills'])
+            self.AddSkills(data['skills'],data['mask'])
             # add Awards section
-            self.AddCerts(data['certificates'])
+            self.AddCerts(data['certificates'],data['mask'])
             
         self.append(lt.HFill())
 
         with self.create(lt.MiniPage(width=lt.NoEscape(r"0.66\textwidth"), pos='t',content_pos='t')):
             # add Experence section
-            self.AddExperience(data['experience'])
+            self.AddExperience(data['experience'],data['mask'])
             # add Projects section
-            self.AddProjects(data['projects'])
+            self.AddProjects(data['projects'],data['mask'])
         # add sub mini pages for other data like education, experience, skills etc
