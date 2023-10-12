@@ -4,7 +4,7 @@ from pylatex.utils import NoEscape
 from util.baseTemplate import Template
 from util.htmlParser import getListItems
 from util.tolatex import createLink
-
+from util.Exceptions import InvalidAttrException
 
 class base(Template):
     def __init__(self):
@@ -12,26 +12,29 @@ class base(Template):
     
     def extractData(self):
         """Extract data and varify if all the required can be extracted or not if not then rise error accordingly"""
-                    
-        userInfoContant = {
-            'name': self.jsonData['basics']['name'],
-            'email': self.jsonData['basics']['email'],
-            'phone': self.jsonData['basics']['phone'],
-            'website': self.jsonData['basics']['url'],
-            'address': ", ".join([i for i in [self.jsonData['basics']['location']['city'], self.jsonData['basics']['location']['postalCode']] if i != '']),
-            'label': self.jsonData['basics']['label'],
-        }
-        links = self.jsonData['basics']['profiles']
-        experience = self.jsonData['work']
-        education = self.jsonData['education']
-        skills = self.jsonData['skills']
-        projects = self.jsonData['projects']
-        awards = self.jsonData['awards']      
         
-        # at last masking Data
-        mask = {}
-        if self.jsonData.get('mask'):
-            mask = self.jsonData['mask']
+        try:     
+            userInfoContant = {
+                'name': self.jsonData['basics']['name'],
+                'email': self.jsonData['basics']['email'],
+                'phone': self.jsonData['basics']['phone'],
+                'website': self.jsonData['basics']['url'],
+                'address': ", ".join([i for i in [self.jsonData['basics']['location']['city'], self.jsonData['basics']['location']['postalCode']] if i != '']),
+                'label': self.jsonData['basics']['label'],
+            }
+            links = self.jsonData['basics']['profiles']
+            experience = self.jsonData['work']
+            education = self.jsonData['education']
+            skills = self.jsonData['skills']
+            projects = self.jsonData['projects']
+            awards = self.jsonData['awards']      
+            
+            # at last masking Data
+            mask = {}
+            if self.jsonData.get('mask'):
+                mask = self.jsonData['mask']
+        except Exception as e:
+            raise InvalidAttrException(" ".join(e.args),500) from e
 
         return {
             'userInfoContant': userInfoContant,
@@ -264,7 +267,11 @@ class base(Template):
         self.append(NoEscape('}%\n'))
 
     def fill_document(self):
-        data = self.extractData()
+        try:
+            data = self.extractData()
+        except InvalidAttrException as e:
+            # print(e.message)
+            raise Exception(f"invalid data of keys: {e.attr}",)
 
         # add date
         self.append(lt.Command("lastupdated"))
