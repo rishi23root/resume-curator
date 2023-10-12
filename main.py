@@ -26,5 +26,6 @@ if __name__ == '__main__' and production == 0:
     with open('template.json', 'r') as f:
         data = json.load(f)
         
-    templateCall = useTemplates('singleColumn')
+    # templateCall = useTemplates('singleColumn')
+    templateCall = useTemplates('twoColumn')
     filePath = templateCall('testing.pdf', data)
