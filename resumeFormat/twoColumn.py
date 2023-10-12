@@ -4,6 +4,7 @@ from pylatex.utils import NoEscape
 from util.baseTemplate import Template
 from util.htmlParser import getListItems
 from util.tolatex import createLink, inBlock
+from util.Exceptions import InvalidAttrException
 
 
 class base(Template):
@@ -12,20 +13,30 @@ class base(Template):
         
     def extractData(self):
         # extract data from the json file and format it according to the template
-                    
-        userInfoContant = {
-            'name': self.jsonData['basics']['name'],
-            'email': self.jsonData['basics']['email'],
-            'phone': self.jsonData['basics']['phone'],
-            'website': self.jsonData['basics']['url'],
-            'address': ", ".join([i for i in [self.jsonData['basics']['location']['city'], self.jsonData['basics']['location']['postalCode']] if i != '']),
-        }
-        links = self.jsonData['basics']['profiles']
-        experience = self.jsonData['work']
-        education = self.jsonData['education']
-        skills = self.jsonData['skills']
-        projects = self.jsonData['projects']
-        awards = self.jsonData['awards']
+
+        try:
+            
+            userInfoContant = {
+                'name': self.jsonData['basics']['name'],
+                'email': self.jsonData['basics']['email'],
+                'phone': self.jsonData['basics']['phone'],
+                'website': self.jsonData['basics']['url'],
+                'address': ", ".join([i for i in [self.jsonData['basics']['location']['city'], self.jsonData['basics']['location']['postalCode']] if i != '']),
+            }
+            links = self.jsonData['basics']['profiles']
+            experience = self.jsonData['work']
+            education = self.jsonData['education']
+            skills = self.jsonData['skills']
+            projects = self.jsonData['projects']
+            awards = self.jsonData['awards']
+
+            # at last masking Data
+            mask = {}
+            if self.jsonData.get('mask'):
+                mask = self.jsonData['mask']
+
+        except Exception as e:
+            raise InvalidAttrException(" ".join(e.args),500) from e
 
         return {
             'userInfoContant': userInfoContant,
@@ -34,7 +45,8 @@ class base(Template):
             'education': education,
             'skills': skills,
             'certificates': awards,
-            'projects': projects
+            'projects': projects,
+            'mask':mask,
         }
 
     # header
@@ -88,10 +100,10 @@ class base(Template):
                 self.append(NoEscape(createLink( link['url'], lt.utils.bold(username))))
                 self.append("\n")
 
-    def AddEducation(self, education: dict):
+    def AddEducation(self, education: dict,mask:dict):
         # add the education section
         # print(education)
-        with self.create(lt.Section('Education')):
+        with self.create(lt.Section(mask['education'])):
             for edu in education:
                 institution = edu['institution']
                 study_type = edu['studyType']
@@ -113,11 +125,11 @@ class base(Template):
                     
             # self.append(NoEscape('\\sectionsep'))
     
-    def AddSkills(self, skills: dict):
+    def AddSkills(self, skills: dict,mask:dict):
         languages = skills['languages'] + skills['frameworks']
         familar = skills['databases'] + skills['libraries'] + skills['technologies']
         tools = skills['tools']
-        with self.create(lt.Section('Skill')):
+        with self.create(lt.Section(mask['skills'])):
             self.append(NoEscape('\\subsection{Programming}\n'))
             
             under5000 = []
@@ -161,8 +173,8 @@ class base(Template):
         # section space
         self.append(NoEscape('\\sectionsep'))
     
-    def AddCerts(self, awards: dict):
-        self.append(lt.Section('Certificates'))
+    def AddCerts(self, awards: dict,mask:dict):
+        self.append(lt.Section(mask['awards']))
         for award in awards:
             self.append(NoEscape('\\subsection{Programming}'))
             self.append(NoEscape('\\subsection{' + award['title'] + '}\n'))
@@ -174,12 +186,12 @@ class base(Template):
 
 
     # right sections
-    def AddExperience(self, experience: dict):
+    def AddExperience(self, experience: dict,mask:dict):
         # \runsubsection{Facebook}
         # \descript{| Software Engineer }
         # \location{Jan 2015 - Present | New York, NY}
         # \sectionsep
-        self.append(NoEscape('\\section{Experience}'))
+        self.append(NoEscape('\\section{'+mask['work']+'}'))
         for ex in experience:
             self.append(NoEscape('\\runsubsection{' + ex['name'] + '}'))
             self.append(NoEscape('\\descript{\\textbar{} ' + ex['position'] + '}'))
@@ -209,8 +221,8 @@ class base(Template):
             # # \sectionsep
             self.append(NoEscape('\\sectionsep'))
     
-    def AddProjects(self, projects: dict):
-        self.append(NoEscape('\\section{Projects}'))
+    def AddProjects(self, projects: dict,mask:dict):
+        self.append(NoEscape('\\section{'+mask['projects']+'}'))
         for project in projects:
             self.append(NoEscape('\\runsubsection{' + project['name'] + '}'))
 
@@ -233,7 +245,10 @@ class base(Template):
             # self.append(lt.NewLine())
 
     def fill_document(self):
-        data = self.extractData()
+        try:
+            data = self.extractData()
+        except InvalidAttrException as e:
+            raise Exception(f"invalid data of keys: {e.attr}",)
 
         # add date
         self.append(lt.Command("lastupdated"))
@@ -243,17 +258,17 @@ class base(Template):
             # add the links section
             self.AddLinks(data['links'])
             # add education section
-            self.AddEducation(data['education'])
+            self.AddEducation(data['education'],data['mask'])
             # add the skills section
-            self.AddSkills(data['skills'])
+            self.AddSkills(data['skills'],data['mask'])
             # add Awards section
-            self.AddCerts(data['certificates'])
+            self.AddCerts(data['certificates'],data['mask'])
             
         self.append(lt.HFill())
 
         with self.create(lt.MiniPage(width=lt.NoEscape(r"0.66\textwidth"), pos='t',content_pos='t')):
             # add Experence section
-            self.AddExperience(data['experience'])
+            self.AddExperience(data['experience'],data['mask'])
             # add Projects section
-            self.AddProjects(data['projects'])
+            self.AddProjects(data['projects'],data['mask'])
         # add sub mini pages for other data like education, experience, skills etc

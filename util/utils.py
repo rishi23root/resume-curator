@@ -118,6 +118,6 @@ if __name__ == "__main__":
 
     # import inspect
     # to test the templates
-    # print(inspect.signature(getTemplates('twoColumn')))
+    # print(inspect.signature(useTemplates('twoColumn')))
 
     pass

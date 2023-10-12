@@ -30,7 +30,7 @@ def extractFuncCallsForTemplate():
     }
 
 @lru_cache()
-def getTemplates(templateName: str) -> callable or None:  # type: ignore
+def useTemplates(templateName: str) -> callable or None:  # type: ignore
     """extract the template to run"""
     functionCallForEach= extractFuncCallsForTemplate()
     if templateName not in functionCallForEach: return None

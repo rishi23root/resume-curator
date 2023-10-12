@@ -10,7 +10,7 @@ import os
 import uuid
 from pathlib import Path
 
-from util.baseFunc import getTemplates, read_json_file
+from util.baseFunc import useTemplates, read_json_file
 from util.constants import baseDir
 
 
@@ -25,7 +25,7 @@ def generateResume(data: dict, templateName: str) -> Path or None:
     fileName = str(uuid.uuid4()) + '.pdf'
 
     # get the template and call the function
-    templateCall = getTemplates(templateName)
+    templateCall = useTemplates(templateName)
     if templateCall is not None:
         return templateCall(fileName, data)
     else:
