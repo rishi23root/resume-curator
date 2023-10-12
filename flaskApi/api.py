@@ -2,9 +2,8 @@ import os
 from urllib.parse import urlsplit
 
 from flask import jsonify, request, send_file
-from flask_cors import CORS
 
-from util.baseFunc import listTemplates  # circular import issue
+from util.baseFunc import listTemplates
 from util.constants import baseDir,outputDir
 from util.utils import rceFunctions
 from util.pdfImage import convertToPageImage
@@ -106,10 +105,12 @@ def create_resume():
             raise Exception("Resume not generated, internal error")
 
     except KeyError as e:
+        # error on missing error message
         # print(e)
         app.logger.error(e)
         return jsonify({'🚫 Error': f'Invalid data, missing key {e}'}), 422
-
+    
+    # put custom error here for data validation 
     except Exception as e:
         app.logger.error(e)
         if "Resume not generated, internal error" in e.__str__():
@@ -124,7 +125,7 @@ def create_resume():
         # if env is debug then show the error
         return jsonify({
             '🚫 Error': f'Invalid content template, Download template from here {base_url}/download_template'
-        }), 422
+        }), 500
 
 
 # @app.route('/create_resume_bulk', methods=['POST'])
