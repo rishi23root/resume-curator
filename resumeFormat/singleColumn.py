@@ -7,6 +7,9 @@ from util.tolatex import createLink
 from util.Exceptions import InvalidAttrException
 
 class base(Template):
+    '''
+    this template is highly inspired from hackerrank clasic template but not a copy :)
+    '''
     def __init__(self):
         super().__init__()
     
@@ -119,7 +122,13 @@ class base(Template):
             # \vspace{0.5em}
             self.append(NoEscape(f'\\textbf{{{institution}}} \\hfill {area}\n'))
             self.append(NoEscape('\\newline\n'))
-            self.append(NoEscape(f'{study_type} \\hfill {studytime}\n'))
+            self.append(NoEscape(f'{study_type} '))
+            if score:
+                self.append(NoEscape('\\textbar{} ')) 
+                self.append(f' Score: {score}')
+                
+            self.append(NoEscape(f'\\hfill {studytime}\n'))
+            
             self.append(NoEscape('\\vspace{0.5em}\n'))
             self.append(NoEscape('\\newline\n'))
 
@@ -205,14 +214,14 @@ class base(Template):
         self.append(NoEscape('\\fieldsection{'+mask['work']+'}{\n'))
         for ex in experience:
             name = ex['name']
-            # \\textbar{}
             position = ex['position']
+            url = ex['url']
             startingDate = str(ex['startDate'])
             endDate: str = (
                 'Present' if ex['isWorkingHere'] else ex['endDate'])
             worktime = f'{startingDate} - {endDate}'
 
-            nameWithPossition = f'{name}'+' \\textbar{} ' + f'{position}'
+            nameWithPossition = f'{createLink(url, name)}'+' \\textbar{} ' + f'{position}'
 
             # \vspace{0.5em}
             self.append(
@@ -247,7 +256,8 @@ class base(Template):
             url = project['url']
             languages = project['languages']
             
-            nameWithUrl = f'{name}'+' \\textbar{} ' + createLink(url, "Link")
+            nameWithUrl = createLink(url, name)
+            # nameWithUrl = f'{name}'+' \\textbar{} ' + createLink(url, "Link")
             
             self.append(NoEscape(f'\\textbf{{{nameWithUrl}}} \\hfill {languages}'))
             # self.append(NoEscape('\\newline'))

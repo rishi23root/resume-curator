@@ -1,59 +1,60 @@
-## Resume curator
-An automated python-latex workflow to curate resume from some most successful templates
-create your own templates and build your own template with latex and python
+## Resume curator 🎯
+An automated python-latex workflow to curate resume from some most successful templates 📄
 
----
-Tested and seems to be working on ubuntu 20.04
----
-## To Running the Project locally
-0. clone the repo
-1. make setup.sh executable and run it (installing smallest version of pdflatex possible)
-    ```
+Create your own templates and build your own template with latex and python 💻
+
+
+## To Run Project
+- [ ] clone the repo 👯‍♀️
+- [ ] make setup.sh executable and run it (installing smallest version of pdflatex possible)
+    ```bash
     sudo chmod +x ./scripts/setup.sh && sudo ./scripts/setup.sh
     ```
-2. ```bash
+- [ ] make path available
+    ```bash
     source ~/.bashrc
-    source ~/.zshrc #if you are using zsh
+    source ~/.zshrc # only if you are using zsh
     ```
-2. edit the existing `tempalte.json`
-3. setup the flask on production server 
-4. run the flask app ```python3 app.py```
+- [ ] edit the existing `tempalte.json`
+- [ ] setup the flask on production server or activate python virtural environment (auto generated in previous steps)
+- [ ] run the flask app ```python3 app.py``` || ```python3 main.py```
 
-## To Running the Project on server
-0. clone the repo
-0.5. edit the /scripts/constants.sh file and add the server domain name 
-1. make setup.sh executable and run it 
-    ```
+
+## How to run for local development
+    - server -> `python wsgi.py`
+    - locally - > `python main.py` # for just create a pdf from data and all templates
+    - test -> `pytest`
+
+
+## To Running the Project on server env (production server)
+- [ ] clone the repo 👯‍♀️
+- [ ] edit the `/scripts/constants.sh` file and add the server domain name 
+- [ ] make setup.sh executable and run it 
+    ```bash
     sudo chmod +x ./scripts/oneForAll.sh && sudo ./scripts/oneForAll.sh
     ```
-2. ```bash
+- [ ] make path available 
+    ```bash
     source ~/.bashrc
     source ~/.zshrc #if you are using zsh
     ```
-3. use it on the server
+- [ ] use it on the server
 
 
-# To-do:
-- [ ] add more templates 
 
-
-<!-- open to contribution section -->
 ---
-## Open to contribution 
-1. fork the repo
-2. clone the repo
+## Open to contribution 🤝
+0. fork the repo
+1. clone the repo
+3. create a new issue 
 3. make changes
 4. push the changes
 5. create a pull request
 
 
-<!-- todos -->
-## How to run for local development
-    - server -> `python wsgi.py`
-    - locally - > `python main.py`
-    - test -> `pytest`
-
-
-
+---
 **Note:**
-Any template name which cointains 'test' in name will be executed by default
+Any template name which cointains `test` in name will be executed by default🛡️
+
+
+### Have fun curating your resume! 🎉

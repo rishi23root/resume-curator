@@ -179,7 +179,7 @@ class base(Template):
             self.append(NoEscape('\\subsection{Programming}'))
             self.append(NoEscape('\\subsection{' + award['title'] + '}\n'))
             self.append(
-                NoEscape('\\location{' + award['date'] + ' by ' + award['awarder'] + '}'))
+                NoEscape('\\location{' + award['date'] + ' by ' + createLink(award['url'], award['awarder']) + '}'))
             self.append(NoEscape('\\sectionsep'))
 
         self.append(NoEscape('\\sectionsep'))
@@ -193,7 +193,8 @@ class base(Template):
         # \sectionsep
         self.append(NoEscape('\\section{'+mask['work']+'}'))
         for ex in experience:
-            self.append(NoEscape('\\runsubsection{' + ex['name'] + '}'))
+            
+            self.append(NoEscape('\\runsubsection{' + createLink(ex['url'], ex['name']) + '}'))
             self.append(NoEscape('\\descript{\\textbar{} ' + ex['position'] + '}'))
             startingDate = str(ex['startDate'])
             endDate: str = ('Present' if ex['isWorkingHere'] else ex['endDate'])
@@ -224,11 +225,11 @@ class base(Template):
     def AddProjects(self, projects: dict,mask:dict):
         self.append(NoEscape('\\section{'+mask['projects']+'}'))
         for project in projects:
-            self.append(NoEscape('\\runsubsection{' + project['name'] + '}'))
+            self.append(NoEscape('\\runsubsection{' + createLink(project['url'], project['name']) + '}'))
 
-            self.append(
-                NoEscape('\\textbar{} ' + createLink(project['url'],"Link"))
-            )
+            # self.append(
+            #     NoEscape('\\textbar{} ' + createLink(project['url'],"Link"))
+            # )
 
             # # description
             if project['discription']:
