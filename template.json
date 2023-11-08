@@ -1,6 +1,6 @@
 {
   "basics": {
-    "name": "Ayush Shrivastava",
+    "name": "Rishi",
     "label": "Frontend Developer",
     "image": "",
     "email": "rishabhjainfinal@email.com",
@@ -14,6 +14,7 @@
       "countryCode": "",
       "region": ""
     },
+    
     "profiles": [
       {
         "network": "linkedin",
@@ -143,13 +144,10 @@
       "id": "1",
       "name": "Company 1",
       "position": "Senior Software Developer",
-      "url": "",
+      "url": "https://github.com/sadanandpai/",
       "startDate": "Apr 2021",
       "isWorkingHere": true,
       "endDate": null,
-      "highlights": [
-        "* Worked on a team of 5 developers to develop a web application for a client"
-      ],
       "summary": "<ul><li> Use my extensive experience with front end development to define the structure and components for the project, making sure they are reusable</li><li>Keep the code quality high reviewing code from other developers and suggesting improvements</li><li> Interact with the designer to suggest changes and to make sure the view he has about the design is translated into actual functionality</li><li> E-commerce maintenance <strong>with Fastcommerce</strong>, a Brazilian e-commerce platform</li></ul>",
       "years": ""
     },
@@ -161,9 +159,6 @@
       "startDate": "Jun 2015",
       "isWorkingHere": false,
       "endDate": "Dec 2017",
-      "highlights": [
-        "* Worked on a team of 5 developers to develop a web application for a client"
-      ],
       "summary": "<ul><li>Develop web applications based on Sharepoint, Drupal 8 and Episerver</li><li>Lead a team of 10 front end developers, giving support to the client's multi-cultural team, providing feedback, clarifying requirements and helping with technical questions</li><li>Keep the Project Manager and the IT Leads updated on the overall progress of the projects and manage the tasks distributed to the team</li><li>Keep the code and the features implemented by the other developers in accordance to the requirements</li></ul>",
       "years": "2 years"
     },
@@ -175,9 +170,6 @@
       "startDate": "Aug 2011",
       "isWorkingHere": false,
       "endDate": "May 2015",
-      "highlights": [
-        "* Worked on a team of 5 developers to develop a web application for a client"
-      ],
       "summary": "<ul><li>Design easy user interfaces and great user experiences for the digital platforms of small companies</li><li>Wordpress development, including themes creation or customization, custom plugins development and training</li><li>E-commerce maintenance with Fastcommerce, a Brazilian e-commerce platform</li><li>E-commerce development with Magento, customizing preexisting themes</li><li>Integrate external services such as payment services, delivery, etc into Magento solutions</li></ul>",
       "years": "4 year"
     }
@@ -187,7 +179,7 @@
       "id": "1",
       "institution": "MIT, University",
       "url": "https://www.mit.edu/",
-      "studyType": "MS",
+      "studyType": "Masters",
       "area": "Cloud technology",
       "startDate": "2014",
       "isStudyingHere": false,
@@ -198,7 +190,7 @@
       "id": "2",
       "institution": "NMAMIT, Nitte",
       "url": "https://www.mit.edu/",
-      "studyType": "B.Tech (VTU)",
+      "studyType": "B.Tech",
       "area": "Computer Science",
       "startDate": "2010",
       "isStudyingHere": false,
@@ -210,7 +202,7 @@
     {
       "id": "1",
       "name": "Project Name",
-      "url": "youtube.com",
+      "url": "https://www.twitter.com/sadanandpai/",
       "languages": "HTML, CSS, JavaScript",
       "discription": "this is the for for now till this day, atlest !"
     },
@@ -241,11 +233,11 @@
     }
   ],
   "mask":{
-    "basics": "1basics",
-    "skills": "1skills",
-    "education": "1education",
-    "work": "1work",
-    "projects": "1projects",
-    "awards": "1certificates"
+    "basics": "basics",
+    "skills": "skills",
+    "education": "education",
+    "work": "work",
+    "projects": "projects",
+    "awards": "certificates"
   }
 }
