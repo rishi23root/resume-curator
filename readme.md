@@ -17,6 +17,9 @@ Create your own templates and build your own template with latex and python 💻
     ```
 - [ ] edit the existing `tempalte.json`
 - [ ] setup the flask on production server or activate python virtural environment (auto generated in previous steps)
+    ```bash
+    source venv/bin/activate
+    ```
 - [ ] run the flask app ```python3 app.py``` || ```python3 main.py```
 
 
