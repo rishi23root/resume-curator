@@ -8,12 +8,14 @@ Create your own templates and build your own template with latex and python 💻
 - [ ] clone the repo 👯‍♀️
 - [ ] make setup.sh executable and run it (installing smallest version of pdflatex possible)
     ```bash
-    sudo chmod +x ./scripts/setup.sh && sudo ./scripts/setup.sh
+    ./scripts/setup.sh
     ```
 - [ ] make path available
     ```bash
     source ~/.bashrc
     source ~/.zshrc # only if you are using zsh
+    # reopen the terminal if you are not able to use the command
+    ```
     ```
 - [ ] edit the existing `tempalte.json`
 - [ ] setup the flask on production server or activate python virtural environment (auto generated in previous steps)
