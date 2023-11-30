@@ -17,8 +17,8 @@ if __name__ == '__main__' and production == 0:
     with open('template.json', 'r') as f:
         data = json.load(f)
         
-    templateCall = useTemplates('singleColumn')
-    # templateCall = useTemplates('twoColumn')
+    # templateCall = useTemplates('singleColumn')
+    templateCall = useTemplates('twoColumn')
     filePath = templateCall('testing.pdf', data)
 
 
@@ -27,7 +27,7 @@ if __name__ == '__main__' and production == 1:
     with open('template.json') as f: # type: ignore
         data = json.load(f)
     # testing for updating the json data in the middle
-    data['basics']['name'] = 'no one knows' # idk just a simple name to test  
+    # data['basics']['name'] = 'no one knows' # idk just a simple name to test  
 
     for template in listTemplates():
         templateCall = useTemplates(template)
@@ -35,4 +35,4 @@ if __name__ == '__main__' and production == 1:
             print("Using :",prCyan(template.capitalize()),end=' | ')
             filePath = templateCall(template+'.pdf', data)
             print("template, saved at :",prCyan(filePath))
-    
+        
