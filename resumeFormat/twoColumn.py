@@ -176,8 +176,12 @@ class base(Template):
     def AddCerts(self, awards: dict,mask:dict):
         self.append(lt.Section(mask['awards']))
         for award in awards:
-            self.append(NoEscape('\\subsection{Programming}'))
-            self.append(NoEscape('\\subsection{' + award['title'] + '}\n'))
+            # self.append(award['title'] + '}\n'))
+            # make head for the title with only first letter capital and rest small
+            self.append(NoEscape('\\runsubsection{' + award['title'].capitalize() + '}\n'))
+            # line seperator
+            self.append(lt.NewLine())
+            
             self.append(
                 NoEscape('\\location{' + award['date'] + ' by ' + createLink(award['url'], award['awarder']) + '}'))
             self.append(NoEscape('\\sectionsep'))
@@ -192,8 +196,9 @@ class base(Template):
         # \location{Jan 2015 - Present | New York, NY}
         # \sectionsep
         self.append(NoEscape('\\section{'+mask['work']+'}'))
-        for ex in experience:
-            
+        self.append(NoEscape('\\vspace{2pt}'))
+        
+        for index,ex in enumerate(experience):
             self.append(NoEscape('\\runsubsection{' + createLink(ex['url'], ex['name']) + '}'))
             self.append(NoEscape('\\descript{\\textbar{} ' + ex['position'] + '}'))
             startingDate = str(ex['startDate'])
@@ -203,12 +208,15 @@ class base(Template):
 
             # # description
             if ex['summary']:
-                
                 # \vspace{\topsep} # Hacky fix for awkward extra vertical space
-                self.append(NoEscape('\\vspace{\\topsep}'))
+                # self.append(NoEscape('\\vspace{\\topsep}'))
+                
                 self.append(NoEscape('\\begin{tightemize}'))
                 # for i in ex['summary'].split:
                 # parse the list items of summeries
+                if index == 0:
+                    self.append(NoEscape('\\vspace{\\topsep}'))
+                    self.append(NoEscape('\\vspace{2pt}'))
                 if "<li>" in ex['summary']:
                     lis = getListItems(ex['summary'])
                     for li in lis:
@@ -224,6 +232,8 @@ class base(Template):
     
     def AddProjects(self, projects: dict,mask:dict):
         self.append(NoEscape('\\section{'+mask['projects']+'}'))
+        self.append(NoEscape("\\vspace{2pt}"))
+        
         for project in projects:
             self.append(NoEscape('\\runsubsection{' + createLink(project['url'], project['name']) + '}'))
 
@@ -234,9 +244,18 @@ class base(Template):
             # # description
             if project['discription']:
                 # \vspace{\topsep} # Hacky fix for awkward extra vertical space
-                self.append(NoEscape('\\vspace{\\topsep}'))
+                self.append(NoEscape("\\vspace{2pt}"))
                 self.append(NoEscape('\\begin{tightemize}'))
-                self.append(NoEscape(project['discription']))
+                if "<li>" in project['discription']:
+                    lis = getListItems(project['discription'])
+                    for li in lis:
+                        self.append(NoEscape('\\item ' + li))
+                else:
+                    # give a space
+                    self.append(NoEscape('\\vspace{\\topsep}'))
+                    self.append(NoEscape(project['discription']))
+                    self.append(NoEscape("\\vspace{10pt}"))
+                # self.append(NoEscape(project['discription']))
                 self.append(NoEscape('\\end{tightemize}'))
                 self.append(NoEscape("\\vspace{10pt}"))
 
@@ -255,7 +274,8 @@ class base(Template):
         self.append(lt.Command("lastupdated"))
 
         self.AddUserProfile(**data['userInfoContant'])
-        with self.create(lt.MiniPage(width=lt.NoEscape(r"0.31\textwidth"), pos='t', content_pos='t')):
+        
+        with self.create(lt.MiniPage(width=lt.NoEscape(r"0.29\textwidth"), pos='t', content_pos='t')):
             # add the links section
             self.AddLinks(data['links'])
             # add education section
@@ -266,6 +286,11 @@ class base(Template):
             self.AddCerts(data['certificates'],data['mask'])
             
         self.append(lt.HFill())
+        
+        # \begin{figure}
+        # self.append(lt.Command("begin", arguments="figure"))
+        # self.append("\|begin{figure}")
+        
 
         with self.create(lt.MiniPage(width=lt.NoEscape(r"0.66\textwidth"), pos='t',content_pos='t')):
             # add Experence section
