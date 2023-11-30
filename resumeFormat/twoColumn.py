@@ -271,7 +271,7 @@ class base(Template):
             raise Exception(f"invalid data of keys: {e.attr}",)
 
         # add date
-        self.append(lt.Command("lastupdated"))
+        # self.append(lt.Command("lastupdated"))
 
         self.AddUserProfile(**data['userInfoContant'])
         
