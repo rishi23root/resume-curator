@@ -287,14 +287,8 @@ class base(Template):
             
         self.append(lt.HFill())
         
-        # \begin{figure}
-        # self.append(lt.Command("begin", arguments="figure"))
-        # self.append("\|begin{figure}")
-        
-
         with self.create(lt.MiniPage(width=lt.NoEscape(r"0.66\textwidth"), pos='t',content_pos='t')):
             # add Experence section
             self.AddExperience(data['experience'],data['mask'])
             # add Projects section
             self.AddProjects(data['projects'],data['mask'])
-        # add sub mini pages for other data like education, experience, skills etc
