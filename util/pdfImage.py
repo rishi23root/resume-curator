@@ -8,7 +8,7 @@ desired_dpi = 300
 
 def convertToPageImage(filename):
     """
-         take the file path and return list of page as images data in base64 format
+        take the file path and return list of page as images data in base64 format
     """
     # Open the PDF file
     pdf_document = fitz.open(filename) # type: ignore

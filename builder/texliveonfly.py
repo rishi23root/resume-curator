@@ -19,13 +19,13 @@ def communicateStr ( process,  s = None ):
     (a,b) = process.communicate( tobytesifpy3(s) )
     return ( frombytesifpy3(a), frombytesifpy3(b) )
 
-subprocess.Popen.communicateStr = communicateStr
+subprocess.Popen.communicateStr = communicateStr # type: ignore
 
 #global variables (necessary in py2; for py3 should use nonlocal)
 installation_initialized = False
 installing = False
 
-def generateSudoer(this_terminal_only = False,  tempDirectory = os.path.join(os.getenv("HOME"), ".texliveonfly") ):
+def generateSudoer(this_terminal_only = False,  tempDirectory = os.path.join(os.getenv("HOME"), ".texliveonfly") ): # type: ignore
     lockfilePath = os.path.join(tempDirectory,  "newterminal_lock")
     #NOTE: double-escaping \\ is neccessary for a slash to appear in the bash command
     # in particular, double quotations in the command need to be written \\"
