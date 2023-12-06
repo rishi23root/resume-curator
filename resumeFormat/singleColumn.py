@@ -135,6 +135,7 @@ class base(Template):
         self.append(NoEscape('}%\n'))
 
     def AddSkills(self, skills: dict,mask:dict):
+        # for now as we are building a tech base temaplate then its fine to neglect the other intersts and spoken languages
         languages = skills['languages'] + skills['frameworks']
         familar = skills['databases'] + skills['libraries'] + skills['technologies']
         tools = skills['tools']
