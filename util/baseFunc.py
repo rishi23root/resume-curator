@@ -36,7 +36,7 @@ def useTemplates(templateName: str) -> callable or None:  # type: ignore
     if templateName not in functionCallForEach: return None
     return functionCallForEach[templateName]
 
-
+@lru_cache()
 def read_json_file(file_path: str):
     """read the json file"""
     try:
