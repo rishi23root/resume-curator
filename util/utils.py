@@ -72,12 +72,14 @@ def creatResumeFromSystem(name, texliveonfly=True):
     pdflatexCommand = f'{pdflatexPath} {toGenerateResumeTexFile}'
 
     if texliveonfly:
-        textliveonflyCommand = f'python3 {texliveonflyFilePath} --texlive_bin={textlivePath} '
+        textliveonflyCommand = f'/bin/python3 {texliveonflyFilePath} --texlive_bin={textlivePath} '
         args = f'-a "-synctex=1 -interaction=nonstopmode -jobname={name}" -c '
         command = f'{textliveonflyCommand} {args} {pdflatexCommand}'
     else:
         command = pdflatexCommand
-
+        
+    # app.logger.error("is textliveonly :" + str(texliveonfly))
+    # app.logger.error(command)
     # app.logger.info({"command": command})
     # generate the resume itself
     # print(command)
@@ -90,7 +92,7 @@ def creatResumeFromSystem(name, texliveonfly=True):
         if error:
             print(app)
             try:
-                app.logger.error("error", error.decode()) # type: ignore
+                app.logger.error(error.decode())  # Fix: Removed the extra argument "error"
             except:
                 raise Exception(error.decode())
         elif success and 'Unable to start' in success.decode():
@@ -98,7 +100,8 @@ def creatResumeFromSystem(name, texliveonfly=True):
         elif success and 'in house texliveonfly' in success.decode():
             print("success in generating the resume")
             # app.logger.info("success", success.decode())
-            return True, (success)
+            return True, success.decode()
+            # Fix: Removed the unnecessary parentheses around "success"
             # print("Output: ", success.decode())
         elif not success and not error:
             raise Exception("check for access for texliveonfly", output)

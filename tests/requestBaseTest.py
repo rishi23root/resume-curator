@@ -131,11 +131,11 @@ def convertResumeToJsonResume():
 
 
 if __name__ == '__main__':
-    # listTemplates()
-    # downloadTemplate()
+    listTemplates()
+    downloadTemplate()
     createResume()
-    # createResume('twoColumn')
-    # convertResumeToBYR()
-    # convertResumeToJsonResume()
+    createResume('twoColumn')
+    convertResumeToBYR()
+    convertResumeToJsonResume()
 
     # os.remove('template.json')
