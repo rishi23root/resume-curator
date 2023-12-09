@@ -2,6 +2,8 @@ import requests
 import json
 import re
 import os 
+from util.constants import baseDir, outputDir
+
 
 
 # baseUrl = 'https://api.buildyourresume.online/'
@@ -129,6 +131,30 @@ def convertResumeToJsonResume():
         print('🚫 Error:', response.text)
         print(response.headers)
 
+# def test_getJpgPreview():
+#     url = baseUrl + 'getJpgPreview'
+    
+#     # readPdffile
+#     with open(os.path.join('./','output' ,'singleColumn.pdf'), 'rb') as f:
+#         pdfFile = f.read()
+        
+#     data = {
+#         "file": pdfFile
+#     }
+    
+#     # Make the GET request
+#     response = requests.get(url, data=data)
+
+#     # Handle the response
+#     if response.status_code == 200:
+#         # Save the response content (resume) to a file
+#         d = response.headers['content-disposition']
+#         fname = (re.findall("filename=(.+)", d)[0])
+#         with open(fname, 'wb') as f:
+#             f.write(response.content)
+#         print('Template downloaded successfully.')
+#     else:
+#         print('🚫 Error:', response.text)
 
 if __name__ == '__main__':
     listTemplates()
@@ -137,5 +163,6 @@ if __name__ == '__main__':
     createResume('twoColumn')
     convertResumeToBYR()
     convertResumeToJsonResume()
+    # test_getJpgPreview()
 
     # os.remove('template.json')

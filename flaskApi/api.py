@@ -1,13 +1,15 @@
 import os
+import uuid
 from urllib.parse import urlsplit
 
 from flask import jsonify, request, send_file
 
 from util.baseFunc import listTemplates
-from util.constants import baseDir,outputDir
-from util.convertor.formatConvertor import JsonResumeToOurTemplate, OurTemplateToJsonResume
-from util.utils import rceFunctions
+from util.constants import baseDir, outputDir
+from util.convertor.formatConvertor import (JsonResumeToOurTemplate,
+                                            OurTemplateToJsonResume)
 from util.pdfImage import convertToPageImage
+from util.utils import rceFunctions
 
 from .app import app
 from .flaskUtils import athenticateUser, generateResume, varifyData
@@ -168,6 +170,25 @@ def create_resume():
         return jsonify({
             '🚫 Error': f'Invalid content template, Download template from here {base_url}/download_template'
         }), 500
+
+
+# generate images from pdf
+# @app.route('/getJpgPreview', methods=['POST'])
+# def getJpgPreview():
+#     # take pdf file as input
+#     pdfFile = request.files['file']
+    
+#     # save file in temp folder with some temp name
+#     tempFileName = str(uuid.uuid4())+'.pdf'
+#     pdfFile.save(os.path.join(outputDir,tempFileName))
+    
+#     # convert it to jpg and return the array of jpgs
+#     pages = convertToPageImage(os.path.join(outputDir,tempFileName+'.pdf'))
+    
+#     # remove the file from the temp folder
+#     os.remove(os.path.join(outputDir,tempFileName))
+    
+#     return jsonify(pages)
 
 
 # @app.route('/create_resume_bulk', methods=['POST'])

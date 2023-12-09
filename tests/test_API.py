@@ -1,9 +1,10 @@
 import json
 import os
 import re
+import uuid
 from flask.testing import FlaskClient
 from util.baseFunc import read_json_file
-from util.constants import baseDir
+from util.constants import baseDir, outputDir
 
 headers = {
     'Content-Type': 'application/json'
@@ -135,4 +136,24 @@ def test_convert_resume_toJR(client: FlaskClient):
         assert i in data, f"{i} field is not present in data"
         # assert "languages" not in data, "languages field is present in data" 
     
+
+# def test_getJpgPreview(client: FlaskClient):
+    # # take pdf file as input
+    # pdfFile = open(os.path.join(outputDir ,'singleColumn.pdf'), 'rb')
     
+    # # send file to the api as form data
+    # data = {
+    #     "file": pdfFile
+    # }
+    
+    # response = client.post(
+    #     '/getJpgPreview', headers=headers, data=data
+    # )
+
+    # print(response.data.decode('utf-8'))
+    
+    # assert response.status_code == 200, "images not downloaded successfully 🚫" + response.data.decode('utf-8')
+    
+    # # check if the return data is array or not
+    # data = json.loads(response.get_data(as_text=True))
+    # assert isinstance(data, list), "type of data is not list 🚫, some errer go in detail manually"
