@@ -1,0 +1,203 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Your API Name",
+    "version": "1.0",
+    "description": "API documentation for Your API Name"
+  },
+  "basePath": "/",
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/templates": {
+      "get": {
+        "summary": "List Templates",
+        "description": "Endpoint to list templates.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getTemplatePreview": {
+      "get": {
+        "summary": "Get Template Preview",
+        "description": "Endpoint to get template preview.",
+        "parameters": [
+          {
+            "name": "templateName",
+            "in": "query",
+            "type": "string",
+            "description": "Name of the template",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/download_template": {
+      "get": {
+        "summary": "Download Template",
+        "description": "Endpoint to download template.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "404": {
+            "description": "Template not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/convert_resume": {
+      "post": {
+        "summary": "Convert Resume",
+        "description": "Endpoint to convert resume.",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConversionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "422": {
+            "description": "Unprocessable entity",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/create_resume": {
+      "post": {
+        "summary": "Create Resume",
+        "description": "Endpoint to create resume.",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResumeCreationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "401": {
+            "description": "Authentication failed",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "422": {
+            "description": "Unprocessable entity",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "🚫 Error": {
+          "type": "string"
+        }
+      }
+    },
+    "ConversionRequest": {
+      "type": "object",
+      "properties": {
+        "to2From": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object"
+        }
+      },
+      "required": ["to2From", "data"]
+    },
+    "ResumeCreationRequest": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object"
+        },
+        "template": {
+          "type": "string"
+        }
+      },
+      "required": ["data", "template"]
+    }
+  }
+}
