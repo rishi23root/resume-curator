@@ -14,7 +14,7 @@
       "countryCode": "",
       "region": ""
     },
-    
+
     "profiles": [
       {
         "network": "linkedin",
@@ -54,6 +54,18 @@
     ]
   },
   "skills": {
+    "core": [
+      {
+        "keywords": ["HTML", "CSS", "JavaScript"],
+        "level": "Master",
+        "name": "Web Development"
+      }
+    ],
+    "interests": [
+      {
+        "name": "Wildlife"
+      }
+    ],
     "languages": [
       {
         "name": "JavaScript",
@@ -137,8 +149,17 @@
         "name": "Bitbucket",
         "level": 3
       }
-    ]
-  },  
+    ],
+    "mask": {
+      "interests": "interests",
+      "languages": "languages",
+      "frameworks": "frameworks",
+      "technologies": "technologies",
+      "libraries": "libraries",
+      "databases": "databases",
+      "tools": "tools"
+    }
+  },
   "work": [
     {
       "id": "1",
@@ -198,7 +219,7 @@
       "score": "8.3 CGPA"
     }
   ],
-  "projects":[
+  "projects": [
     {
       "id": "1",
       "name": "Project Name",
@@ -220,7 +241,7 @@
       "date": "2014-11-01",
       "awarder": "XYZ client",
       "summary": "* Recognition zero defect delivery",
-      "url":"https://drive.google.com/file/d/1btwUi5c5t2rQ2gISsCOkLZiS01-g17OL/view?usp=sharing",
+      "url": "https://drive.google.com/file/d/1btwUi5c5t2rQ2gISsCOkLZiS01-g17OL/view?usp=sharing",
       "id": "1"
     },
     {
@@ -228,11 +249,11 @@
       "date": "2016-11-01",
       "awarder": "XYZ client",
       "summary": "Awarded for exceptional improvements made to improve user experience",
-      "url":"https://drive.google.com/file/d/1btwUi5c5t2rQ2gISsCOkLZiS01-g17OL/view?usp=sharing",
+      "url": "https://drive.google.com/file/d/1btwUi5c5t2rQ2gISsCOkLZiS01-g17OL/view?usp=sharing",
       "id": "1"
     }
   ],
-  "mask":{
+  "mask": {
     "basics": "basics",
     "skills": "skills",
     "education": "education",

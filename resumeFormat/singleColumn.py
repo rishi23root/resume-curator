@@ -135,6 +135,7 @@ class base(Template):
         self.append(NoEscape('}%\n'))
 
     def AddSkills(self, skills: dict,mask:dict):
+        # for now as we are building a tech base temaplate then its fine to neglect the other intersts and spoken languages
         languages = skills['languages'] + skills['frameworks']
         familar = skills['databases'] + skills['libraries'] + skills['technologies']
         tools = skills['tools']
@@ -267,10 +268,20 @@ class base(Template):
             if project['discription']:
                 # \vspace{\topsep} # Hacky fix for awkward extra vertical space
                 # self.append(NoEscape('\\vspace{\\topsep}'))
+                self.append(NoEscape("\\vspace{2pt}"))
                 self.append(NoEscape('\\begin{tightemize}'))
-                self.append(NoEscape("\\vspace{10pt}"))
-                self.append(NoEscape(project['discription']))
+                if "<li>" in project['discription']:
+                    lis = getListItems(project['discription'])
+                    for li in lis:
+                        self.append(NoEscape('\\item ' + li))
+                else:
+                    # give a space
+                    self.append(NoEscape('\\vspace{\\topsep}'))
+                    self.append(NoEscape(project['discription']))
+                    self.append(NoEscape("\\vspace{10pt}"))
+                # self.append(NoEscape(project['discription']))
                 self.append(NoEscape('\\end{tightemize}'))
+                self.append(NoEscape("\\vspace{10pt}"))
             
             self.append(NoEscape('\\vspace{0.5em}\n'))
 
@@ -284,7 +295,7 @@ class base(Template):
             raise Exception(f"invalid data of keys: {e.attr}",)
 
         # add date
-        self.append(lt.Command("lastupdated"))
+        # self.append(lt.Command("lastupdated"))
 
         self.AddUserProfile(**data['userInfoContant'],links=data['links'])
         self.append(lt.NewLine())

@@ -1,12 +1,15 @@
 import os
+import uuid
 from urllib.parse import urlsplit
 
 from flask import jsonify, request, send_file
 
 from util.baseFunc import listTemplates
-from util.constants import baseDir,outputDir
-from util.utils import rceFunctions
+from util.constants import baseDir, outputDir
+from util.convertor.formatConvertor import (JsonResumeToOurTemplate,
+                                            OurTemplateToJsonResume)
 from util.pdfImage import convertToPageImage
+from util.utils import rceFunctions
 
 from .app import app
 from .flaskUtils import athenticateUser, generateResume, varifyData
@@ -62,6 +65,47 @@ def download_template():
 
     return send_file(template_path, as_attachment=True)
 
+# convert Templates to build your resume from jsonResume
+        
+# types of conversions
+conversionOptions = ['jsonResumeToBYR', 'BYRToJsonResume']
+
+@app.route('/convert_resume', methods=['POST'])
+def convertTemplate():
+    # 0. Receive the data from the frontend
+    # should be json
+    content_type = request.headers.get('Content-Type')
+    if content_type != 'application/json':
+        return jsonify({'🚫 Error': 'Invalid content type. Expected JSON.'}), 400
+
+    try:
+        # b. Get the JSON data from the frontend 
+        # should have data key
+        jsonData = request.get_json()
+        conversionString = jsonData['to2From']
+        data = jsonData['data']
+        
+        if conversionString == 'jsonResumeToBYR':
+            return JsonResumeToOurTemplate(data)
+        elif conversionString == 'BYRToJsonResume':
+            # varify the data 
+            Varifed, error = varifyData(data)
+            if not Varifed:
+                raise KeyError(error)
+            return OurTemplateToJsonResume(data)
+        
+        else:
+            return jsonify({'🚫 Error': f'Invalid converson type. Expected one of these - { ",".join(conversionOptions) }'}), 400
+            
+    except KeyError as e:
+        # error on missing error message
+        app.logger.error(e)
+        return jsonify({'🚫 Error': f'Invalid data, missing key {e}'}), 422
+        
+    # put custom error here for data validation 
+    except Exception as e:
+        app.logger.error(e)
+        return jsonify({'🚫 Error': f'unable to convert template' }), 422 
 
 @app.route('/create_resume', methods=['POST'])
 def create_resume():
@@ -126,6 +170,25 @@ def create_resume():
         return jsonify({
             '🚫 Error': f'Invalid content template, Download template from here {base_url}/download_template'
         }), 500
+
+
+# generate images from pdf
+# @app.route('/getJpgPreview', methods=['POST'])
+# def getJpgPreview():
+#     # take pdf file as input
+#     pdfFile = request.files['file']
+    
+#     # save file in temp folder with some temp name
+#     tempFileName = str(uuid.uuid4())+'.pdf'
+#     pdfFile.save(os.path.join(outputDir,tempFileName))
+    
+#     # convert it to jpg and return the array of jpgs
+#     pages = convertToPageImage(os.path.join(outputDir,tempFileName+'.pdf'))
+    
+#     # remove the file from the temp folder
+#     os.remove(os.path.join(outputDir,tempFileName))
+    
+#     return jsonify(pages)
 
 
 # @app.route('/create_resume_bulk', methods=['POST'])

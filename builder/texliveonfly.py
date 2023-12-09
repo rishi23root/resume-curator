@@ -19,13 +19,13 @@ def communicateStr ( process,  s = None ):
     (a,b) = process.communicate( tobytesifpy3(s) )
     return ( frombytesifpy3(a), frombytesifpy3(b) )
 
-subprocess.Popen.communicateStr = communicateStr
+subprocess.Popen.communicateStr = communicateStr # type: ignore
 
 #global variables (necessary in py2; for py3 should use nonlocal)
 installation_initialized = False
 installing = False
 
-def generateSudoer(this_terminal_only = False,  tempDirectory = os.path.join(os.getenv("HOME"), ".texliveonfly") ):
+def generateSudoer(this_terminal_only = False,  tempDirectory = os.path.join(os.getenv("HOME"), ".texliveonfly") ): # type: ignore
     lockfilePath = os.path.join(tempDirectory,  "newterminal_lock")
     #NOTE: double-escaping \\ is neccessary for a slash to appear in the bash command
     # in particular, double quotations in the command need to be written \\"
@@ -113,8 +113,8 @@ def generateSpeakers(speech_setting):
         if not expression.endswith("\n"):
             expression += "\n"
         try:
-            speaker.stdin.write(tobytesifpy3(expression))
-            speaker.stdin.flush()
+            speaker.stdin.write(tobytesifpy3(expression)) # type: ignore
+            speaker.stdin.flush() # type: ignore
         except: #very tolerant of errors here
             print("An error has occurred when using the speech synthesizer.")
 
@@ -148,7 +148,7 @@ def generateTLMGRFuncs(tlmgr, speaker, sudoFunc):
     #checks that tlmgr is installed, raises OSError otherwise
     #also checks whether we need to escalate permissions, using fake remove command
     process = subprocess.Popen( [ tlmgr,  "remove" ], stdin=subprocess.PIPE, stdout = subprocess.PIPE,  stderr=subprocess.PIPE  )
-    (tlmgr_out,  tlmgr_err) = process.communicateStr()
+    (tlmgr_out,  tlmgr_err) = process.communicateStr() # type: ignore
 
     #does our default user have update permissions?
     default_permission = "don't have permission" not in tlmgr_err
@@ -196,7 +196,7 @@ sudo {2}'''.format(scriptName, packagesString, basicCommand)
         print( "{0}: Searching repositories for missing {1} {2}".format(scriptName, fontOrFile,  term) )
 
         process = subprocess.Popen([ tlmgr, "search", "--global", "--file", term], stdin=subprocess.PIPE, stdout = subprocess.PIPE, stderr=subprocess.PIPE )
-        ( output ,  stderrdata ) = process.communicateStr()
+        ( output ,  stderrdata ) = process.communicateStr() # type: ignore
         outList = output.split("\n")
 
         results = ["latex"]    #latex 'result' for removal later
@@ -313,11 +313,10 @@ if __name__ == '__main__':
         (installFile,  installFont) = generateTLMGRFuncs(tlmgr_path,  installSpeaker,  generateSudoer(options.terminal_only))
     except OSError:
         if options.fail_silently:
-            (output, returnCode)  = compileTex()
+            (output, returnCode)  = compileTex() # type: ignore
             exitScript(returnCode)
         else:
-            parser.error( "{0}: It appears {1} is not installed.  {2}".format(scriptName, tlmgr_path,
-                "Are you sure you have TeX Live 2010 or later?" if tlmgr_path == "tlmgr" else "" ) )
+            parser.error( "{0}: It appears {1} is not installed.  {2}".format(scriptName, tlmgr_path, "Are you sure you have TeX Live 2010 or later?" if tlmgr_path == "tlmgr" else "" ) ) # type: ignore
 
     #loop constraints
     done = False
@@ -327,7 +326,7 @@ if __name__ == '__main__':
 
     #keeps running until all missing font/file errors are gone, or the same ones persist in all categories
     while not done:
-        (output, returnCode)  = compileTex()
+        (output, returnCode)  = compileTex() # type: ignore
 
         #most reliable: searches for missing file
         filesSearch = re.findall(r"! LaTeX Error: File `([^`']*)' not found" , output) + re.findall(r"! I can't find file `([^`']*)'." , output)
@@ -339,11 +338,11 @@ if __name__ == '__main__':
 
         try:
             if len(filesSearch) > 0 and filesSearch[0] != previousFile:
-                previousFile = installFile(filesSearch[0] )
+                previousFile = installFile(filesSearch[0] ) # type: ignore
             elif len(fontsFileSearch) > 0 and fontsFileSearch[0] != previousFontFile:
-                previousFontFile = installFile(fontsFileSearch[0])
+                previousFontFile = installFile(fontsFileSearch[0]) # type: ignore
             elif len(fontsSearch) > 0 and fontsSearch[0] != previousFont:
-                previousFont = installFont(fontsSearch[0])
+                previousFont = installFont(fontsSearch[0]) # type: ignore
             else:
                 done = True
         except OSError:
@@ -351,4 +350,4 @@ if __name__ == '__main__':
             print("We've already compiled the .tex document, so there's nothing else to do.\n  Exiting..")
             exitScript(returnCode)
 
-    exitScript(returnCode)
+    exitScript(returnCode) # type: ignore

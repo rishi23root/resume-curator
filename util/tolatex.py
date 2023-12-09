@@ -18,7 +18,7 @@ def inBlock(blockName: str, argStr: str):
 # wrapper which will take arguments and closing element name
 # ex - {minipage}[t]{0.66\textwidth}
 
-def latexBlock(blockName: str, argStr: str,endingStr:str="") -> callable:
+def latexBlock(blockName: str, argStr: str,endingStr:str="") -> callable: # type: ignore
     starting = f"\\{blockName}{argStr}"
     if blockName == "section" and endingStr == "":
         endingStr = f"\\{blockName}sep"

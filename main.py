@@ -35,4 +35,3 @@ if __name__ == '__main__' and production == 1:
             print("Using :",prCyan(template.capitalize()),end=' | ')
             filePath = templateCall(template+'.pdf', data)
             print("template, saved at :",prCyan(filePath))
-        
