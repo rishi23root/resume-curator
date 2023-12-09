@@ -1,9 +1,9 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Your API Name",
+    "title": "build your resume",
     "version": "1.0",
-    "description": "API documentation for Your API Name"
+    "description": "API documentation for Your BYR "
   },
   "basePath": "/",
   "schemes": ["http"],
