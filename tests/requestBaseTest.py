@@ -2,7 +2,7 @@ import requests
 import json
 import re
 import os 
-from util.constants import baseDir, outputDir
+# from util.constants import baseDir, outputDir
 
 
 
