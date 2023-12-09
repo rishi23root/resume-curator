@@ -5,6 +5,7 @@ from flask import jsonify, request, send_file
 
 from util.baseFunc import listTemplates
 from util.constants import baseDir,outputDir
+from util.convertor.formatConvertor import JsonResumeToOurTemplate, OurTemplateToJsonResume
 from util.utils import rceFunctions
 from util.pdfImage import convertToPageImage
 
@@ -62,6 +63,47 @@ def download_template():
 
     return send_file(template_path, as_attachment=True)
 
+# convert Templates to build your resume from jsonResume
+        
+# types of conversions
+conversionOptions = ['jsonResumeToBYR', 'BYRToJsonResume']
+
+@app.route('/convert_resume', methods=['POST'])
+def convertTemplate():
+    # 0. Receive the data from the frontend
+    # should be json
+    content_type = request.headers.get('Content-Type')
+    if content_type != 'application/json':
+        return jsonify({'🚫 Error': 'Invalid content type. Expected JSON.'}), 400
+
+    try:
+        # b. Get the JSON data from the frontend 
+        # should have data key
+        jsonData = request.get_json()
+        conversionString = jsonData['to2From']
+        data = jsonData['data']
+        
+        if conversionString == 'jsonResumeToBYR':
+            return JsonResumeToOurTemplate(data)
+        elif conversionString == 'BYRToJsonResume':
+            # varify the data 
+            Varifed, error = varifyData(data)
+            if not Varifed:
+                raise KeyError(error)
+            return OurTemplateToJsonResume(data)
+        
+        else:
+            return jsonify({'🚫 Error': f'Invalid converson type. Expected one of these - { ",".join(conversionOptions) }'}), 400
+            
+    except KeyError as e:
+        # error on missing error message
+        app.logger.error(e)
+        return jsonify({'🚫 Error': f'Invalid data, missing key {e}'}), 422
+        
+    # put custom error here for data validation 
+    except Exception as e:
+        app.logger.error(e)
+        return jsonify({'🚫 Error': f'unable to convert template' }), 422 
 
 @app.route('/create_resume', methods=['POST'])
 def create_resume():
