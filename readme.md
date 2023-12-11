@@ -53,11 +53,7 @@ Create your own templates and build your own template with latex and python 💻
 
 ```js
 routes -
-'/test' - GET - (only works in debug mode )
-'/templates' - GET - return list of all templates avilable
-'/getTemplatePreview' - GET and argument of templateName - return base64 image path
-'/download_template' - GET  - returns the template file json
-'/create_resume' - POST and expects {template,data} - returns pdf file with your template and data
+'/swagger' - swagger docs
 ```
 
 ---

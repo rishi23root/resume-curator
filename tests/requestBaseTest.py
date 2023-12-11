@@ -131,30 +131,24 @@ def convertResumeToJsonResume():
         print('🚫 Error:', response.text)
         print(response.headers)
 
-# def test_getJpgPreview():
-#     url = baseUrl + 'getJpgPreview'
-    
-#     # readPdffile
-#     with open(os.path.join('./','output' ,'singleColumn.pdf'), 'rb') as f:
-#         pdfFile = f.read()
-        
-#     data = {
-#         "file": pdfFile
-#     }
-    
-#     # Make the GET request
-#     response = requests.get(url, data=data)
+def getJpgPreview():
+    url = baseUrl + 'getJpgPreview'
 
-#     # Handle the response
-#     if response.status_code == 200:
-#         # Save the response content (resume) to a file
-#         d = response.headers['content-disposition']
-#         fname = (re.findall("filename=(.+)", d)[0])
-#         with open(fname, 'wb') as f:
-#             f.write(response.content)
-#         print('Template downloaded successfully.')
-#     else:
-#         print('🚫 Error:', response.text)
+    # with open(os.path.join('./','output' ,'singleColumn.pdf'), 'rb') as f:
+    #     pdfFile = f.read()
+        
+    data = {
+        "file": open(os.path.join('./','output' ,'singleColumn.pdf'), 'rb')
+    }
+    
+    response = requests.post(url, files=data)
+
+    # Handle the response
+    if response.status_code == 200:
+        print(response.json())
+        print("total pages recieved : ",len(response.json()))
+    else:
+        print('🚫 Error:', response.text)
 
 if __name__ == '__main__':
     listTemplates()
@@ -163,6 +157,6 @@ if __name__ == '__main__':
     createResume('twoColumn')
     convertResumeToBYR()
     convertResumeToJsonResume()
-    # test_getJpgPreview()
-
+    getJpgPreview()
+    # pass
     # os.remove('template.json')

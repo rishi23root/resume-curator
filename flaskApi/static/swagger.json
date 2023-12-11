@@ -1,0 +1,237 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "build your resume",
+    "version": "1.0",
+    "description": "API documentation for Your BYR "
+  },
+  "basePath": "/",
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/templates": {
+      "get": {
+        "summary": "List all Templates we have",
+        "description": "Endpoint to list all existing templates.",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getTemplatePreview": {
+      "get": {
+        "summary": "Get Template Preview",
+        "description": "Endpoint to get template preview in array of base64 images .",
+        "parameters": [
+          {
+            "name": "templateName",
+            "in": "query",
+            "type": "string",
+            "default": "singleColumn",
+            "description": "Name of the template",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/download_template": {
+      "get": {
+        "summary": "Download Template.json file",
+        "description": "Endpoint to download template.json which can be used to create resumes of any templates.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "404": {
+            "description": "Template not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/convert_resume": {
+      "post": {
+        "summary": "Convert jsonResume template to our template",
+        "description": "Endpoint to convert resume template files, using these params \n\t -> to2from - ['jsonResumeToBYR', 'BYRToJsonResume'] \n\t -> data - jsonResume template file or our temaplate file.",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConversionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "422": {
+            "description": "Unprocessable entity",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/create_resume": {
+      "post": {
+        "summary": "Create Resume",
+        "description": "Endpoint to create resume. \n\t -> data - jsonResume template file or our temaplate file. \n\t -> template - name of the template.",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResumeCreationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "401": {
+            "description": "Authentication failed",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "422": {
+            "description": "Unprocessable entity",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/getJpgPreview": {
+      "post": {
+        "summary": "Get JPG preview from PDF",
+        "description": "This endpoint takes a PDF file as input, converts it to JPG, and returns an array of JPGs in base64 format.",
+        "consumes": ["multipart/form-data"],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "description": "PDF file to be converted",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "🚫 Error": {
+          "type": "string"
+        }
+      }
+    },
+    "ConversionRequest": {
+      "type": "object",
+      "properties": {
+        "to2From": {
+          "type": "string",
+          "enum": ["jsonResumeToBYR", "BYRToJsonResume"]
+        },
+        "data": {
+          "type": "object"
+        }
+      },
+      "required": ["to2From", "data"]
+    },
+    "ResumeCreationRequest": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object"
+        },
+        "template": {
+          "type": "string",
+          "enum": ["singleColumn", "twoColumn"]
+        }
+      },
+      "required": ["data", "template"]
+    }
+  }
+}
