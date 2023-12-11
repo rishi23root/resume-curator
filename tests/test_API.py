@@ -23,7 +23,7 @@ def test_download_template(client: FlaskClient):
     assert response.status_code == 200, "Template not downloaded successfully 🚫"
     data = json.loads(response.get_data(as_text=True))
     # check if data is equl to template.json
-    assert isinstance(data, dict), "type of data is not dict 🚫, some errer go in detail manually"
+    assert isinstance(data, dict), "type of data is not dict 🚫, some error go in detail manually"
     assert read_json_file('template.json') == data,\
             "template.json is not equal to data, please check the template.json file 🚫 or code !!"
 
@@ -95,7 +95,7 @@ def test_convert_resume_toBYR(client: FlaskClient):
 
     # check if the return data is json or not
     data = json.loads(response.get_data(as_text=True))
-    assert isinstance(data, dict), "type of data is not dict 🚫, some errer go in detail manually"
+    assert isinstance(data, dict), "type of data is not dict 🚫, some error go in detail manually"
     
     # check if data have fields like - interests, languages, 
     assert "interests" in data, "interests field is not present in data"
@@ -125,7 +125,7 @@ def test_convert_resume_toJR(client: FlaskClient):
 
     # check if the return data is json or not
     data = json.loads(response.get_data(as_text=True))
-    assert isinstance(data, dict), "type of data is not dict 🚫, some errer go in detail manually"
+    assert isinstance(data, dict), "type of data is not dict 🚫, some error go in detail manually"
     
     # check if data should not have fields like - interests, languages
     assert "interests" not in data, "interests field is present in data"
@@ -137,23 +137,17 @@ def test_convert_resume_toJR(client: FlaskClient):
         # assert "languages" not in data, "languages field is present in data" 
     
 
-# def test_getJpgPreview(client: FlaskClient):
-    # # take pdf file as input
-    # pdfFile = open(os.path.join(outputDir ,'singleColumn.pdf'), 'rb')
+def test_getJpgPreview(client: FlaskClient):
+    data = {
+        "file": open(os.path.join(outputDir ,'singleColumn.pdf'), 'rb')
+    }
     
-    # # send file to the api as form data
-    # data = {
-    #     "file": pdfFile
-    # }
+    response = client.post(
+        '/getJpgPreview', data=data
+    )
     
-    # response = client.post(
-    #     '/getJpgPreview', headers=headers, data=data
-    # )
-
-    # print(response.data.decode('utf-8'))
-    
-    # assert response.status_code == 200, "images not downloaded successfully 🚫" + response.data.decode('utf-8')
-    
-    # # check if the return data is array or not
-    # data = json.loads(response.get_data(as_text=True))
-    # assert isinstance(data, list), "type of data is not list 🚫, some errer go in detail manually"
+    assert response.status_code == 200, "images not downloaded successfully 🚫" + response.data.decode('utf-8')        
+    if response.status_code == 200: 
+        assert isinstance(response.json, list), "type of data is not list 🚫, some error go in detail manually"
+    else:
+        assert False, "error with return status code for the api"

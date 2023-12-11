@@ -173,23 +173,20 @@ def create_resume():
 
 
 # generate images from pdf
-# @app.route('/getJpgPreview', methods=['POST'])
-# def getJpgPreview():
-#     # take pdf file as input
-#     pdfFile = request.files['file']
-    
-#     # save file in temp folder with some temp name
-#     tempFileName = str(uuid.uuid4())+'.pdf'
-#     pdfFile.save(os.path.join(outputDir,tempFileName))
-    
-#     # convert it to jpg and return the array of jpgs
-#     pages = convertToPageImage(os.path.join(outputDir,tempFileName+'.pdf'))
-    
-#     # remove the file from the temp folder
-#     os.remove(os.path.join(outputDir,tempFileName))
-    
-#     return jsonify(pages)
+@app.route('/getJpgPreview', methods=['POST'])
+def getJpgPreview():
+    # take pdf file as input
+    pdfFile = request.files['file']
 
+    # save file in temp folder with some temp name
+    tempFileName = str(uuid.uuid4())+'.pdf'  
+    pdfFile.save(os.path.join(outputDir,tempFileName))
+    
+    # convert it to jpg and return the array of jpgs
+    pages = convertToPageImage(os.path.join(outputDir,tempFileName))
+    # # remove the file from the temp folder
+    os.remove(os.path.join(outputDir,tempFileName))
+    return jsonify(pages)
 
 # @app.route('/create_resume_bulk', methods=['POST'])
 # def create_resume_bulk():
