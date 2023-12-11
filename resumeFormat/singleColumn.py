@@ -278,10 +278,10 @@ class base(Template):
                     # give a space
                     self.append(NoEscape('\\vspace{\\topsep}'))
                     self.append(NoEscape(project['discription']))
-                    self.append(NoEscape("\\vspace{10pt}"))
+                    # self.append(NoEscape("\\vspace{10pt}"))
                 # self.append(NoEscape(project['discription']))
                 self.append(NoEscape('\\end{tightemize}'))
-                self.append(NoEscape("\\vspace{10pt}"))
+                self.append(NoEscape("\\vspace{6pt}"))
             
             self.append(NoEscape('\\vspace{0.5em}\n'))
 
