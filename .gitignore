@@ -2,6 +2,7 @@
 __pycache__
 testing
 .pytest_cache
+.vscode
 venv
 
 /logs/*

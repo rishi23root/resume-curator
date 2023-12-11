@@ -12,11 +12,11 @@
   "paths": {
     "/templates": {
       "get": {
-        "summary": "List Templates",
-        "description": "Endpoint to list templates.",
+        "summary": "List all Templates we have",
+        "description": "Endpoint to list all existing templates.",
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Successful Response",
             "schema": {
               "type": "array",
               "items": {
@@ -30,12 +30,13 @@
     "/getTemplatePreview": {
       "get": {
         "summary": "Get Template Preview",
-        "description": "Endpoint to get template preview.",
+        "description": "Endpoint to get template preview in array of base64 images .",
         "parameters": [
           {
             "name": "templateName",
             "in": "query",
             "type": "string",
+            "default": "singleColumn",
             "description": "Name of the template",
             "required": true
           }
@@ -61,8 +62,8 @@
     },
     "/download_template": {
       "get": {
-        "summary": "Download Template",
-        "description": "Endpoint to download template.",
+        "summary": "Download Template.json file",
+        "description": "Endpoint to download template.json which can be used to create resumes of any templates.",
         "responses": {
           "200": {
             "description": "Successful response",
@@ -81,8 +82,8 @@
     },
     "/convert_resume": {
       "post": {
-        "summary": "Convert Resume",
-        "description": "Endpoint to convert resume.",
+        "summary": "Convert jsonResume template to our template",
+        "description": "Endpoint to convert resume template files, using these params \n\t -> to2from - ['jsonResumeToBYR', 'BYRToJsonResume'] \n\t -> data - jsonResume template file or our temaplate file.",
         "consumes": ["application/json"],
         "parameters": [
           {
@@ -119,7 +120,7 @@
     "/create_resume": {
       "post": {
         "summary": "Create Resume",
-        "description": "Endpoint to create resume.",
+        "description": "Endpoint to create resume. \n\t -> data - jsonResume template file or our temaplate file. \n\t -> template - name of the template.",
         "consumes": ["application/json"],
         "parameters": [
           {
@@ -179,7 +180,8 @@
       "type": "object",
       "properties": {
         "to2From": {
-          "type": "string"
+          "type": "string",
+          "enum": ["jsonResumeToBYR", "BYRToJsonResume"]
         },
         "data": {
           "type": "object"
@@ -194,7 +196,8 @@
           "type": "object"
         },
         "template": {
-          "type": "string"
+          "type": "string",
+          "enum": ["singleColumn", "twoColumn"]
         }
       },
       "required": ["data", "template"]
