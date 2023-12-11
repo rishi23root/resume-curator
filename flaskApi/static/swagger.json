@@ -165,6 +165,37 @@
           }
         }
       }
+    },
+    "/getJpgPreview": {
+      "post": {
+        "summary": "Get JPG preview from PDF",
+        "description": "This endpoint takes a PDF file as input, converts it to JPG, and returns an array of JPGs in base64 format.",
+        "consumes": ["multipart/form-data"],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "description": "PDF file to be converted",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
     }
   },
   "definitions": {
