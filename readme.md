@@ -6,12 +6,12 @@ Create your own templates and build your own template with latex and python 💻
 
 ## To Run Project
 
-- [ ] clone the repo 👯‍♀️
-- [ ] make setup.sh executable and run it (installing smallest version of pdflatex possible)
+- [x] clone the repo 👯‍♀️
+- [x] make setup.sh executable and run it (installing smallest version of pdflatex possible)
   ```bash
   ./scripts/setup.sh
   ```
-- [ ] make path available
+- [x] make path available
 
   ```bash
   source ~/.bashrc
@@ -19,16 +19,15 @@ Create your own templates and build your own template with latex and python 💻
   # reopen the terminal if you are not able to use the command
   ```
 
-  ```
-
-  ```
-
-- [ ] edit the existing `tempalte.json`
-- [ ] setup the flask on production server or activate python virtural environment (auto generated in previous steps)
+- [x] edit the existing `tempalte.json`
+- [x] setup the flask on production server or activate python virtural environment (auto generated in previous steps)
   ```bash
   source venv/bin/activate
   ```
-- [ ] run the flask app `python3 app.py` || `python3 main.py`
+- [x] run the flask app
+  ```
+  python3 wsgi.py  ||  python3 main.py
+  ```
 
 ## How to run for local development
 
@@ -38,21 +37,22 @@ Create your own templates and build your own template with latex and python 💻
 
 ## To Running the Project on server env (production server)
 
-- [ ] clone the repo 👯‍♀️
-- [ ] edit the `/scripts/constants.sh` file and add the server domain name
-- [ ] make setup.sh executable and run it
+- [x] clone the repo 👯‍♀️
+- [x] edit the `/scripts/constants.sh` file and add the server domain name
+- [x] make setup.sh executable and run it
   ```bash
   sudo chmod +x ./scripts/oneForAll.sh && sudo ./scripts/oneForAll.sh
   ```
-- [ ] make path available
+- [x] make path available
   ```bash
   source ~/.bashrc
   source ~/.zshrc #if you are using zsh
   ```
-- [ ] use it on the server
+- [x] use it on the server
+
+### Api Routes
 
 ```js
-routes -
 '/swagger' - swagger docs
 ```
 
