@@ -47,7 +47,7 @@ def read_json_file(file_path: str):
         raise Exception('🚫 Error in reading json file, check the json format')
 
 
-# local logger 
+# local logger in case not running in server mode
 class logger:
     def error(self, x):
         print("[ERROR] : ",end='')

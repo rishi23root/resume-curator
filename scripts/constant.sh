@@ -43,7 +43,7 @@ cleanUpCertbot(){
 }
 
 
-# just old code hunny
+# just old code 
 gunicornCall(){
     # take port number from command line argument make sure it is not empty default to 5000
     port=${1:-5000}
