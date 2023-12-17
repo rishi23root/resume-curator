@@ -88,7 +88,7 @@ def JsonResumeToOurTemplate(data):
     for index,projects in enumerate(resume_data["projects"]):        
         projects["id"] = str(index+1)
         projects["languages"] = ""
-        projects["discription"] = ""
+        projects["description"] = ""
         del projects['highlights']
         del projects['endDate']
         personal_format['projects'].append(projects)
@@ -170,7 +170,7 @@ def OurTemplateToJsonResume(data):
         project_data = project.copy()
         project_data['endDate'] = ''
         project_data['startDate'] = ''
-        project_data['highlights'] = [highlight.text for highlight in BeautifulSoup(project_data['discription'], 'html.parser').find_all('li')]
+        project_data['highlights'] = [highlight.text for highlight in BeautifulSoup(project_data['description'], 'html.parser').find_all('li')]
         resume_data['projects'].append(project_data)
 
     # awards and certificates

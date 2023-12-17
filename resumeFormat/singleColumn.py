@@ -265,21 +265,21 @@ class base(Template):
             # self.append(NoEscape(f'{study_type} \hfill {studytime}\n'))
             # self.append(NoEscape('\\newline\n'))
             # # description
-            if project['discription']:
+            if project['description']:
                 # \vspace{\topsep} # Hacky fix for awkward extra vertical space
                 # self.append(NoEscape('\\vspace{\\topsep}'))
                 self.append(NoEscape("\\vspace{2pt}"))
                 self.append(NoEscape('\\begin{tightemize}'))
-                if "<li>" in project['discription']:
-                    lis = getListItems(project['discription'])
+                if "<li>" in project['description']:
+                    lis = getListItems(project['description'])
                     for li in lis:
                         self.append(NoEscape('\\item ' + li))
                 else:
                     # give a space
                     self.append(NoEscape('\\vspace{\\topsep}'))
-                    self.append(NoEscape(project['discription']))
+                    self.append(NoEscape(project['description']))
                     # self.append(NoEscape("\\vspace{10pt}"))
-                # self.append(NoEscape(project['discription']))
+                # self.append(NoEscape(project['description']))
                 self.append(NoEscape('\\end{tightemize}'))
                 self.append(NoEscape("\\vspace{6pt}"))
             

@@ -18,13 +18,13 @@ def createResume(filename: str, isSilent: bool = True, texliveonfly=True):
     # get only first part of the filename
     name = filename.split('.')[0]
     try:
-        isSuccess, discription = creatResumeFromSystem(
+        isSuccess, description = creatResumeFromSystem(
             name, texliveonfly)  # type: ignore
 
-        # app.logger.info(str(discription))
+        # app.logger.info(str(description))
 
         if not isSuccess:
-            raise Exception(discription)
+            raise Exception(description)
 
     except Exception as e:
         # print(e)
