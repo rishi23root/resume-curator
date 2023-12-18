@@ -15,7 +15,6 @@ class base(Template):
         # extract data from the json file and format it according to the template
 
         try:
-            
             userInfoContant = {
                 'name': self.jsonData['basics']['name'],
                 'email': self.jsonData['basics']['email'],
@@ -126,11 +125,16 @@ class base(Template):
             # self.append(NoEscape('\\sectionsep'))
     
     def AddSkills(self, skills: dict,mask:dict):
-        languages = skills['languages'] + skills['frameworks']
-        familar = skills['databases'] + skills['libraries'] + skills['technologies']
+        try:
+            languages = skills['languages'] + skills['frameworks']
+            familar = skills['databases'] + skills['libraries'] + skills['technologies']
+        except:
+            languages = []
+            familar = []
         tools = skills['tools']
         with self.create(lt.Section(mask['skills'])):
-            self.append(NoEscape('\\subsection{Programming}\n'))
+            if self.jsonData['basics']['label'].startswith( 'sofrware' ):
+                self.append(NoEscape('\\subsection{Programming}\n'))
             
             under5000 = []
             under1000 = []
