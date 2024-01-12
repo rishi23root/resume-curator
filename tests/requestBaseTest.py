@@ -150,6 +150,26 @@ def getJpgPreview():
     else:
         print('🚫 Error:', response.text)
 
+
+def extract_text():
+    url = baseUrl + 'extract_text'
+
+    # with open(os.path.join('./','output' ,'singleColumn.pdf'), 'rb') as f:
+    #     pdfFile = f.read()
+        
+    data = {
+        "file": open(os.path.join('./','output' ,'singleColumn.pdf'), 'rb')
+    }
+    
+    response = requests.post(url, files=data)
+
+    # Handle the response
+    if response.status_code == 200:
+        print("output:",response.json())
+        # print("total pages recieved : ",len(response.json()))
+    else:
+        print('🚫 Error:', response.text)
+
 if __name__ == '__main__':
     listTemplates()
     downloadTemplate()
@@ -160,3 +180,5 @@ if __name__ == '__main__':
     getJpgPreview()
     # pass
     # os.remove('template.json')
+
+    extract_text()

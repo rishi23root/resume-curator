@@ -151,3 +151,19 @@ def test_getJpgPreview(client: FlaskClient):
         assert isinstance(response.json, list), "type of data is not list 🚫, some error go in detail manually"
     else:
         assert False, "error with return status code for the api"
+
+# pdf to text with links
+def test_extract_text(client: FlaskClient):
+    data = {
+        "file": open(os.path.join(outputDir ,'singleColumn.pdf'), 'rb')
+    }
+    
+    response = client.post(
+        '/extract_text', data=data
+    )
+    
+    assert response.status_code == 200, "images not downloaded successfully 🚫" + response.data.decode('utf-8')        
+    if response.status_code == 200: 
+        assert isinstance(response.json, str), "type of data is not list 🚫, some error go in detail manually"
+    else:
+        assert False, "error with return status code for the api"

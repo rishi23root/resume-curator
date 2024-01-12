@@ -196,6 +196,33 @@
           }
         }
       }
+    },
+    "/extract_text": {
+      "post": {
+        "summary": "Extract text from PDF",
+        "description": "This endpoint takes a PDF file as input, extracts text from it, and returns the text with any existing links in pdf ",
+        "consumes": ["multipart/form-data"],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "description": "PDF file to be converted",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
     }
   },
   "definitions": {

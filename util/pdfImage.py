@@ -53,6 +53,25 @@ def convertToPageImage(filename):
     return base64_images
 
 
+def extractTextAndLinksFromPDF(filePath):
+    # read file from path
+    result = ""
+
+    with fitz.open(filePath) as pdf_file: # type: ignore
+        for page_index in range(len(pdf_file)):
+            # get the page
+            page = pdf_file[page_index]
+            # get the text
+            text = page.get_text("text")
+            # clean the text
+            text = text.replace("\r", " ").replace("\n", "  ")
+            # get links on the page
+            page_links = " ".join([ x.get('uri', '') for x in page.links()])
+            result += text + "\n" + page_links + "\n"
+
+    # return the final result
+    return result
+
 if __name__ == '__main__':
     # get all the pdf files from the directory
     pdf_files = [

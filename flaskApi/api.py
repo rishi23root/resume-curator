@@ -8,7 +8,7 @@ from util.baseFunc import listTemplates
 from util.constants import baseDir, outputDir
 from util.convertor.formatConvertor import (JsonResumeToOurTemplate,
                                             OurTemplateToJsonResume)
-from util.pdfImage import convertToPageImage
+from util.pdfImage import convertToPageImage,extractTextAndLinksFromPDF
 from util.utils import rceFunctions
 
 from .app import app
@@ -195,3 +195,20 @@ def getJpgPreview():
 #     # a. create resume and save in some folder
 #     # b. send the resume to the frontend in byte format and delete the file from the folder
 #     return "under development", 200
+
+
+# extract text form pdf file
+@app.route('/extract_text', methods=['POST'])
+def extract_text():
+    # take pdf file as input
+    pdfFile = request.files['file']
+
+    # save file in temp folder with some temp name
+    tempFileName = str(uuid.uuid4())+'.pdf'  
+    pdfFile.save(os.path.join(outputDir,tempFileName))
+    
+    # convert it to jpg and return the array of jpgs
+    text = extractTextAndLinksFromPDF(os.path.join(outputDir,tempFileName))
+    # # remove the file from the temp folder
+    os.remove(os.path.join(outputDir,tempFileName))
+    return jsonify(text)
