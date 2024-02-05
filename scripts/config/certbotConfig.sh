@@ -10,6 +10,6 @@ if ! [ -x "$(command -v certbot)" ]; then
 fi
 
 echo "Adding cert for $websiteUrl " 
-echo "sudo certbot --nginx -d $websiteUrl -m $email --agree-tos -n"
+    echo "sudo certbot --nginx -d $websiteUrl -m $email --agree-tos -n"
 sudo certbot --nginx -d $websiteUrl -m $email --agree-tos -n
 echo "Done ✅"

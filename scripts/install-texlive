@@ -102,7 +102,8 @@ tar -xzf install-tl-unx.tar.gz --strip-components 1
 
 echo ":: starting the installer..."
 TEXLIVE_INSTALL_PREFIX=$prefix ./install-tl \
-  --scheme $scheme --no-interaction
+  --scheme $scheme --no-interaction 
+  # --scheme $scheme --no-interaction --profile installation.profile
 
 ## POST-INSTALLATION PHASE ************************************************
 
