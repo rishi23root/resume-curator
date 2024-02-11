@@ -19,7 +19,7 @@ def athenticateUser(request):
     return True
 
 
-def generateResume(data: dict, templateName: str) -> Path or None:
+def generateResume(data: dict, templateName: str) -> Path or None: # type: ignore
     # file name to save the resume
     # return full path of the resume with the file name
     fileName = str(uuid.uuid4()) + '.pdf'

@@ -82,14 +82,14 @@ def creatResumeFromSystem(name, texliveonfly=True):
     # app.logger.error(command)
     # app.logger.info({"command": command})
     # generate the resume itself
-    # print(command)
     try:
         (success, error), output = runSystemCommad(command)
-        # print(success.decode('utf-8'))
+        # print(error.decode())
         # app.logger.info({"success": success, "error": error})
+        # print("Output: ", output)
 
         # succes if string contains the word success
-        if error:
+        if error and 'UnicodeDecodeError' not in error.decode():
             print(app)
             try:
                 app.logger.error(error.decode())  # Fix: Removed the extra argument "error"
@@ -105,7 +105,8 @@ def creatResumeFromSystem(name, texliveonfly=True):
             # print("Output: ", success.decode())
         elif not success and not error:
             raise Exception("check for access for texliveonfly", output)
-
+    except UnicodeDecodeError as e:
+        return True, success.decode()
     except Exception as e:
         return False, str(e)
 

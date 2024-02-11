@@ -100,6 +100,8 @@ class base(Template):
                 self.append("\n")
 
     def AddEducation(self, education: dict,mask:dict):
+        if not education:
+            return
         # add the education section
         # print(education)
         with self.create(lt.Section(mask['education'])):
@@ -178,6 +180,8 @@ class base(Template):
         self.append(NoEscape('\\sectionsep'))
     
     def AddCerts(self, awards: dict,mask:dict):
+        if not awards:
+            return
         self.append(lt.Section(mask['awards']))
         for award in awards:
             # self.append(award['title'] + '}\n'))
@@ -195,6 +199,8 @@ class base(Template):
 
     # right sections
     def AddExperience(self, experience: dict,mask:dict):
+        if not experience:
+            return
         # \runsubsection{Facebook}
         # \descript{| Software Engineer }
         # \location{Jan 2015 - Present | New York, NY}
@@ -235,6 +241,8 @@ class base(Template):
             self.append(NoEscape('\\sectionsep'))
     
     def AddProjects(self, projects: dict,mask:dict):
+        if not projects:
+            return
         self.append(NoEscape('\\section{'+mask['projects']+'}'))
         self.append(NoEscape("\\vspace{2pt}"))
         

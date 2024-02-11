@@ -108,6 +108,8 @@ class base(Template):
 
     # left sections
     def AddEducation(self, education: dict,mask:dict):
+        if not education:
+            return
         self.append(NoEscape('\\fieldsection{'+mask['education']+'}{\n'))
         for edu in education:
             institution = edu['institution']
@@ -204,6 +206,8 @@ class base(Template):
         self.append(NoEscape('}%\n'))
 
     def AddCerts(self, awards: dict,mask:dict):
+        if not awards:
+            return
         self.append(NoEscape('\\fieldsection{'+mask['awards']+'}{\n'))
         for award in awards:
             title = award['title']
@@ -216,6 +220,8 @@ class base(Template):
         self.append(NoEscape('}%\n'))
 
     def AddExperience(self, experience: dict,mask:dict):
+        if not experience:
+            return
         self.append(NoEscape('\\fieldsection{'+mask['work']+'}{\n'))
         for ex in experience:
             name = ex['name']
@@ -255,6 +261,8 @@ class base(Template):
         self.append(NoEscape('\\vspace{0.5em}\n'))
 
     def AddProjects(self, projects: dict,mask:dict):
+        if not projects:
+            return
         self.append(NoEscape('\\fieldsection{'+mask['projects']+'}{\n'))
         for project in projects:
             name = project['name']
