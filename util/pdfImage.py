@@ -32,7 +32,7 @@ def convertToPageImage(filename):
 
         # Convert the image to JPG format and save it to the BytesIO object
         img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples) # type: ignore
-        img.save(img_bytes_io, format="JPEG")
+        img.save(img_bytes_io, format="PNG")
         
         # # save image
         # with open(os.path.join(outputDir, f"{page_number}.jpg"), "wb") as f:
@@ -44,7 +44,7 @@ def convertToPageImage(filename):
 
         # Encode the image data as Base64 and append it to the list
         base64_image_data = base64.b64encode(jpg_image_data).decode('utf-8')
-        base64_images.append(f"data:image/jpeg;base64,{base64_image_data}")
+        base64_images.append(f"data:image/png;base64,{base64_image_data}")
 
     # Close the PDF file
     pdf_document.close()
