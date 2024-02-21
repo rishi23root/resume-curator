@@ -12,7 +12,7 @@ from util.pdfImage import convertToPageImage,extractTextAndLinksFromPDF
 from util.utils import rceFunctions
 
 from .app import app
-from .flaskUtils import athenticateUser, generateResume, varifyData
+from .flaskUtils import athenticateUser, generateResume, varifyData, compress_base64_image
 
 ######################################################3
 # for testing only remove in production
@@ -172,6 +172,14 @@ def create_resume():
         }), 500
 
 
+# @app.route('/create_resume_bulk', methods=['POST'])
+# def create_resume_bulk():
+#     # 0. recieve the data as list
+#     # 1. get the json data from the frontend
+#     # a. create resume and save in some folder
+#     # b. send the resume to the frontend in byte format and delete the file from the folder
+#     return "under development", 200
+
 # generate images from pdf
 @app.route('/getJpgPreview', methods=['POST'])
 def getJpgPreview():
@@ -188,14 +196,20 @@ def getJpgPreview():
     os.remove(os.path.join(outputDir,tempFileName))
     return jsonify(pages)
 
-# @app.route('/create_resume_bulk', methods=['POST'])
-# def create_resume_bulk():
-#     # 0. recieve the data as list
-#     # 1. get the json data from the frontend
-#     # a. create resume and save in some folder
-#     # b. send the resume to the frontend in byte format and delete the file from the folder
-#     return "under development", 200
+# compress base64 image
+@app.route('/compressImage', methods=['POST'])
+def compressImage():
+    # take string as input and compress it
+    # take two parameters image string and quality
+    imageString = request.form['imageString']
+    try:
+        quality = int(request.form['quality'])
+    except KeyError as e:
+        quality = 30
 
+    # return the compressed string
+    statusCode, data = compress_base64_image(imageString, quality)
+    return data, statusCode
 
 # extract text form pdf file
 @app.route('/extract_text', methods=['POST'])

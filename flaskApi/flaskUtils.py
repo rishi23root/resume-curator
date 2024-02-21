@@ -6,11 +6,15 @@
 # 1. create resume and save in some folder
 # 2. send the resume to the frontend in byte format and delete the file from the folder
 
+import base64
 import os
 import uuid
+from io import BytesIO
 from pathlib import Path
 
-from util.baseFunc import useTemplates, read_json_file
+from PIL import Image
+
+from util.baseFunc import read_json_file, useTemplates
 from util.constants import baseDir
 
 
@@ -57,3 +61,33 @@ def varifyData(data: dict) :
                     if eachField not in eachElementInList.keys():
                         return False, '.'.join([field, eachField])
     return True, ""
+
+
+def compress_base64_image(image_string, quality=30):
+    # get only base64 part
+    if image_string.count(';base64,') == 0:
+        return 422, image_string
+    glan ,input_base64 = image_string.split(';base64,')
+    try:
+        # Decode base64 string to bytes
+        image_data = base64.b64decode(input_base64)
+
+        # Open image from bytes
+        img = Image.open(BytesIO(image_data))
+
+        # Create a BytesIO object to store compressed image
+        compressed_img_io = BytesIO()
+
+        # Save the image with specified quality to BytesIO
+        img.save(compressed_img_io, format='PNG', quality=quality)
+
+        # Get the compressed image data as bytes
+        compressed_img_data = compressed_img_io.getvalue()
+
+        # Encode the compressed image bytes to base64
+        compressed_base64 = base64.b64encode(compressed_img_data).decode('utf-8')
+
+        return 200, glan + ';base64,' + compressed_base64
+
+    except Exception as e:
+        return 422, image_string

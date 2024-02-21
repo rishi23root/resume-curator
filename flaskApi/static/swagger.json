@@ -197,6 +197,43 @@
         }
       }
     },
+    "/compressImage": {
+      "post": {
+        "summary": "Compress Image",
+        "description": "This endpoint takes a base64 image uri and quality variable as input, compresses it, and returns the compressed image.",
+        "consumes": ["multipart/form-data"],
+        "parameters": [
+          {
+            "name": "imageString",
+            "in": "formData",
+            "description": "Base64 encoded image string",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "quality",
+            "in": "formData",
+            "description": "Image compression quality",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1,
+            "maximum": 100
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "422": {
+            "description": "failed to compress image"
+          }
+        }
+      }
+    },
     "/extract_text": {
       "post": {
         "summary": "Extract text from PDF",

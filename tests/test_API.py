@@ -136,7 +136,7 @@ def test_convert_resume_toJR(client: FlaskClient):
         assert i in data, f"{i} field is not present in data"
         # assert "languages" not in data, "languages field is present in data" 
     
-
+# convert pdf to images arr
 def test_getJpgPreview(client: FlaskClient):
     data = {
         "file": open(os.path.join(outputDir ,'singleColumn.pdf'), 'rb')
@@ -151,6 +151,30 @@ def test_getJpgPreview(client: FlaskClient):
         assert isinstance(response.json, list), "type of data is not list 🚫, some error go in detail manually"
     else:
         assert False, "error with return status code for the api"
+
+# compressImage 
+def test_compressImage(client: FlaskClient):
+    # collect data from the response of the above api
+    data = {
+        "file": open(os.path.join(outputDir ,'singleColumn.pdf'), 'rb')
+    }
+    response = client.post(
+        '/getJpgPreview', data=data
+    )
+
+    if response.status_code != 200:
+        assert False, "unable to collect data to test on "
+    
+    # compress the image
+    data = {
+        "imageString": response.get_json()[0]
+    }
+
+    response = client.post(
+        '/compressImage', data=data
+    )
+
+    assert response.status_code == 200, "images not compressed successfully 🚫" + response.data.decode('utf-8')
 
 # pdf to text with links
 def test_extract_text(client: FlaskClient):
