@@ -67,7 +67,7 @@ def compress_base64_image(image_string, quality=30):
     # get only base64 part
     if image_string.count(';base64,') == 0:
         return 422, image_string
-    glan ,input_base64 = image_string.split(';base64,')
+    glans ,input_base64 = image_string.split(';base64,')
     try:
         # Decode base64 string to bytes
         image_data = base64.b64decode(input_base64)
@@ -79,7 +79,7 @@ def compress_base64_image(image_string, quality=30):
         compressed_img_io = BytesIO()
 
         # Save the image with specified quality to BytesIO
-        img.save(compressed_img_io, format='PNG', quality=quality)
+        img.save(compressed_img_io, format='JPEG', quality=quality, optimize=True)
 
         # Get the compressed image data as bytes
         compressed_img_data = compressed_img_io.getvalue()
@@ -87,7 +87,8 @@ def compress_base64_image(image_string, quality=30):
         # Encode the compressed image bytes to base64
         compressed_base64 = base64.b64encode(compressed_img_data).decode('utf-8')
 
-        return 200, glan + ';base64,' + compressed_base64
+        return 200, glans.replace('png','jpg') + ';base64,' + compressed_base64
 
     except Exception as e:
+        print('[error] ',e)
         return 422, image_string

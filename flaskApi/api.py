@@ -186,6 +186,12 @@ def getJpgPreview():
     # take pdf file as input
     pdfFile = request.files['file']
 
+    # is compress form request
+    try:
+        compress = True if request.form['compress'] == 'true' else False
+    except KeyError as e:
+        compress = False
+
     # save file in temp folder with some temp name
     tempFileName = str(uuid.uuid4())+'.pdf'  
     pdfFile.save(os.path.join(outputDir,tempFileName))
@@ -194,22 +200,30 @@ def getJpgPreview():
     pages = convertToPageImage(os.path.join(outputDir,tempFileName))
     # # remove the file from the temp folder
     os.remove(os.path.join(outputDir,tempFileName))
+
+    # for i in pages:
+    #     print(len(i),compress_base64_image(i, 30)[0])
+    # compress the images if compress is true
+    pages = [compress_base64_image(page, 30)[1] if compress else page for page in pages]
+    # for i in pages:
+    #     print(len(i))
     return jsonify(pages)
 
 # compress base64 image
-@app.route('/compressImage', methods=['POST'])
-def compressImage():
-    # take string as input and compress it
-    # take two parameters image string and quality
-    imageString = request.form['imageString']
-    try:
-        quality = int(request.form['quality'])
-    except KeyError as e:
-        quality = 30
+# @app.route('/compressImage', methods=['POST'])
+# def compressImage():
+#     # take string as input and compress it
+#     # take two parameters image string and quality
+#     imageString = request.form['imageString']
+#     try:
+#         quality = int(request.form['quality'])
+#     except KeyError as e:
+#         quality = 30
 
-    # return the compressed string
-    statusCode, data = compress_base64_image(imageString, quality)
-    return data, statusCode
+#     print(quality)
+#     # return the compressed string
+#     statusCode, data = compress_base64_image(imageString, quality)
+#     return data, statusCode
 
 # extract text form pdf file
 @app.route('/extract_text', methods=['POST'])
