@@ -82,7 +82,7 @@ class base(Template):
                 kwargs['label'] + 
                 '\\end{center}\n'
                 "\n\\newline"+
-                '\\vspace{-0.7em}\n'+
+                '\\vspace{-0.9em}\n'+
                 '\n\t\\urlstyle{same}\n\t' +
                 linkstring +
                 '\n'
@@ -205,7 +205,7 @@ class base(Template):
 
 
     # right sections
-    def AddExperience(self, experience: dict,mask:dict):
+    def AddExperience(self, experience: dict,mask:dict, isTop :bool):
         if not experience:
             return
         # \runsubsection{Facebook}
@@ -231,7 +231,7 @@ class base(Template):
                 self.append(NoEscape('\\begin{tightemize}'))
                 # for i in ex['summary'].split:
                 # parse the list items of summeries
-                if index == 0:
+                if index == 0 and isTop:
                     self.append(NoEscape('\\vspace{\\topsep}'))
                     self.append(NoEscape('\\vspace{2pt}'))
                 if "<li>" in ex['summary']:
@@ -247,24 +247,23 @@ class base(Template):
             # # \sectionsep
             self.append(NoEscape('\\sectionsep'))
     
-    def AddProjects(self, projects: dict,mask:dict):
+    def AddProjects(self, projects: dict,mask:dict, isTop :bool):
         if not projects:
             return
         self.append(NoEscape('\\section{'+mask['projects']+'}'))
         self.append(NoEscape("\\vspace{2pt}"))
         
-        for project in projects:
+        for index,project in enumerate(projects):
             self.append(NoEscape('\\runsubsection{' + createLink(project['url'], project['name']) + '}'))
-
-            # self.append(
-            #     NoEscape('\\textbar{} ' + createLink(project['url'],"Link"))
-            # )
 
             # # description
             if project['description']:
                 # \vspace{\topsep} # Hacky fix for awkward extra vertical space
-                self.append(NoEscape("\\vspace{2pt}"))
+                # self.append(NoEscape("\\vspace{2pt}"))
                 self.append(NoEscape('\\begin{tightemize}'))
+                if index == 0 and isTop:
+                    self.append(NoEscape('\\vspace{\\topsep}'))
+                    self.append(NoEscape('\\vspace{2pt}'))
                 if "<li>" in project['description']:
                     lis = getListItems(project['description'])
                     for li in lis:
@@ -276,7 +275,7 @@ class base(Template):
                     # self.append(NoEscape("\\vspace{10pt}"))
                 # self.append(NoEscape(project['description']))
                 self.append(NoEscape('\\end{tightemize}'))
-                self.append(NoEscape("\\vspace{6pt}"))
+                # self.append(NoEscape("\\vspace{6pt}"))
             
             self.append(NoEscape('\\sectionsep'))
             
@@ -307,6 +306,6 @@ class base(Template):
         
         with self.create(lt.MiniPage(width=lt.NoEscape(r"0.66\textwidth"), pos='t',content_pos='t')):
             # add Experence section
-            self.AddExperience(data['experience'],data['mask'])
+            self.AddExperience(data['experience'],data['mask'],True)
             # add Projects section
-            self.AddProjects(data['projects'],data['mask'])
+            self.AddProjects(data['projects'],data['mask'],not bool(len(data['experience'])))
