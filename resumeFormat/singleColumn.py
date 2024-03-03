@@ -68,8 +68,8 @@ class base(Template):
                 if key in ['phone', 'address']:
                     linkstring += val + ' \\textbar{} \n\t'
                 elif key == 'email':
-                    linkstring += createLink('mailto:' +
-                                             val, val) + ' \\textbar{} \n\t'
+                    linkstring += createLink(
+                        'mailto:' + val, val) + ' \\textbar{} \n\t'
                 else:
                     linkstring += createLink(val, val) + ' \\textbar{} \n\t'
         else:
@@ -246,7 +246,7 @@ class base(Template):
                 if "<li>" in ex['summary']:
                     lis = getListItems(ex['summary'])
                     for li in lis:
-                        self.append(NoEscape('\\item ' + li))
+                        self.append(NoEscape(f'\\item {li}'))
                 else:
                     # give a space
                     self.append(NoEscape("\\vspace{10pt}"))
@@ -285,7 +285,7 @@ class base(Template):
                 if "<li>" in project['description']:
                     lis = getListItems(project['description'])
                     for li in lis:
-                        self.append(NoEscape('\\item ' + li))
+                        self.append(NoEscape(f'\\item {li}'))
                 else:
                     # give a space
                     self.append(NoEscape('\\vspace{\\topsep}'))

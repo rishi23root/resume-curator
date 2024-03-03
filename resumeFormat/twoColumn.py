@@ -21,6 +21,7 @@ class base(Template):
                 'phone': self.jsonData['basics']['phone'],
                 'website': self.jsonData['basics']['url'],
                 'address': ", ".join([i for i in [self.jsonData['basics']['location']['city'], self.jsonData['basics']['location']['postalCode']] if i != '']),
+                'label': self.jsonData['basics']['label'],
             }
             links = self.jsonData['basics']['profiles']
             experience = self.jsonData['work']
@@ -62,12 +63,12 @@ class base(Template):
         # profile links
         linkstring = ''
         for key, val in kwargs.items():
-            if key != 'name':
+            if key not in ['name', 'label', 'links']:
                 if key in ['phone', 'address']:
                     linkstring += val + ' \\textbar{} \n\t'
                 elif key == 'email':
-                    linkstring += createLink('mailto:' +
-                                             val, val) + ' \\textbar{} \n\t'
+                    linkstring += createLink(
+                        'mailto:' + val, val) + ' \\textbar{} \n\t'
                 else:
                     linkstring += createLink(val, val) + ' \\textbar{} \n\t'
         else:
@@ -76,6 +77,12 @@ class base(Template):
         namesection_args = [
             first, last,
             NoEscape(
+                '\\vspace{-1.5em}\n'+
+                '\\begin{center} ' +
+                kwargs['label'] + 
+                '\\end{center}\n'
+                "\n\\newline"+
+                '\\vspace{-0.7em}\n'+
                 '\n\t\\urlstyle{same}\n\t' +
                 linkstring +
                 '\n'
