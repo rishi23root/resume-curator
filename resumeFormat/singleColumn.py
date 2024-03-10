@@ -50,7 +50,6 @@ class base(Template):
             'mask':mask,
         }
 
-
     # header
     def AddUserProfile(self, **kwargs):
         # name: str, email: str, phone: str, website: str, address: str
@@ -139,10 +138,12 @@ class base(Template):
     def AddSkills(self, skills: dict,mask:dict):
         # for now as we are building a tech base temaplate then its fine to neglect the other intersts and spoken languages
         try:
-            languages = skills['languages'] + skills['frameworks']
+            languages = skills['languages'] 
+            frameworks = skills['frameworks']
             familar = skills['databases'] + skills['libraries'] + skills['technologies']
         except:
             languages = []
+            frameworks = []
             familar = []
         tools = skills['tools']
         
@@ -153,55 +154,56 @@ class base(Template):
         under5000 = []
         under1000 = []
         for i in languages:
-            if int(i['level']) > 60:
+            if int(i['level']) > 2:
                 under5000.append(i['name'])
             else:
                 under1000.append(i['name'])
         
-        # languages
+        self.append(lt.utils.bold(NoEscape(f'\\textbf{{{skills["mask"]["languages"].capitalize()}}} : \t')))
+        
         if under5000:
-            self.append(lt.utils.bold(NoEscape('\\textbf{Over 5000 lines:}')))
             # new line
-            self.append(lt.NewLine())
             self.append(NoEscape(' \\textbullet{} '.join(under5000)))
             self.append(NoEscape('\\vspace{0.2em}\n'))
-            self.append(lt.NewLine())
         
         if under1000:
-            self.append(lt.utils.bold(NoEscape('\\textbf{Over 5000 lines:}')))
             # new line
-            self.append(lt.NewLine())
             self.append(NoEscape(' \\textbullet{} '.join(under1000)))
             self.append(NoEscape('\\vspace{0.2em}\n'))
-            self.append(lt.NewLine())
 
-        # if len(under5000) < len(languages):
-        #     self.append(lt.utils.bold(NoEscape('\\textbf{Over 1000 lines:}\t')))
-        #     self.append(lt.NewLine())
-        #     self.append(NoEscape(' \\textbullet{} '.join([i['name'] for i in languages if i not in under5000])))
-        #     self.append(NoEscape('\\vspace{0.2em}\n'))
-        #     self.append(lt.NewLine())
+        self.append(lt.NewLine())
+        
+        if frameworks:
+            self.append(lt.utils.bold(NoEscape(f'\\textbf{{{skills["mask"]["frameworks"].capitalize()}}} : \t')))
+            for index,i in enumerate(frameworks):
+                if index == 0:
+                    self.append(NoEscape(i['name']))
+                else:
+                    self.append(NoEscape(' \\textbullet{} ' + i['name']))
+            self.append(NoEscape('\\vspace{0.2em}\n'))
+            self.append(lt.NewLine())
 
         # familar
         if familar:
-            self.append(lt.utils.bold(NoEscape('\\textbf{Familiar:}\n\t')))
-            self.append(lt.NewLine())
-            for i in familar:
-                self.append(NoEscape(' \\textbullet{} ' + i['name']))
+            self.append(lt.utils.bold(NoEscape('\\textbf{Familiar} :\t')))
+            for index,i in enumerate(familar):
+                if index == 0:
+                    self.append(NoEscape(i['name']))
+                else:
+                    self.append(NoEscape(' \\textbullet{} ' + i['name']))
             self.append(NoEscape('\\vspace{0.2em}\n'))
             self.append(lt.NewLine())
 
         # tools
         if tools:
-            self.append(lt.utils.bold(NoEscape('\\textbf{Tools:}\n\t')))
-            self.append(lt.NewLine())
-            for i in tools:
-                self.append(NoEscape(' \\textbullet{} ' + i['name']))
-            self.append(lt.NewLine())
+            self.append(lt.utils.bold(NoEscape(f'\\textbf{{{skills["mask"]["tools"].capitalize()}}} :\t')))
+            for index,i in enumerate(tools):
+                if index == 0:
+                    self.append(NoEscape(i['name']))
+                else:
+                    self.append(NoEscape(' \\textbullet{} ' + i['name']))
             self.append(NoEscape('\\vspace{0.2em}\n'))
-
-
-        
+            self.append(lt.NewLine())
 
         self.append(NoEscape('}%\n'))
 

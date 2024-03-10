@@ -135,53 +135,81 @@ class base(Template):
     
     def AddSkills(self, skills: dict,mask:dict):
         try:
-            languages = skills['languages'] + skills['frameworks']
+            languages = skills['languages'] 
+            frameworks = skills['frameworks']
             familar = skills['databases'] + skills['libraries'] + skills['technologies']
         except:
             languages = []
+            frameworks = []
             familar = []
         tools = skills['tools']
+        
         with self.create(lt.Section(mask['skills'])):
-            if self.jsonData['basics']['label'].startswith( 'sofrware' ):
+            if self.jsonData['basics']['label'].startswith( 'Software' ):
                 self.append(NoEscape('\\subsection{Programming}\n'))
             
             under5000 = []
             under1000 = []
             for i in languages:
-                if int(i['level']) > 60:
+                if int(i['level']) > 2:
                     under5000.append(i['name'])
                 else:
                     under1000.append(i['name'])
-                    
-            # languages  
+            
+            self.append(lt.utils.bold(NoEscape(f'\\textbf{{{skills["mask"]["languages"].capitalize()}}} : \t')))
+            
             if under5000:
-                self.append(lt.utils.bold(NoEscape('\\location{Over 5000 lines:}')))
+                # new line
                 self.append(NoEscape(' \\textbullet{} '.join(under5000)))
-                self.append(NoEscape("\\vspace{5pt}"))
-
-
+                self.append(NoEscape('\\vspace{0.05em}\n'))
+            
             if under1000:
-                self.append(lt.utils.bold(NoEscape('\\location{Over 1000 lines:}')))
                 self.append(NoEscape(' \\textbullet{} '.join(under1000)))
-                self.append(NoEscape("\\vspace{5pt}"))
+                self.append(NoEscape('\\vspace{0.05em}\n'))
 
             self.append(lt.NewLine())
+            self.append(NoEscape('\\\\'))
+            
+            
+            if frameworks:
+                self.append(lt.utils.bold(NoEscape(f'\\textbf{{{skills["mask"]["frameworks"].capitalize()}}} : \t')))
+                for index,i in enumerate(frameworks):
+                    if index == 0:
+                        self.append(NoEscape(i['name']))
+                    else:
+                        self.append(NoEscape(' \\textbullet{} ' + i['name']))
+                    self.append(NoEscape('\\vspace{0.05em}\n'))
+                self.append(lt.NewLine())
+                self.append(NoEscape('\\\\'))
+                
 
             # familar
             if familar:
-                self.append(lt.utils.bold(NoEscape('\\location{Familiar:}\n')))
-                for i in familar:
-                    self.append(NoEscape(' \\textbullet{} ' + i['name']))
-                self.append(NoEscape("\\vspace{5pt}"))
+                self.append(lt.utils.bold(NoEscape('\\textbf{Familiar} :\t')))
+                for index,i in enumerate(familar):
+                    if index == 0:
+                        self.append(NoEscape(i['name']))
+                    else:
+                        self.append(NoEscape(' \\textbullet{} ' + i['name']))
+                    self.append(NoEscape('\\vspace{0.05em}\n'))
                 self.append(lt.NewLine())
+                self.append(NoEscape('\\\\'))
                 
+
             # tools
             if tools:
-                self.append(lt.utils.bold(NoEscape('\\location{Tools:}\n')))
-                for i in tools:
-                    self.append(NoEscape(' \\textbullet{} ' + i['name']))
+                self.append(lt.utils.bold(NoEscape(f'\\textbf{{{skills["mask"]["tools"].capitalize()}}} :\t')))
+                for index,i in enumerate(tools):
+                    if index == 0:
+                        self.append(NoEscape(i['name']))
+                    else:
+                        self.append(NoEscape(' \\textbullet{} ' + i['name']))
+                    self.append(NoEscape('\\vspace{0.05em}\n'))
                 self.append(lt.NewLine())
+                self.append(NoEscape('\\\\'))
+                
 
+            self.append(NoEscape('}%\n'))
         # pprint(skills)
         # section space
         self.append(NoEscape('\\sectionsep'))
