@@ -34,7 +34,7 @@ def tivetextPaht():
         # a = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
 
         # if a == '. . .' or a == '':
-        defalttexlivePath = '/texlive/2023/bin/x86_64-linux'
+        defalttexlivePath = '/texlive/2024/bin/x86_64-linux'
         homePath = subprocess.Popen(
             "echo $HOME", shell=True, stdout=subprocess.PIPE).stdout.read().decode('utf-8').strip()  # type: ignore
         a = (homePath+defalttexlivePath)
