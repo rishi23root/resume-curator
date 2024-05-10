@@ -13,7 +13,7 @@ sudo apt-get dist-upgrade -y
 # if not install it
 # check if texlive path is added to path
 # if not add it
-if [ -d "$HOME/texlive/2023/bin/x86_64-linux" ]; then
+if [ -d "$HOME/texlive/2024/bin/x86_64-linux" ]; then
     source $HOME/.bashrc 
 else
     echo "texlive is not installed. 🚫"
@@ -28,7 +28,7 @@ else
     chmod +x ./scripts/install-texlive
     ./scripts/install-texlive --scheme=minimal
 
-    texlivePath=$HOME/texlive/2023/bin/x86_64-linux
+    texlivePath=$HOME/texlive/2024/bin/x86_64-linux
     # make this path executable for every user
     chmod -R 755 $texlivePath
     # if user on zsh make this path available to zsh
